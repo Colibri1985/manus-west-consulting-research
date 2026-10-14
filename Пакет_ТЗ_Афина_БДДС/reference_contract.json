@@ -1,0 +1,3646 @@
+{
+  "initialState": {
+    "schemaVersion": 6,
+    "budget": {
+      "project": "",
+      "cfo": "Управление коммерческой недвижимостью",
+      "periodStart": "2027-01-01",
+      "periodEnd": "2027-12-31",
+      "unit": "RUB",
+      "openingBalance": null
+    },
+    "settings": {
+      "allowManualFot": false,
+      "fotMode": "staff_only",
+      "fotMixedConfirmed": false,
+      "bitFormCode": "",
+      "staffArticles": {
+        "salary": "tpl-702.0101",
+        "bonus": "tpl-702.0102",
+        "ndfl": "tpl-702.0103",
+        "contrib": "tpl-702.0104"
+      },
+      "taxProfile": {
+        "isMSP": false,
+        "mspType": "priority",
+        "injuryRate": 0.2,
+        "table": [
+          {
+            "year": 2026,
+            "mrot": 27093,
+            "epvb": 2979000
+          },
+          {
+            "year": 2027,
+            "mrot": 27093,
+            "epvb": 2979000
+          }
+        ],
+        "brackets": [
+          {
+            "upTo": 2400000,
+            "rate": 13
+          },
+          {
+            "upTo": 5000000,
+            "rate": 15
+          },
+          {
+            "upTo": 20000000,
+            "rate": 18
+          },
+          {
+            "upTo": 50000000,
+            "rate": 20
+          },
+          {
+            "upTo": null,
+            "rate": 22
+          }
+        ]
+      }
+    },
+    "articles": [
+      {
+        "id": "tpl-700.000",
+        "code": "700.000",
+        "name": "ДЕЯТЕЛЬНОСТЬ УК",
+        "parentId": null,
+        "direction": "root",
+        "isActive": true,
+        "sortOrder": 1,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.000",
+        "code": "701.000",
+        "name": "Поступления по операционной деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 2,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.100",
+        "code": "701.100",
+        "name": "Поступления от оказания эксплуатационных услуг",
+        "parentId": "tpl-701.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 3,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.200",
+        "code": "701.200",
+        "name": "Поступления от оказания платных услуг",
+        "parentId": "tpl-701.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 4,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.201",
+        "code": "701.201",
+        "name": "Поступление от ДУ (клиентские услуги)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 5,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.202",
+        "code": "701.202",
+        "name": "Поступление от ДУ (ежемесячное ТО)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 6,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.203",
+        "code": "701.203",
+        "name": "Поступление от ДУ (клининг)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 7,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.204",
+        "code": "701.204",
+        "name": "Поступление от ДУ (аренда)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 8,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.205",
+        "code": "701.205",
+        "name": "Поступление от ДУ (агентские услуги)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 9,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.206",
+        "code": "701.206",
+        "name": "Поступление от ДУ (наземная парковка)",
+        "parentId": "tpl-701.200",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 10,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.300",
+        "code": "701.300",
+        "name": "Поступления от оказания коммунальных услуг",
+        "parentId": "tpl-701.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 11,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.400",
+        "code": "701.400",
+        "name": "Поступление взносов на капитальный ремонт",
+        "parentId": "tpl-701.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 12,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.500",
+        "code": "701.500",
+        "name": "Прочие поступления по операционной деятельности",
+        "parentId": "tpl-701.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 13,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.501",
+        "code": "701.501",
+        "name": "Штрафы, пени, неустойки к получению",
+        "parentId": "tpl-701.500",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 14,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.502",
+        "code": "701.502",
+        "name": "Госпошлина к получению",
+        "parentId": "tpl-701.500",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 15,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.503",
+        "code": "701.503",
+        "name": "Возмещение ущерба к получению",
+        "parentId": "tpl-701.500",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 16,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.504",
+        "code": "701.504",
+        "name": "Поступления от сдачи имущества в аренду (субаренду)",
+        "parentId": "tpl-701.500",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 17,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-701.505",
+        "code": "701.505",
+        "name": "Компенсации от застройщика",
+        "parentId": "tpl-701.500",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 18,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.000",
+        "code": "702.000",
+        "name": "Выплаты по операционной деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 19,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0100",
+        "code": "702.0100",
+        "name": "Оплата труда, НДФЛ и страховые взносы",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 20,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0101",
+        "code": "702.0101",
+        "name": "Заработная плата УК",
+        "parentId": "tpl-702.0100",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 21,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0102",
+        "code": "702.0102",
+        "name": "Премиальные и бонусные выплаты УК",
+        "parentId": "tpl-702.0100",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 22,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0103",
+        "code": "702.0103",
+        "name": "НДФЛ с ФОТ УК",
+        "parentId": "tpl-702.0100",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 23,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0104",
+        "code": "702.0104",
+        "name": "Страховые взносы с ФОТ УК",
+        "parentId": "tpl-702.0100",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 24,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0105",
+        "code": "702.0105",
+        "name": "Выплаты по партнерской программе УК",
+        "parentId": "tpl-702.0100",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 25,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0200",
+        "code": "702.0200",
+        "name": "Расходы УК на основные услуги",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 26,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0201",
+        "code": "702.0201",
+        "name": "ТО и ТР лифтов",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 27,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0202",
+        "code": "702.0202",
+        "name": "Техническое освидетельствование лифтов",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 28,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0203",
+        "code": "702.0203",
+        "name": "Страхование лифтов",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 29,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0204",
+        "code": "702.0204",
+        "name": "ТО и ТР противопожарных систем",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 30,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0205",
+        "code": "702.0205",
+        "name": "ТО и ТР систем вентиляции и кондиционирования",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 31,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0206",
+        "code": "702.0206",
+        "name": "ТО и ТР систем безопасности",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 32,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0207",
+        "code": "702.0207",
+        "name": "ТО и ТР систем автоматизации и диспетчеризации",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 33,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0208",
+        "code": "702.0208",
+        "name": "ТО и ТР систем отопления",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 34,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0209",
+        "code": "702.0209",
+        "name": "ТО и ТР систем водоснабжения и канализации",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 35,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0210",
+        "code": "702.0210",
+        "name": "ТО и ТР систем электроснабжения",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 36,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0211",
+        "code": "702.0211",
+        "name": "Прочие работы по инженерному оборудованию",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 37,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0213",
+        "code": "702.0213",
+        "name": "Расходы УК на уборку МОП и территории",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 38,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0214",
+        "code": "702.0214",
+        "name": "Расходы УК на охрану",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 39,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0215",
+        "code": "702.0215",
+        "name": "Расходы УК на текущий ремонт и обслуживание зданий и тер.",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 40,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0216",
+        "code": "702.0216",
+        "name": "Расходы УК на мойку фасадов и альпработы",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 41,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0217",
+        "code": "702.0217",
+        "name": "Расходы УК на ландш. работы, озеленение, МАФ",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 42,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0218",
+        "code": "702.0218",
+        "name": "Расходы УК на мероприятия",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 43,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0219",
+        "code": "702.0219",
+        "name": "Расходы УК на дератизацию и дезинфекцию",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 44,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0220",
+        "code": "702.0220",
+        "name": "Расходы УК на вывоз и утилизацию снега",
+        "parentId": "tpl-702.0200",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 45,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0300",
+        "code": "702.0300",
+        "name": "Расходы УК на дополнительные услуги",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 46,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0301",
+        "code": "702.0301",
+        "name": "Расходы на ДУ (клиентские услуги)",
+        "parentId": "tpl-702.0300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 47,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0302",
+        "code": "702.0302",
+        "name": "Расходы на ДУ (ежемесячное ТО)",
+        "parentId": "tpl-702.0300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 48,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0303",
+        "code": "702.0303",
+        "name": "Расходы на ДУ (клининг)",
+        "parentId": "tpl-702.0300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 49,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0304",
+        "code": "702.0304",
+        "name": "Расходы на ДУ (аренда)",
+        "parentId": "tpl-702.0300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 50,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0400",
+        "code": "702.0400",
+        "name": "Уплата налогов и сборов УК",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 51,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0401",
+        "code": "702.0401",
+        "name": "НДС к уплате (возмещению) УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 52,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0402",
+        "code": "702.0402",
+        "name": "Налог на прибыль УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 53,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0403",
+        "code": "702.0403",
+        "name": "Налог УСН УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 54,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0404",
+        "code": "702.0404",
+        "name": "Налог транспортный УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 55,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0405",
+        "code": "702.0405",
+        "name": "Налог на имущество УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 56,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0406",
+        "code": "702.0406",
+        "name": "Налог земельный, аренда земли УК",
+        "parentId": "tpl-702.0400",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 57,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0500",
+        "code": "702.0500",
+        "name": "Платежи на содержание офиса",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 58,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0501",
+        "code": "702.0501",
+        "name": "Канцтовары, инвентарь, хозтовары, продукты, вода",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 59,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0502",
+        "code": "702.0502",
+        "name": "Услуги связи",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 60,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0503",
+        "code": "702.0503",
+        "name": "Почтовые, курьерские и транспортные расходы",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 61,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0504",
+        "code": "702.0504",
+        "name": "Обслуживание и ремонт бытовой и оргтехники",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 62,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0505",
+        "code": "702.0505",
+        "name": "Имиджевые расходы",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 63,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0506",
+        "code": "702.0506",
+        "name": "Аренда помещений УК",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 64,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0507",
+        "code": "702.0507",
+        "name": "Коммунальные услуги на собств. нужды УК",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 65,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0508",
+        "code": "702.0508",
+        "name": "Прочие расходы на содержание и ремонт офиса УК",
+        "parentId": "tpl-702.0500",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 66,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0600",
+        "code": "702.0600",
+        "name": "Платежи на ИТ услуги",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 67,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0601",
+        "code": "702.0601",
+        "name": "Содержание сайтов, серверов и сетевого оборудования УК",
+        "parentId": "tpl-702.0600",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 68,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0602",
+        "code": "702.0602",
+        "name": "Услуги разработки/адаптации ПО УК",
+        "parentId": "tpl-702.0600",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 69,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0603",
+        "code": "702.0603",
+        "name": "Подписка и лицензии на ПО УК",
+        "parentId": "tpl-702.0600",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 70,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0700",
+        "code": "702.0700",
+        "name": "Платежи на вспомогательные услуги",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 71,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0701",
+        "code": "702.0701",
+        "name": "Страхование гражданской ответственности УК",
+        "parentId": "tpl-702.0700",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 72,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0702",
+        "code": "702.0702",
+        "name": "Информационно-консультационные услуги УК",
+        "parentId": "tpl-702.0700",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 73,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0703",
+        "code": "702.0703",
+        "name": "Юридические, бухгалтерские и аудиторские услуги",
+        "parentId": "tpl-702.0700",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 74,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0704",
+        "code": "702.0704",
+        "name": "Услуги банка УК",
+        "parentId": "tpl-702.0700",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 75,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0800",
+        "code": "702.0800",
+        "name": "Платежи на содержание персонала УК",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 76,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0801",
+        "code": "702.0801",
+        "name": "Расходы на обучение и подбор персонала",
+        "parentId": "tpl-702.0800",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 77,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0802",
+        "code": "702.0802",
+        "name": "Расходы по охране труда",
+        "parentId": "tpl-702.0800",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 78,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0803",
+        "code": "702.0803",
+        "name": "Расходы на спецодежду и средства защиты",
+        "parentId": "tpl-702.0800",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 79,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0804",
+        "code": "702.0804",
+        "name": "Расходы на компенсации и льготы для персонала",
+        "parentId": "tpl-702.0800",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 80,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0900",
+        "code": "702.0900",
+        "name": "Оплата приобретения оборудования и техники",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 81,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0901",
+        "code": "702.0901",
+        "name": "Покупка бытовой техники УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 82,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0902",
+        "code": "702.0902",
+        "name": "Покупка мебели УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 83,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0903",
+        "code": "702.0903",
+        "name": "Покупка МФУ и оборудования переговорных комнат УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 84,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0904",
+        "code": "702.0904",
+        "name": "Покупка пользовательского оборудования УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 85,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0905",
+        "code": "702.0905",
+        "name": "Покупка серверного оборудования УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 86,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.0906",
+        "code": "702.0906",
+        "name": "Покупка сетевого оборудования УК",
+        "parentId": "tpl-702.0900",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 87,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1000",
+        "code": "702.1000",
+        "name": "Оплата коммунальных ресурсов",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 88,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1001",
+        "code": "702.1001",
+        "name": "Расходы на электроэнергию",
+        "parentId": "tpl-702.1000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 89,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1002",
+        "code": "702.1002",
+        "name": "Расходы на теплоснабжение, газ",
+        "parentId": "tpl-702.1000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 90,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1003",
+        "code": "702.1003",
+        "name": "Расходы на водоснабжение и водоотведение",
+        "parentId": "tpl-702.1000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 91,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1004",
+        "code": "702.1004",
+        "name": "Расходы на вывоз и утилизацию ТКО",
+        "parentId": "tpl-702.1000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 92,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1100",
+        "code": "702.1100",
+        "name": "Выплата процентов по займам УК",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 93,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1200",
+        "code": "702.1200",
+        "name": "Расходы по капитальному ремонту зданий",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 94,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1300",
+        "code": "702.1300",
+        "name": "Прочие выплаты по операционной деятельности",
+        "parentId": "tpl-702.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 95,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1301",
+        "code": "702.1301",
+        "name": "Штрафы, пени, неустойки к уплате",
+        "parentId": "tpl-702.1300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 96,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1302",
+        "code": "702.1302",
+        "name": "Судебные расходы и арбитражные сборы",
+        "parentId": "tpl-702.1300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 97,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1303",
+        "code": "702.1303",
+        "name": "Госпошлина к уплате",
+        "parentId": "tpl-702.1300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 98,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1304",
+        "code": "702.1304",
+        "name": "Материальная помощь",
+        "parentId": "tpl-702.1300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 99,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-702.1305",
+        "code": "702.1305",
+        "name": "Расходы на устранение строительных недостатков",
+        "parentId": "tpl-702.1300",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 100,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-703.000",
+        "code": "703.000",
+        "name": "Поступления по инвестиционной деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 101,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-703.100",
+        "code": "703.100",
+        "name": "Поступления от продажи ОС и НМА",
+        "parentId": "tpl-703.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 102,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-703.200",
+        "code": "703.200",
+        "name": "Поступления от инвестиционных операций",
+        "parentId": "tpl-703.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 103,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-704.000",
+        "code": "704.000",
+        "name": "Выплаты по инвестиционной деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 104,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-704.100",
+        "code": "704.100",
+        "name": "Приобретение ОС и НМА",
+        "parentId": "tpl-704.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 105,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-704.200",
+        "code": "704.200",
+        "name": "Платежи по инвестиционным операциям",
+        "parentId": "tpl-704.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 106,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-705.000",
+        "code": "705.000",
+        "name": "Поступления по финансовой деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 107,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-705.100",
+        "code": "705.100",
+        "name": "Получение займов УК",
+        "parentId": "tpl-705.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 108,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-705.200",
+        "code": "705.200",
+        "name": "Возврат депозитов сроком до 3 месяцев УК",
+        "parentId": "tpl-705.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 109,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-705.300",
+        "code": "705.300",
+        "name": "Проценты к получению по депозитам со сроком до 3 месяцев УК",
+        "parentId": "tpl-705.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 110,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-705.400",
+        "code": "705.400",
+        "name": "Взнос в уставный капитал УК",
+        "parentId": "tpl-705.000",
+        "direction": "in",
+        "isActive": true,
+        "sortOrder": 111,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-706.000",
+        "code": "706.000",
+        "name": "Выплаты по финансовой деятельности",
+        "parentId": "tpl-700.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 112,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-706.100",
+        "code": "706.100",
+        "name": "Погашение полученных займов УК",
+        "parentId": "tpl-706.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 113,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-706.200",
+        "code": "706.200",
+        "name": "Размещение депозитов сроком до 3 месяцев УК",
+        "parentId": "tpl-706.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 114,
+        "origin": "template",
+        "codeStatus": "template"
+      },
+      {
+        "id": "tpl-706.300",
+        "code": "706.300",
+        "name": "Выплата дивидендов УК",
+        "parentId": "tpl-706.000",
+        "direction": "out",
+        "isActive": true,
+        "sortOrder": 115,
+        "origin": "template",
+        "codeStatus": "template"
+      }
+    ],
+    "incomes": [],
+    "expenses": [],
+    "staff": []
+  },
+  "bitRows": [
+    {
+      "code": "700.000",
+      "name": "ДЕЯТЕЛЬНОСТЬ УК",
+      "row": 5,
+      "group": true
+    },
+    {
+      "code": "701.000",
+      "name": "Поступления по операционной деятельности",
+      "row": 6,
+      "group": true
+    },
+    {
+      "code": "701.100",
+      "name": "Поступления от оказания эксплуатационных услуг",
+      "row": 7,
+      "group": false
+    },
+    {
+      "code": "701.200",
+      "name": "Поступления от оказания платных услуг",
+      "row": 8,
+      "group": true
+    },
+    {
+      "code": "701.201",
+      "name": "Поступление от ДУ (клиентские услуги)",
+      "row": 9,
+      "group": false
+    },
+    {
+      "code": "701.202",
+      "name": "Поступление от ДУ (ежемесячное ТО)",
+      "row": 10,
+      "group": false
+    },
+    {
+      "code": "701.203",
+      "name": "Поступление от ДУ (клининг)",
+      "row": 11,
+      "group": false
+    },
+    {
+      "code": "701.204",
+      "name": "Поступление от ДУ (аренда)",
+      "row": 12,
+      "group": false
+    },
+    {
+      "code": "701.205",
+      "name": "Поступление от ДУ (агентские услуги)",
+      "row": 13,
+      "group": false
+    },
+    {
+      "code": "701.206",
+      "name": "Поступление от ДУ (наземная парковка)",
+      "row": 14,
+      "group": false
+    },
+    {
+      "code": "701.300",
+      "name": "Поступления от оказания коммунальных услуг",
+      "row": 15,
+      "group": false
+    },
+    {
+      "code": "701.400",
+      "name": "Поступление взносов на капитальный ремонт",
+      "row": 16,
+      "group": false
+    },
+    {
+      "code": "701.500",
+      "name": "Прочие поступления по операционной деятельности",
+      "row": 17,
+      "group": true
+    },
+    {
+      "code": "701.501",
+      "name": "Штрафы, пени, неустойки к получению",
+      "row": 18,
+      "group": false
+    },
+    {
+      "code": "701.502",
+      "name": "Госпошлина к получению",
+      "row": 19,
+      "group": false
+    },
+    {
+      "code": "701.503",
+      "name": "Возмещение ущерба к получению",
+      "row": 20,
+      "group": false
+    },
+    {
+      "code": "701.504",
+      "name": "Поступления от сдачи имущества в аренду (субаренду)",
+      "row": 21,
+      "group": false
+    },
+    {
+      "code": "701.505",
+      "name": "Компенсации от застройщика",
+      "row": 22,
+      "group": false
+    },
+    {
+      "code": "702.000",
+      "name": "Выплаты по операционной деятельности",
+      "row": 23,
+      "group": true
+    },
+    {
+      "code": "702.0100",
+      "name": "Оплата труда, НДФЛ и страховые взносы",
+      "row": 24,
+      "group": true
+    },
+    {
+      "code": "702.0101",
+      "name": "Заработная плата УК",
+      "row": 25,
+      "group": false
+    },
+    {
+      "code": "702.0102",
+      "name": "Премиальные и бонусные выплаты УК",
+      "row": 26,
+      "group": false
+    },
+    {
+      "code": "702.0103",
+      "name": "НДФЛ с ФОТ УК",
+      "row": 27,
+      "group": false
+    },
+    {
+      "code": "702.0104",
+      "name": "Страховые взносы с ФОТ УК",
+      "row": 28,
+      "group": false
+    },
+    {
+      "code": "702.0105",
+      "name": "Выплаты по партнерской программе УК",
+      "row": 29,
+      "group": false
+    },
+    {
+      "code": "702.0200",
+      "name": "Расходы УК на основные услуги",
+      "row": 30,
+      "group": true
+    },
+    {
+      "code": "702.0201",
+      "name": "ТО и ТР лифтов",
+      "row": 31,
+      "group": false
+    },
+    {
+      "code": "702.0202",
+      "name": "Техническое освидетельствование лифтов",
+      "row": 32,
+      "group": false
+    },
+    {
+      "code": "702.0203",
+      "name": "Страхование лифтов",
+      "row": 33,
+      "group": false
+    },
+    {
+      "code": "702.0204",
+      "name": "ТО и ТР противопожарных систем",
+      "row": 34,
+      "group": false
+    },
+    {
+      "code": "702.0205",
+      "name": "ТО и ТР систем вентиляции и кондиционирования",
+      "row": 35,
+      "group": false
+    },
+    {
+      "code": "702.0206",
+      "name": "ТО и ТР систем безопасности",
+      "row": 36,
+      "group": false
+    },
+    {
+      "code": "702.0207",
+      "name": "ТО и ТР систем автоматизации и диспетчеризации",
+      "row": 37,
+      "group": false
+    },
+    {
+      "code": "702.0208",
+      "name": "ТО и ТР систем отопления",
+      "row": 38,
+      "group": false
+    },
+    {
+      "code": "702.0209",
+      "name": "ТО и ТР систем водоснабжения и канализации",
+      "row": 39,
+      "group": false
+    },
+    {
+      "code": "702.0210",
+      "name": "ТО и ТР систем электроснабжения",
+      "row": 40,
+      "group": false
+    },
+    {
+      "code": "702.0211",
+      "name": "Прочие работы по инженерному оборудованию",
+      "row": 41,
+      "group": false
+    },
+    {
+      "code": "702.0213",
+      "name": "Расходы УК на уборку МОП и территории",
+      "row": 42,
+      "group": false
+    },
+    {
+      "code": "702.0214",
+      "name": "Расходы УК на охрану",
+      "row": 43,
+      "group": false
+    },
+    {
+      "code": "702.0215",
+      "name": "Расходы УК на текущий ремонт и обслуживание зданий и тер.",
+      "row": 44,
+      "group": false
+    },
+    {
+      "code": "702.0216",
+      "name": "Расходы УК на мойку фасадов и альпработы",
+      "row": 45,
+      "group": false
+    },
+    {
+      "code": "702.0217",
+      "name": "Расходы УК на ландш. работы, озеленение, МАФ",
+      "row": 46,
+      "group": false
+    },
+    {
+      "code": "702.0218",
+      "name": "Расходы УК на мероприятия",
+      "row": 47,
+      "group": false
+    },
+    {
+      "code": "702.0219",
+      "name": "Расходы УК на дератизацию и дезинфекцию",
+      "row": 48,
+      "group": false
+    },
+    {
+      "code": "702.0220",
+      "name": "Расходы УК на вывоз и утилизацию снега",
+      "row": 49,
+      "group": false
+    },
+    {
+      "code": "702.0300",
+      "name": "Расходы УК на дополнительные услуги",
+      "row": 50,
+      "group": true
+    },
+    {
+      "code": "702.0301",
+      "name": "Расходы на ДУ (клиентские услуги)",
+      "row": 51,
+      "group": false
+    },
+    {
+      "code": "702.0302",
+      "name": "Расходы на ДУ (ежемесячное ТО)",
+      "row": 52,
+      "group": false
+    },
+    {
+      "code": "702.0303",
+      "name": "Расходы на ДУ (клининг)",
+      "row": 53,
+      "group": false
+    },
+    {
+      "code": "702.0304",
+      "name": "Расходы на ДУ (аренда)",
+      "row": 54,
+      "group": false
+    },
+    {
+      "code": "702.0400",
+      "name": "Уплата налогов и сборов УК",
+      "row": 55,
+      "group": true
+    },
+    {
+      "code": "702.0401",
+      "name": "НДС к уплате (возмещению) УК",
+      "row": 56,
+      "group": false
+    },
+    {
+      "code": "702.0402",
+      "name": "Налог на прибыль УК",
+      "row": 57,
+      "group": false
+    },
+    {
+      "code": "702.0403",
+      "name": "Налог УСН УК",
+      "row": 58,
+      "group": false
+    },
+    {
+      "code": "702.0404",
+      "name": "Налог транспортный УК",
+      "row": 59,
+      "group": false
+    },
+    {
+      "code": "702.0405",
+      "name": "Налог на имущество УК",
+      "row": 60,
+      "group": false
+    },
+    {
+      "code": "702.0406",
+      "name": "Налог земельный, аренда земли УК",
+      "row": 61,
+      "group": false
+    },
+    {
+      "code": "702.0500",
+      "name": "Платежи на содержание офиса",
+      "row": 62,
+      "group": true
+    },
+    {
+      "code": "702.0501",
+      "name": "Канцтовары, инвентарь, хозтовары, продукты, вода",
+      "row": 63,
+      "group": false
+    },
+    {
+      "code": "702.0502",
+      "name": "Услуги связи",
+      "row": 64,
+      "group": false
+    },
+    {
+      "code": "702.0503",
+      "name": "Почтовые, курьерские и транспортные расходы",
+      "row": 65,
+      "group": false
+    },
+    {
+      "code": "702.0504",
+      "name": "Обслуживание и ремонт бытовой и оргтехники",
+      "row": 66,
+      "group": false
+    },
+    {
+      "code": "702.0505",
+      "name": "Имиджевые расходы",
+      "row": 67,
+      "group": false
+    },
+    {
+      "code": "702.0506",
+      "name": "Аренда помещений УК",
+      "row": 68,
+      "group": false
+    },
+    {
+      "code": "702.0507",
+      "name": "Коммунальные услуги на собств. нужды УК",
+      "row": 69,
+      "group": false
+    },
+    {
+      "code": "702.0508",
+      "name": "Прочие расходы на содержание и ремонт офиса УК",
+      "row": 70,
+      "group": false
+    },
+    {
+      "code": "702.0600",
+      "name": "Платежи на ИТ услуги",
+      "row": 71,
+      "group": true
+    },
+    {
+      "code": "702.0601",
+      "name": "Содержание сайтов, серверов и сетевого оборудования УК",
+      "row": 72,
+      "group": false
+    },
+    {
+      "code": "702.0602",
+      "name": "Услуги разработки/адаптации ПО УК",
+      "row": 73,
+      "group": false
+    },
+    {
+      "code": "702.0603",
+      "name": "Подписка и лицензии на ПО УК",
+      "row": 74,
+      "group": false
+    },
+    {
+      "code": "702.0700",
+      "name": "Платежи на вспомогательные услуги",
+      "row": 75,
+      "group": true
+    },
+    {
+      "code": "702.0701",
+      "name": "Страхование гражданской ответственности УК",
+      "row": 76,
+      "group": false
+    },
+    {
+      "code": "702.0702",
+      "name": "Информационно-консультационные услуги УК",
+      "row": 77,
+      "group": false
+    },
+    {
+      "code": "702.0703",
+      "name": "Юридические, бухгалтерские и аудиторские услуги",
+      "row": 78,
+      "group": false
+    },
+    {
+      "code": "702.0704",
+      "name": "Услуги банка УК",
+      "row": 79,
+      "group": false
+    },
+    {
+      "code": "702.0800",
+      "name": "Платежи на содержание персонала УК",
+      "row": 80,
+      "group": true
+    },
+    {
+      "code": "702.0801",
+      "name": "Расходы на обучение и подбор персонала",
+      "row": 81,
+      "group": false
+    },
+    {
+      "code": "702.0802",
+      "name": "Расходы по охране труда",
+      "row": 82,
+      "group": false
+    },
+    {
+      "code": "702.0803",
+      "name": "Расходы на спецодежду и средства защиты",
+      "row": 83,
+      "group": false
+    },
+    {
+      "code": "702.0804",
+      "name": "Расходы на компенсации и льготы для персонала",
+      "row": 84,
+      "group": false
+    },
+    {
+      "code": "702.0900",
+      "name": "Оплата приобретения оборудования и техники",
+      "row": 85,
+      "group": true
+    },
+    {
+      "code": "702.0901",
+      "name": "Покупка бытовой техники УК",
+      "row": 86,
+      "group": false
+    },
+    {
+      "code": "702.0902",
+      "name": "Покупка мебели УК",
+      "row": 87,
+      "group": false
+    },
+    {
+      "code": "702.0903",
+      "name": "Покупка МФУ и оборудования переговорных комнат УК",
+      "row": 88,
+      "group": false
+    },
+    {
+      "code": "702.0904",
+      "name": "Покупка пользовательского оборудования УК",
+      "row": 89,
+      "group": false
+    },
+    {
+      "code": "702.0905",
+      "name": "Покупка серверного оборудования УК",
+      "row": 90,
+      "group": false
+    },
+    {
+      "code": "702.0906",
+      "name": "Покупка сетевого оборудования УК",
+      "row": 91,
+      "group": false
+    },
+    {
+      "code": "702.1000",
+      "name": "Оплата коммунальных ресурсов",
+      "row": 92,
+      "group": true
+    },
+    {
+      "code": "702.1001",
+      "name": "Расходы на электроэнергию",
+      "row": 93,
+      "group": false
+    },
+    {
+      "code": "702.1002",
+      "name": "Расходы на теплоснабжение, газ",
+      "row": 94,
+      "group": false
+    },
+    {
+      "code": "702.1003",
+      "name": "Расходы на водоснабжение и водоотведение",
+      "row": 95,
+      "group": false
+    },
+    {
+      "code": "702.1004",
+      "name": "Расходы на вывоз и утилизацию ТКО",
+      "row": 96,
+      "group": false
+    },
+    {
+      "code": "702.1100",
+      "name": "Выплата процентов по займам УК",
+      "row": 97,
+      "group": false
+    },
+    {
+      "code": "702.1200",
+      "name": "Расходы по капитальному ремонту зданий",
+      "row": 98,
+      "group": false
+    },
+    {
+      "code": "702.1300",
+      "name": "Прочие выплаты по операционной деятельности",
+      "row": 99,
+      "group": true
+    },
+    {
+      "code": "702.1301",
+      "name": "Штрафы, пени, неустойки к уплате",
+      "row": 100,
+      "group": false
+    },
+    {
+      "code": "702.1302",
+      "name": "Судебные расходы и арбитражные сборы",
+      "row": 101,
+      "group": false
+    },
+    {
+      "code": "702.1303",
+      "name": "Госпошлина к уплате",
+      "row": 102,
+      "group": false
+    },
+    {
+      "code": "702.1304",
+      "name": "Материальная помощь",
+      "row": 103,
+      "group": false
+    },
+    {
+      "code": "702.1305",
+      "name": "Расходы на устранение строительных недостатков",
+      "row": 104,
+      "group": false
+    },
+    {
+      "code": "703.000",
+      "name": "Поступления по инвестиционной деятельности",
+      "row": 105,
+      "group": true
+    },
+    {
+      "code": "703.100",
+      "name": "Поступления от продажи ОС и НМА",
+      "row": 106,
+      "group": false
+    },
+    {
+      "code": "703.200",
+      "name": "Поступления от инвестиционных операций",
+      "row": 107,
+      "group": false
+    },
+    {
+      "code": "704.000",
+      "name": "Выплаты по инвестиционной деятельности",
+      "row": 108,
+      "group": true
+    },
+    {
+      "code": "704.100",
+      "name": "Приобретение ОС и НМА",
+      "row": 109,
+      "group": false
+    },
+    {
+      "code": "704.200",
+      "name": "Платежи по инвестиционным операциям",
+      "row": 110,
+      "group": false
+    },
+    {
+      "code": "705.000",
+      "name": "Поступления по финансовой деятельности",
+      "row": 111,
+      "group": true
+    },
+    {
+      "code": "705.100",
+      "name": "Получение займов УК",
+      "row": 112,
+      "group": false
+    },
+    {
+      "code": "705.200",
+      "name": "Возврат депозитов сроком до 3 месяцев УК",
+      "row": 113,
+      "group": false
+    },
+    {
+      "code": "705.300",
+      "name": "Проценты к получению по депозитам со сроком до 3 месяцев УК",
+      "row": 114,
+      "group": false
+    },
+    {
+      "code": "705.400",
+      "name": "Взнос в уставный капитал УК",
+      "row": 115,
+      "group": false
+    },
+    {
+      "code": "706.000",
+      "name": "Выплаты по финансовой деятельности",
+      "row": 116,
+      "group": true
+    },
+    {
+      "code": "706.100",
+      "name": "Погашение полученных займов УК",
+      "row": 117,
+      "group": false
+    },
+    {
+      "code": "706.200",
+      "name": "Размещение депозитов сроком до 3 месяцев УК",
+      "row": 118,
+      "group": false
+    },
+    {
+      "code": "706.300",
+      "name": "Выплата дивидендов УК",
+      "row": 119,
+      "group": false
+    }
+  ],
+  "fixtures": [
+    {
+      "input": {
+        "id": "fixture-staff",
+        "position": "Руководитель СБ",
+        "schedule": "5/2",
+        "units": 1,
+        "allocation": 100,
+        "netPerUnit": 180000,
+        "bonusFebPerUnit": 150000,
+        "bonusAugPerUnit": 0,
+        "startMonth": 1,
+        "endMonth": 12
+      },
+      "taxProfile": {
+        "isMSP": false,
+        "mspType": "priority",
+        "injuryRate": 0.2,
+        "table": [
+          {
+            "year": 2026,
+            "mrot": 27093,
+            "epvb": 2979000
+          },
+          {
+            "year": 2027,
+            "mrot": 27093,
+            "epvb": 2979000
+          }
+        ],
+        "brackets": [
+          {
+            "upTo": 2400000,
+            "rate": 13
+          },
+          {
+            "upTo": 5000000,
+            "rate": 15
+          },
+          {
+            "upTo": 20000000,
+            "rate": 18
+          },
+          {
+            "upTo": 50000000,
+            "rate": 20
+          },
+          {
+            "upTo": null,
+            "rate": 22
+          }
+        ]
+      },
+      "annual": {
+        "net": 2160000,
+        "gross": 2484705.86,
+        "ndfl": 324705.86,
+        "insurance": 745411.81,
+        "injury": 4969.38,
+        "contributions": 750381.19,
+        "bonus": 150000,
+        "total": 3385087.05
+      },
+      "displayedInsurance": 745411.81,
+      "trace": [
+        {
+          "month": 1,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 206896.55,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 2,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 413793.1,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 150000,
+          "total": 419379.31
+        },
+        {
+          "month": 3,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 620689.65,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 4,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 827586.2,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 5,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1034482.75,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 6,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1241379.3,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 7,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1448275.85,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 8,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1655172.4,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 9,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1862068.95,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 10,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2068965.5,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 11,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2275862.05,
+          "net": 180000,
+          "gross": 206896.55,
+          "ndfl": 26896.55,
+          "insurance": 62068.97,
+          "injury": 413.79,
+          "contributions": 62482.76,
+          "bonus": 0,
+          "total": 269379.31
+        },
+        {
+          "month": 12,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 208843.81,
+          "fullNdfl": 28843.81,
+          "fullYtd": 2484705.86,
+          "net": 180000,
+          "gross": 208843.81,
+          "ndfl": 28843.81,
+          "insurance": 62653.14,
+          "injury": 417.69,
+          "contributions": 63070.83,
+          "bonus": 0,
+          "total": 271914.64
+        }
+      ]
+    },
+    {
+      "input": {
+        "id": "fixture-staff",
+        "position": "Руководитель СБ",
+        "schedule": "5/2",
+        "units": 1,
+        "allocation": 50,
+        "netPerUnit": 180000,
+        "bonusFebPerUnit": 150000,
+        "bonusAugPerUnit": 0,
+        "startMonth": 1,
+        "endMonth": 12
+      },
+      "taxProfile": {
+        "isMSP": false,
+        "mspType": "priority",
+        "injuryRate": 0.2,
+        "table": [
+          {
+            "year": 2026,
+            "mrot": 27093,
+            "epvb": 2979000
+          },
+          {
+            "year": 2027,
+            "mrot": 27093,
+            "epvb": 2979000
+          }
+        ],
+        "brackets": [
+          {
+            "upTo": 2400000,
+            "rate": 13
+          },
+          {
+            "upTo": 5000000,
+            "rate": 15
+          },
+          {
+            "upTo": 20000000,
+            "rate": 18
+          },
+          {
+            "upTo": 50000000,
+            "rate": 20
+          },
+          {
+            "upTo": null,
+            "rate": 22
+          }
+        ]
+      },
+      "annual": {
+        "net": 1080000,
+        "gross": 1242352.99,
+        "ndfl": 162352.99,
+        "insurance": 372705.96,
+        "injury": 2484.75,
+        "contributions": 375190.6,
+        "bonus": 75000,
+        "total": 1692543.59
+      },
+      "displayedInsurance": 372705.85,
+      "trace": [
+        {
+          "month": 1,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 206896.55,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 2,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 413793.1,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 75000,
+          "total": 209689.66
+        },
+        {
+          "month": 3,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 620689.65,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 4,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 827586.2,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 5,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1034482.75,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 6,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1241379.3,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 7,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1448275.85,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 8,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1655172.4,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 9,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1862068.95,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 10,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2068965.5,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 11,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2275862.05,
+          "net": 90000,
+          "gross": 103448.28,
+          "ndfl": 13448.28,
+          "insurance": 31034.48,
+          "injury": 206.9,
+          "contributions": 31241.38,
+          "bonus": 0,
+          "total": 134689.66
+        },
+        {
+          "month": 12,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 208843.81,
+          "fullNdfl": 28843.81,
+          "fullYtd": 2484705.86,
+          "net": 90000,
+          "gross": 104421.91,
+          "ndfl": 14421.91,
+          "insurance": 31326.57,
+          "injury": 208.85,
+          "contributions": 31535.42,
+          "bonus": 0,
+          "total": 135957.33
+        }
+      ]
+    },
+    {
+      "input": {
+        "id": "fixture-staff",
+        "position": "Руководитель СБ",
+        "schedule": "5/2",
+        "units": 1,
+        "allocation": 0,
+        "netPerUnit": 180000,
+        "bonusFebPerUnit": 150000,
+        "bonusAugPerUnit": 0,
+        "startMonth": 1,
+        "endMonth": 12
+      },
+      "taxProfile": {
+        "isMSP": false,
+        "mspType": "priority",
+        "injuryRate": 0.2,
+        "table": [
+          {
+            "year": 2026,
+            "mrot": 27093,
+            "epvb": 2979000
+          },
+          {
+            "year": 2027,
+            "mrot": 27093,
+            "epvb": 2979000
+          }
+        ],
+        "brackets": [
+          {
+            "upTo": 2400000,
+            "rate": 13
+          },
+          {
+            "upTo": 5000000,
+            "rate": 15
+          },
+          {
+            "upTo": 20000000,
+            "rate": 18
+          },
+          {
+            "upTo": 50000000,
+            "rate": 20
+          },
+          {
+            "upTo": null,
+            "rate": 22
+          }
+        ]
+      },
+      "annual": {
+        "net": 0,
+        "gross": 0,
+        "ndfl": 0,
+        "insurance": 0,
+        "injury": 0,
+        "contributions": 0,
+        "bonus": 0,
+        "total": 0
+      },
+      "displayedInsurance": 0,
+      "trace": [
+        {
+          "month": 1,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 206896.55,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 2,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 413793.1,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 3,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 620689.65,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 4,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 827586.2,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 5,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1034482.75,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 6,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1241379.3,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 7,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1448275.85,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 8,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1655172.4,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 9,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 1862068.95,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 10,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2068965.5,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 11,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 206896.55,
+          "fullNdfl": 26896.55,
+          "fullYtd": 2275862.05,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        },
+        {
+          "month": 12,
+          "inPeriod": true,
+          "fullNet": 180000,
+          "fullGross": 208843.81,
+          "fullNdfl": 28843.81,
+          "fullYtd": 2484705.86,
+          "net": 0,
+          "gross": 0,
+          "ndfl": 0,
+          "insurance": 0,
+          "injury": 0,
+          "contributions": 0,
+          "bonus": 0,
+          "total": 0
+        }
+      ]
+    }
+  ],
+  "source": {
+    "filename": "bdds-constructor_staff_breakdown.html",
+    "sha256": "93eb0646f500b2f60e12537e77fe14f167a983d1222feac778f57e41b5bbbbc7",
+    "size_bytes": 846983
+  },
+  "domControls": [
+    {
+      "tag": "input",
+      "id": "projectName",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": "updateBudget()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "cfo",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": "updateBudget()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "periodStart",
+      "type": "date",
+      "name": null,
+      "onchange": null,
+      "oninput": "updateBudget()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "periodEnd",
+      "type": "date",
+      "name": null,
+      "onchange": null,
+      "oninput": "updateBudget()",
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "unit",
+      "type": null,
+      "name": null,
+      "onchange": "updateBudget()",
+      "oninput": null,
+      "options": [
+        {
+          "value": "RUB",
+          "text": "Рубли"
+        },
+        {
+          "value": "K",
+          "text": "Тысячи рублей"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "id": "openingBalance",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": "updateBudget()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "fileInput",
+      "type": "file",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "artCode",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "artName",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "artParent",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "artDirection",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": [
+        {
+          "value": "in",
+          "text": "Поступление"
+        },
+        {
+          "value": "out",
+          "text": "Выплата"
+        },
+        {
+          "value": "root",
+          "text": "Корень"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "id": "artActive",
+      "type": "checkbox",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "incSection",
+      "type": null,
+      "name": null,
+      "onchange": "fillIncomeArticleSelect()",
+      "oninput": null,
+      "options": [
+        {
+          "value": "exploitation",
+          "text": "Эксплуатация"
+        },
+        {
+          "value": "utilities",
+          "text": "Коммунальные услуги"
+        },
+        {
+          "value": "additional",
+          "text": "Дополнительные услуги"
+        },
+        {
+          "value": "capex",
+          "text": "Капитальный ремонт"
+        }
+      ]
+    },
+    {
+      "tag": "select",
+      "id": "incArticle",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "incBase",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "incTariff",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "incVat",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "incStart",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "incEnd",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "incDesc",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "expType",
+      "type": null,
+      "name": null,
+      "onchange": "onExpTypeChange()",
+      "oninput": null,
+      "options": [
+        {
+          "value": "service",
+          "text": "Работа / услуга"
+        },
+        {
+          "value": "material",
+          "text": "Материал / закупка"
+        },
+        {
+          "value": "payment",
+          "text": "Платёж / налог / прочее"
+        }
+      ]
+    },
+    {
+      "tag": "select",
+      "id": "expArticle",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "expAmount",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "expVat",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "expStart",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "expEnd",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "expCounterparty",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "expContract",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "expDesc",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "matName",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "matUnit",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "matQty",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "matPrice",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "textarea",
+      "id": "expMaterial",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": null,
+      "type": "radio",
+      "name": "fotMode",
+      "onchange": "onFotModeChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": null,
+      "type": "radio",
+      "name": "fotMode",
+      "onchange": "onFotModeChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": null,
+      "type": "radio",
+      "name": "fotMode",
+      "onchange": "onFotModeChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "fotMixedOk",
+      "type": "checkbox",
+      "name": null,
+      "onchange": "onFotMixedConfirm()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "taxIsMSP",
+      "type": "checkbox",
+      "name": null,
+      "onchange": "onTaxProfileChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "taxMspType",
+      "type": null,
+      "name": null,
+      "onchange": "onTaxProfileChange()",
+      "oninput": null,
+      "options": [
+        {
+          "value": "priority",
+          "text": "МСП, приоритетные отрасли: 30% до 1,5 МРОТ, 15% сверх"
+        },
+        {
+          "value": "manufacturing",
+          "text": "МСП, обрабатывающее производство: 30% до 1,5 МРОТ, 7,6% сверх"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "id": "taxInjuryRate",
+      "type": "number",
+      "name": null,
+      "onchange": "onTaxProfileChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "staffArtSalary",
+      "type": null,
+      "name": null,
+      "onchange": "onStaffArticleChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "staffArtBonus",
+      "type": null,
+      "name": null,
+      "onchange": "onStaffArticleChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "staffArtNdfl",
+      "type": null,
+      "name": null,
+      "onchange": "onStaffArticleChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "staffArtContrib",
+      "type": null,
+      "name": null,
+      "onchange": "onStaffArticleChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "stPosition",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "stSchedule",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": [
+        {
+          "value": "5/2",
+          "text": "5/2"
+        },
+        {
+          "value": "2/2",
+          "text": "2/2"
+        },
+        {
+          "value": "1/3",
+          "text": "1/3"
+        },
+        {
+          "value": "1/2",
+          "text": "1/2"
+        },
+        {
+          "value": "6/1",
+          "text": "6/1"
+        },
+        {
+          "value": "иной",
+          "text": "иной"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "id": "stUnits",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "stAlloc",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "stNet",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "stBonusFeb",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "stBonusAug",
+      "type": "number",
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "stStart",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "select",
+      "id": "stEnd",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "bitFormCode",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": "onBitConfigChange()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "bitFormDateTime",
+      "type": null,
+      "name": null,
+      "onchange": null,
+      "oninput": "onBitConfigChange()",
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "bitNegSigns",
+      "type": "checkbox",
+      "name": null,
+      "onchange": "onBitConfigChange()",
+      "oninput": null,
+      "options": []
+    },
+    {
+      "tag": "input",
+      "id": "bitGroupTotals",
+      "type": "checkbox",
+      "name": null,
+      "onchange": "onBitConfigChange()",
+      "oninput": null,
+      "options": []
+    }
+  ],
+  "functions": [
+    "emptyCalc",
+    "uid",
+    "esc",
+    "escapeXml",
+    "round2",
+    "sumArr",
+    "num",
+    "validMonths",
+    "monthRangeText",
+    "fmtNumber",
+    "fmtNum",
+    "fmtMoney",
+    "fmtDT",
+    "safeFile",
+    "sanitizeSheet",
+    "downloadBlob",
+    "vatRateNum",
+    "vatLabel",
+    "byId",
+    "getIdByCode",
+    "articleLabel",
+    "hasChildren",
+    "childrenOf",
+    "treeList",
+    "walk",
+    "descendantIds",
+    "isDescendant",
+    "dirByCode",
+    "parentCodeFor",
+    "buildArticles",
+    "getIdByCodeInList",
+    "defaultTaxProfile",
+    "getTp",
+    "normalizeBrackets",
+    "getTaxParamsForYear",
+    "getContributionRegime",
+    "contributionRegimeLabel",
+    "grossUpNet",
+    "calcInsurance",
+    "incomeNetMonthly",
+    "incomeVatMonthly",
+    "incomeGrossMonthly",
+    "expenseGrossMonthly",
+    "expenseVatMonthly",
+    "expenseNetMonthly",
+    "incomeAnnualGross",
+    "expenseAnnualGross",
+    "getPeriodMonths",
+    "isFullCalendarYear",
+    "isInPeriod",
+    "pushIssue",
+    "addEvent",
+    "ownAmount",
+    "groupAmount",
+    "allowedIncomeArticles",
+    "allowedIncomeArticle",
+    "articleUsed",
+    "getFotMode",
+    "isFotAllowedManually",
+    "isStaffEnabled",
+    "validateBudgetPeriod",
+    "validateArticles",
+    "validateIncomes",
+    "validateExpenses",
+    "validateStaff",
+    "validateAndCompute",
+    "recalc",
+    "renderAll",
+    "showTab",
+    "updateSaveStatus",
+    "renderDashboard",
+    "renderVat",
+    "renderTaxProfile",
+    "renderDictionary",
+    "renderIncomes",
+    "renderExpenses",
+    "renderStaff",
+    "renderMaterials",
+    "renderRegistry",
+    "renderBdds",
+    "fillVatSelect",
+    "fillMonthSelect",
+    "refreshSelectors",
+    "fillIncomeArticleSelect",
+    "fillExpenseArticleSelect",
+    "fillArticleParentSelect",
+    "fillStaffArticleSelects",
+    "fillAllMonthSelects",
+    "resetAllForms",
+    "syncSettings",
+    "onExpTypeChange",
+    "onFotModeChange",
+    "onFotMixedConfirm",
+    "onTaxProfileChange",
+    "onTaxTableChange",
+    "addTaxYear",
+    "deleteTaxYear",
+    "onTaxBracketChange",
+    "addTaxBracket",
+    "deleteTaxBracket",
+    "onStaffArticleChange",
+    "onBitConfigChange",
+    "resetArticleForm",
+    "editArticle",
+    "saveArticle",
+    "toggleArticle",
+    "deleteArticle",
+    "resetIncomeForm",
+    "editIncome",
+    "saveIncome",
+    "deleteIncome",
+    "resetExpenseForm",
+    "editExpense",
+    "saveExpense",
+    "deleteExpense",
+    "resetStaffForm",
+    "editStaff",
+    "saveStaff",
+    "deleteStaff",
+    "syncHeader",
+    "updateBudget",
+    "newBudget",
+    "autoSave",
+    "loadLocal",
+    "markFileSaved",
+    "saveProject",
+    "saveCopyWithDate",
+    "restoreFromBrowser",
+    "runCheck",
+    "openJsonFile",
+    "createNewState",
+    "normalizeState",
+    "getYear",
+    "monthLabels",
+    "artName",
+    "hasErrors",
+    "crc32",
+    "strU8",
+    "makeZip",
+    "u16",
+    "u32",
+    "colName",
+    "sheetXml",
+    "makeXlsx",
+    "exportCustomer",
+    "exportMaterialsCSV",
+    "updateBitBlock",
+    "exportBIT",
+    "bindEvents",
+    "init",
+    "monthsInside",
+    "validateModeAndProfile",
+    "validateRawProject",
+    "previewCompute",
+    "applyProject",
+    "materialRows",
+    "validateBitIdentity",
+    "replaceTemplateCell",
+    "createBitWorkbook",
+    "showStaffBreakdown"
+  ],
+  "templateAudit": {
+    "sheetNames": [
+      "Данные бюджета",
+      "Лист1"
+    ],
+    "definedNamesCount": 1637,
+    "brokenNames": [
+      {
+        "name": "СП_20270101_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270201_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270301_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270401_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270501_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270601_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270701_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270801_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20270901_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20271001_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20271101_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_20271201_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СП_Итог_bcb2e5a094dc11ee8376005056a1be4c",
+        "target": "'Данные бюджета'!#REF!"
+      },
+      {
+        "name": "СтатьяОборотов_116",
+        "target": "'Данные бюджета'!#REF!"
+      }
+    ],
+    "maxRow": 119,
+    "notCertifiedForBIT": true
+  }
+}

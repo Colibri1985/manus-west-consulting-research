@@ -1,0 +1,81 @@
+{
+	"time": "2026-10-13T18:34:41+03:00",
+	"id": "2fb5bddf-fdd2-4eb3-8c98-9e8fa9809243",
+	"clientInfo": {
+		"platformType": "Windows_x86",
+		"appVersion": "8.3.27.1688",
+		"appName": "1CV8C",
+		"systemInfo": {
+			"osVersion": "Microsoft Windows 10 version 10.0  (Build 17763)",
+			"fullRAM": 51538583552,
+			"freeRAM": 22412005376,
+			"processor": "GenuineIntel Intel64 Family 6 Model 79 Stepping 0 2594 MHz",
+			"clientID": "2749bbdf-661f-4d81-9ecb-ab7aab571375"
+		}
+	},
+	"sessionInfo": {
+		"userName": "Муллер Андрей",
+		"dataSeparation": "+,+",
+		"platformInterfaceLanguageCode": "ru",
+		"configurationInterfaceLanguageCode": "ru",
+		"localeCode": "ru_RU"
+	},
+	"infoBaseInfo": {
+		"localeCode": "ru_RU"
+	},
+	"serverInfo": {
+		"appVersion": "8.3.27.1688",
+		"type": "Windows_x86_64",
+		"dbms": "MSSQLServer"
+	},
+	"configInfo": {
+		"name": "БухгалтерияПредприятия",
+		"description": "Бухгалтерия предприятия, редакция 3.0 \nБИТ.ФИНАНС 3.0\nБИТ.Строительство 3.0\nCopyright © 2009 - 2014, ООО \"БТ\". Все права защищены. (3.0.37.29\/3.1.17.6\/3.0.1.25) (http:\/\/v8.1c.ru\/buhv8\/)\nCopyright (С) ООО \"1C\", 2009 - 2014. Все права защищены\n(http:\/\/www.1c.ru)",
+		"version": "3.0.37.29\/3.1.17.6\/3.0.1.25",
+		"compatibilityMode": "Version8_3_7",
+		"hash": "7e335feee3bf554892126659967f2e1800000000",
+		"changeEnabled": true
+	},
+	"errorInfo": {
+		"systemErrorInfo": {
+			"clientStack": "core83.dll:0x0002E7BF core83.dll:0x0003A77E bsl.dll:0x00044931 bsl.dll:0x000463CA bsl.dll:0x00044671 bsl.dll:0x00020307 bsl.dll:0x000200A8 bsl.dll:0x000462C1 bsl.dll:0x00044216 bsl.dll:0x00044671 bsl.dll:0x00020307 bsl.dll:0x000200A8 bsl.dll:0x00019A79 bsl.dll:0x00019C38 mngui.dll:0x001B434F mngui.dll:0x001B46A5 mngui.dll:0x001B26A2 mngcore.dll:0x004FEFE4 mngui.dll:0x001EAC0A mngui.dll:0x00225F9F mngui.dll:0x0051C20E frame.dll:0x0017065A frame.dll:0x001735B8 frame.dll:0x0015F73F frame.dll:0x0015E7D8 frame.dll:0x00162F10 frame.dll:0x0016940E frame.dll:0x00162C05 frame.dll:0x0015CF96 frame.dll:0x0015D95A wbase83.dll:0x0002EDB5 wbase83.dll:0x00021F72 wbase83.dll:0x00021B71 wbase83.dll:0x000215A0 wbase83.dll:0x0002129A wbase83.dll:0x000134CE wbase83.dll:0x00013606 frame.dll:0x000A5EFC frame.dll:0x000A367B mngcln.dll:0x00052F40 mngcln.dll:0x0005270B 1cv8c.exe:0x0000B663 1cv8c.exe:0x00006E98 core83.dll:0x00285307 core83.dll:0x0028794E 1cv8c.exe:0x000C689F KERNEL32.DLL:0x00000000 unknown:0x00000000 unknown:0x00000000 ",
+			"clientStackHash": "2769E3DBA3ED81E920A3A8C7D3B19948"
+		},
+		"applicationErrorInfo": {
+			"errors": [
+				[
+					"{Документ.бит_ФормаВводаБюджета.Форма.ФормаДокументаУправляемая_оригинал.Форма(915)}: Ошибка при вызове метода контекста (Range)",
+					[
+						"ScriptRuntimeError"
+					],
+					"",
+					""
+				],
+				[
+					"Произошла исключительная ситуация (0x800a03ec)",
+					[
+						"ScriptUseError"
+					],
+					"",
+					""
+				]
+			],
+			"stack": [
+				[
+					"Документ.бит_ФормаВводаБюджета.Форма.ФормаДокументаУправляемая_оригинал.Форма",
+					1592,
+					"\u0009\u0009ЗагрузитьДанныеПоШаблону();"
+				],
+				[
+					"Документ.бит_ФормаВводаБюджета.Форма.ФормаДокументаУправляемая_оригинал.Форма",
+					915,
+					"\u0009\u0009   ЗнчСтр    = Лист.Range(ИмяЭксель).Value;"
+				]
+			],
+			"stackHash": "85B08BEB8E91F73D7A99975B20B4CB5F"
+		}
+	},
+	"screenshot": {
+		"file": "screenshot.png"
+	}
+}
