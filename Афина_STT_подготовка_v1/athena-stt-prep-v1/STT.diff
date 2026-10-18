@@ -1,0 +1,10 @@
+# Semantic target only; exact diff requires original config, unavailable to this executor.
+# Change ONLY the stt node; security.allow_lazy_installs is NOT changed.
+-stt.provider: <current: no explicit provider in previous diagnostic>
++stt.provider: local_command
++stt.enabled: true
++stt.language: ru
++stt.local.model: base
++stt.local.language: ru
+# HERMES_LOCAL_STT_COMMAND is supplied only by the reviewed Compose override.
+# Inference always CPU/int8 in isolated runner; unrelated gateway packages stay unchanged.

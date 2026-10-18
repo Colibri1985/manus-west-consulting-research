@@ -1,0 +1,93 @@
+{
+  "status": "PREPARATION_ONLY_NOT_BUILT",
+  "fixture_sha256": "63a4b1e4c1dc655ac70961ffbf518acd249df237e5a0152faae9a4a836949715",
+  "pinned_distributions": 26,
+  "dependency_edges": 29,
+  "build_download_inference_switch_executed": false,
+  "files": {
+    "README.md": {
+      "bytes": 17287,
+      "sha256": "097a49847b297c5c3438deb6235d0fd9ad93c498cb069b835dc1a64b9fbb38e4"
+    },
+    "STT.diff": {
+      "bytes": 516,
+      "sha256": "e9ec0132777ea8c53c59fd851764aec01e9e5016267c5c498ad59ce8cde523cf"
+    },
+    "build-context/.dockerignore": {
+      "bytes": 110,
+      "sha256": "7f9dda49906f97714409f2252517de39796a65868e1e609ff65a7171ec2e3e02"
+    },
+    "build-context/Dockerfile": {
+      "bytes": 1038,
+      "sha256": "c3aece6cde459efd814ede1cf1cf13a7bc85e2faef28e0cabb05647eca79ba9f"
+    },
+    "build-context/download_model.py": {
+      "bytes": 1178,
+      "sha256": "886c4ec5b0422fa049ea0a935725c321d2f49263fe15f37d24421f23b8239a58"
+    },
+    "build-context/requirements.lock": {
+      "bytes": 2919,
+      "sha256": "221f664fcd6c8c53193d2e26cd334022ffe0035440a00593e826459e7672e247"
+    },
+    "build-context/selftest.py": {
+      "bytes": 2058,
+      "sha256": "561831b03abb23e97546ff0f9bac034d0231b2f5974d2707f0f4cc1bc66318d3"
+    },
+    "build-context/transcribe.py": {
+      "bytes": 1600,
+      "sha256": "6ef062068b10d5a9ace4d920859d481d50cf327ea6f039cc4dd7e5f0195680f7"
+    },
+    "build-context/versions.json": {
+      "bytes": 642,
+      "sha256": "4e6961dfc7d1e9353aef52c1678b1030bcf83761ff1ff21c3086e8bad348a393"
+    },
+    "build.sh": {
+      "bytes": 577,
+      "sha256": "6d2d81634e08eddd9875e666066abe8fed36ec997bf78021d2a79364bafbf712"
+    },
+    "compose.telegram.stt.yaml": {
+      "bytes": 547,
+      "sha256": "42f3d181478a727411fd723e3bfaab9c94ccd157f4db0790b921137e6bc033c6"
+    },
+    "config_transaction.py": {
+      "bytes": 3118,
+      "sha256": "1cb2cfae18a9d7cc299792a10ff14f81440715f161f69ab127dbec35226fceac"
+    },
+    "dependency-evidence.json": {
+      "bytes": 33338,
+      "sha256": "d650936e34473ac5f18ab9bb45d81c10837604f92e3816c6b37b21d1076def32"
+    },
+    "fixtures/jfk.flac": {
+      "bytes": 1152693,
+      "sha256": "63a4b1e4c1dc655ac70961ffbf518acd249df237e5a0152faae9a4a836949715"
+    },
+    "fixtures/provenance.json": {
+      "bytes": 616,
+      "sha256": "55d21d3a946866afa846c7a867db11dc0443dbe16b0891be59ccf5bc50b04365"
+    },
+    "preflight.py": {
+      "bytes": 2879,
+      "sha256": "7352a5b5b3dfe1f247d248afecdc74a38950f11a599e5f65c5d78d2c7535af96"
+    },
+    "prepare_bundle.py": {
+      "bytes": 42778,
+      "sha256": "e64becb50774b4790580d1e4e4404043617c955f7a423c072b27537e23b9f3ca"
+    },
+    "rollback.sh": {
+      "bytes": 900,
+      "sha256": "621cc23f926e3d849e95511a08082812cb7dcafb87ff086911ba388c1693dd27"
+    },
+    "stt-target.yaml": {
+      "bytes": 104,
+      "sha256": "271e4769c22da9b7c249ae8373ba0239275a46a58a9cb21ef75b26a6f860a8a2"
+    },
+    "switch.sh": {
+      "bytes": 1180,
+      "sha256": "7de03399d6011d70e5c9e68e22ba4fa2a3f7be41be9b0e500164297635683115"
+    },
+    "test.sh": {
+      "bytes": 2172,
+      "sha256": "c6314be0a78904a03108c3efec8a4bafea7fa09560e73e096f821a8732b8f2fb"
+    }
+  }
+}
