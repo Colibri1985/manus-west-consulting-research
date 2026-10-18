@@ -1,0 +1,10 @@
+*
+!Dockerfile
+!.dockerignore
+!requirements.lock
+!versions.json
+!contract-hashes.json
+!transcribe.py
+!download_model.py
+!selftest.py
+!integration_test.py
