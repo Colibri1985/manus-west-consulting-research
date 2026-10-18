@@ -1,0 +1,210 @@
+{
+  "format_version": 2,
+  "description": "Preparation only; no ASR acceptance results",
+  "files": {
+    "CHANGES.md": {
+      "sha256": "a722c6547a840711c3016aa8aad81298bd09c1bb17db7c0bd797407fa178402d",
+      "size_bytes": 3669
+    },
+    "CONTRACT_AND_PERMISSIONS.md": {
+      "sha256": "0a9d86fb4d8c8e54c00e3f44be497f00768de50086941aeaae900992086ca096",
+      "size_bytes": 7121
+    },
+    "PACKAGE_TEST_RESULTS.txt": {
+      "sha256": "3a575f25ec42c88effd0ca0e843a2f39573dc35e1a2246e1c4dcbbf0e8e2595b",
+      "size_bytes": 2857
+    },
+    "README.md": {
+      "sha256": "4b286ba1486cae7eaa2604fd0d1e08062df8905cccaf21670930db56f094ee51",
+      "size_bytes": 14715
+    },
+    "STT.diff": {
+      "sha256": "e9ec0132777ea8c53c59fd851764aec01e9e5016267c5c498ad59ce8cde523cf",
+      "size_bytes": 516
+    },
+    "build-context/.dockerignore": {
+      "sha256": "c46986272d429ae0dc5b0185ddf1dd46be8e6a4623a3c10ec4d925e6adba1a9f",
+      "size_bytes": 153
+    },
+    "build-context/Dockerfile": {
+      "sha256": "5011a246e33f61892d69830145a8cdc11c5cff9964b3a52d82d36e3fd1824c40",
+      "size_bytes": 954
+    },
+    "build-context/contract-hashes.json": {
+      "sha256": "7153456e87e1338f33f0c3f4fee6ae5140d5f656d9014430f6280a229b133d0a",
+      "size_bytes": 828
+    },
+    "build-context/download_model.py": {
+      "sha256": "886c4ec5b0422fa049ea0a935725c321d2f49263fe15f37d24421f23b8239a58",
+      "size_bytes": 1178
+    },
+    "build-context/integration_test.py": {
+      "sha256": "a392aba91b22a371a31bc4b99886d7340973d9e59b897fc86c410d49b14ce720",
+      "size_bytes": 4264
+    },
+    "build-context/requirements.lock": {
+      "sha256": "221f664fcd6c8c53193d2e26cd334022ffe0035440a00593e826459e7672e247",
+      "size_bytes": 2919
+    },
+    "build-context/selftest.py": {
+      "sha256": "7f63edc87c471799c78ff27ec233e2e976d029bd36d5f3d677a91d709aef15ed",
+      "size_bytes": 2877
+    },
+    "build-context/transcribe.py": {
+      "sha256": "6ef062068b10d5a9ace4d920859d481d50cf327ea6f039cc4dd7e5f0195680f7",
+      "size_bytes": 1600
+    },
+    "build-context/versions.json": {
+      "sha256": "4e6961dfc7d1e9353aef52c1678b1030bcf83761ff1ff21c3086e8bad348a393",
+      "size_bytes": 642
+    },
+    "build.sh": {
+      "sha256": "e013ab9b9045bb7ce1c680c8b80055689bc387f2399a25ce688c30ddd759647e",
+      "size_bytes": 274
+    },
+    "compose.telegram.stt.yaml": {
+      "sha256": "e6815b83c0b9cf76eed3501ccaff19d5310cbe1cde6e09e2fb96ae3af0f184f5",
+      "size_bytes": 460
+    },
+    "config_transaction.py": {
+      "sha256": "9ed5000d6dbe2d6200caec5e02aff42aa6651d4fed0d5e77d2bddc94c493d61f",
+      "size_bytes": 3229
+    },
+    "control.py": {
+      "sha256": "27d77e03c880c1366ba02714ab004ddd1e2103799c6d79af7198920fd9b3374e",
+      "size_bytes": 12115
+    },
+    "dependency-evidence.json": {
+      "sha256": "d650936e34473ac5f18ab9bb45d81c10837604f92e3816c6b37b21d1076def32",
+      "size_bytes": 33338
+    },
+    "evidence/base-image/LICENSE": {
+      "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6",
+      "size_bytes": 1070
+    },
+    "evidence/base-image/hermes_cli/config.py": {
+      "sha256": "d8118b064bb442e10ce6a90e8e23c7f347b6ff532781febab206d9c652f3c7dd",
+      "size_bytes": 202213
+    },
+    "evidence/base-image/hermes_cli/config_home.py": {
+      "sha256": "85f5e604e745a7b74688b4ae2c930af96f228e661b8100cefd561f2640618e74",
+      "size_bytes": 4053
+    },
+    "evidence/base-image/hermes_state.py": {
+      "sha256": "968cd869f077d490a59b5f624958375fe455d6024e67cbc96b4ecf49981f3828",
+      "size_bytes": 94123
+    },
+    "evidence/base-image/index.json": {
+      "sha256": "9774f4f39a9bb8c2f68ce728ed5e99ddbad282163be56764afacf88ed952b784",
+      "size_bytes": 685
+    },
+    "evidence/base-image/manifest.json": {
+      "sha256": "ffa4fbb471c2bc8c85fbcfc629347585cc1586c86d2e6db465d01203ce696d95",
+      "size_bytes": 8054
+    },
+    "evidence/base-image/pm/features.py": {
+      "sha256": "6e00fd522362794d76219972be3b50bd2c3bc65e8279d3c22eb9ac1ec559bafb",
+      "size_bytes": 5799
+    },
+    "evidence/base-image/pm/install.py": {
+      "sha256": "4686aef2f72a00a3591195bf5e98eceba989b480ff847af9b98b229a06403274",
+      "size_bytes": 42897
+    },
+    "evidence/base-image/provenance.json": {
+      "sha256": "1502e69380583a0b061c3287e8d530ed677556545f1eff33bb3f9f924d51e726",
+      "size_bytes": 3075
+    },
+    "evidence/base-image/tools/environments/local.py": {
+      "sha256": "d96c53a2755e0afc6566e790ae9489a825c4d790c51bfcc258c78aafc2a47a26",
+      "size_bytes": 58122
+    },
+    "evidence/base-image/tools/tool_backend_helpers.py": {
+      "sha256": "c52d8f8d40724b19b42dbe04bcb39ae17cf57254ce9c3c1a29f610ecc0adc6ec",
+      "size_bytes": 14188
+    },
+    "evidence/base-image/tools/transcription_audio.py": {
+      "sha256": "d36654c89ef59362c5103e7fc700aab8572eeb662e9cc5632fe351c6134b79af",
+      "size_bytes": 14562
+    },
+    "evidence/base-image/tools/transcription_chunking.py": {
+      "sha256": "7c8c06f8a0a94d37dd7ed2b28b89606878cd8ca8a3ba56b617ee49806b01c28a",
+      "size_bytes": 8387
+    },
+    "evidence/base-image/tools/transcription_cloud.py": {
+      "sha256": "f80c2bed58f92df369e3876e09610ade27a56ebf4d7a72bff4b821f59bf385c8",
+      "size_bytes": 26694
+    },
+    "evidence/base-image/tools/transcription_command.py": {
+      "sha256": "8d93d94f8524a35bb85eaf5d5216d59ce6769312fb6a481d23eaea7cc6c83906",
+      "size_bytes": 15938
+    },
+    "evidence/base-image/tools/transcription_common.py": {
+      "sha256": "5e0b91f2ffc6442be7a6d5c66f9b41f8100ab62dd8a09f568e7380ac1d6f1e53",
+      "size_bytes": 6305
+    },
+    "evidence/base-image/tools/transcription_local.py": {
+      "sha256": "d82aa4183bff0d2b27a6a5e8b615857bb77412dc398c6940c7c906c063dd9f98",
+      "size_bytes": 17713
+    },
+    "evidence/base-image/tools/transcription_streaming.py": {
+      "sha256": "3f6256c4d08f85132cf103d8c4b86ab047f496b867f6642059ab191f54f6db8b",
+      "size_bytes": 23284
+    },
+    "evidence/base-image/tools/transcription_tools.py": {
+      "sha256": "6056eda9ce3f0af9f8bdaf31f7928dc958563a66cdc2ee3b5f7157e3bd89c284",
+      "size_bytes": 32062
+    },
+    "evidence/base-image/tools/transcription_whisper_cpp.py": {
+      "sha256": "2ab9d50e465d98b15230814bf1a3b9195d65d49e73f53e8d254fc1412061b2fe",
+      "size_bytes": 3262
+    },
+    "evidence/base-image/utils.py": {
+      "sha256": "c46d55ef54828906b1de34bd38c1d0338b2ea25fa1c604538debc83d05dfa14d",
+      "size_bytes": 35627
+    },
+    "fixtures/jfk.flac": {
+      "sha256": "63a4b1e4c1dc655ac70961ffbf518acd249df237e5a0152faae9a4a836949715",
+      "size_bytes": 1152693
+    },
+    "fixtures/provenance.json": {
+      "sha256": "55d21d3a946866afa846c7a867db11dc0443dbe16b0891be59ccf5bc50b04365",
+      "size_bytes": 616
+    },
+    "policy_probe.py": {
+      "sha256": "9f4a940718cb412e57def069087f318222c006e863acdbc07261d9ad1e76d3a8",
+      "size_bytes": 3107
+    },
+    "rollback.sh": {
+      "sha256": "0cb67c6dcd2379095e7443ad5af3f1f1ce499878a748ca49cfdc4dc61958cf23",
+      "size_bytes": 279
+    },
+    "stt-target.yaml": {
+      "sha256": "271e4769c22da9b7c249ae8373ba0239275a46a58a9cb21ef75b26a6f860a8a2",
+      "size_bytes": 104
+    },
+    "switch.sh": {
+      "sha256": "4ce3ec80f6b8ce6585acb37f02b54d5b21420485461dc0b9a9d57411c099040b",
+      "size_bytes": 277
+    },
+    "test.sh": {
+      "sha256": "2473fc868f58304d2c30f030c5504112e4d3777773a18756c9d0f762bac69be6",
+      "size_bytes": 380
+    },
+    "tests/test_config_transaction.py": {
+      "sha256": "2b97ac884f8a9b8f4beda96b5cc3c8cddf18c980a17d394615c38c34a5a4a86d",
+      "size_bytes": 2060
+    },
+    "tests/test_contract.py": {
+      "sha256": "fc428fda93e59f30db2d7f8334294aebde85e90b383ab900d522800da16d0bf3",
+      "size_bytes": 3699
+    },
+    "tests/test_gates.py": {
+      "sha256": "73441113ab45ec9dc8b3ce367023331aa258b4b41b6aaf68f8ff9464a0c672e9",
+      "size_bytes": 5458
+    }
+  },
+  "exclusions": {
+    "MANIFEST.json": "Self excluded to avoid recursive hash",
+    "prepare_bundle.py": "v1 development generator; not needed for reproducible Docker build; intentionally not supplied"
+  }
+}

@@ -1,0 +1,34 @@
+Package-only tests. No Docker, no actual ASR, no VPS operation.
+test_apply_restore_exact_bytes (test_config_transaction.TransactionTests.test_apply_restore_exact_bytes) ... ok
+test_repeat_restore_after_partial_rollback (test_config_transaction.TransactionTests.test_repeat_restore_after_partial_rollback) ... ok
+test_restore_refuses_later_edits (test_config_transaction.TransactionTests.test_restore_refuses_later_edits) ... ok
+test_bad_placeholder (test_contract.ContractTests.test_bad_placeholder) ... ok
+test_exit_error (test_contract.ContractTests.test_exit_error) ... Local STT command failed for /tmp/name with spaces.wav: injected exit 7
+ok
+test_placeholders_txt_and_timeout_argument (test_contract.ContractTests.test_placeholders_txt_and_timeout_argument) ... ok
+test_stdout_without_txt_is_not_accepted (test_contract.ContractTests.test_stdout_without_txt_is_not_accepted) ... ok
+test_timeout_error (test_contract.ContractTests.test_timeout_error) ... Unexpected error during local command transcription: Command '['python', '/tmp/name with spaces.wav', '/tmp/hermes-local-stt-i6nvh_ka', 'en', 'base']' timed out after 300 seconds
+Traceback (most recent call last):
+  File "<exact pinned local_command AST>", line 328, in _transcribe_local_command
+  File "/var/lib/hermes/workspace/athena_stt_preparation_v2/tests/test_contract.py", line 50, in runner
+    def runner(*a,**kw):raise subprocess.TimeoutExpired(a[0],300)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+subprocess.TimeoutExpired: Command '['python', '/tmp/name with spaces.wav', '/tmp/hermes-local-stt-i6nvh_ka', 'en', 'base']' timed out after 300 seconds
+ok
+test_absent_receipts_refused (test_gates.GateTests.test_absent_receipts_refused) ... ok
+test_changed_build_file_refused (test_gates.GateTests.test_changed_build_file_refused) ... ok
+test_changed_compose_refused (test_gates.GateTests.test_changed_compose_refused) ... ok
+test_changed_image_refused (test_gates.GateTests.test_changed_image_refused) ... ok
+test_changed_live_config_refused (test_gates.GateTests.test_changed_live_config_refused) ... ok
+test_changed_model_refused (test_gates.GateTests.test_changed_model_refused) ... ok
+test_changed_preflight_refused (test_gates.GateTests.test_changed_preflight_refused) ... ok
+test_complete_synthetic_receipts_allowed (test_gates.GateTests.test_complete_synthetic_receipts_allowed) ... ok
+test_failed_integration_refused (test_gates.GateTests.test_failed_integration_refused) ... ok
+test_model_content_rehashed (test_gates.GateTests.test_model_content_rehashed) ... ok
+test_switch_missing_receipts_cannot_modify (test_gates.GateTests.test_switch_missing_receipts_cannot_modify) ... ok
+test_wrong_uid_refused (test_gates.GateTests.test_wrong_uid_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.119s
+
+OK

@@ -1,0 +1,40 @@
+{
+  "index_digest": "sha256:9774f4f39a9bb8c2f68ce728ed5e99ddbad282163be56764afacf88ed952b784",
+  "platform_manifest_digest": "sha256:ffa4fbb471c2bc8c85fbcfc629347585cc1586c86d2e6db465d01203ce696d95",
+  "config_image_id": "sha256:373ddd5e6649f525b17993e1c885cdf1352127f8e98fd329140a73237125e52f",
+  "platform": "linux/amd64",
+  "base_user": "root",
+  "layer_digests_verified": [
+    "sha256:49a9da722157de36fc218242b18b8dde0a9bb619ba7e68a929ec8e7d69e84fb2",
+    "sha256:ebff1496d84f3b8a8b45e8561f926aa6de419a8d16dbffb69eb8b7ecbe811459",
+    "sha256:7ef30f88565694ae91f9c221d782d725e176a679b54ae60ac1d74e81d8baca4e",
+    "sha256:a53f663293ebd17bbc6aa24f7d224efae4a059d7fc8d1f84c45476dc2f84677c",
+    "sha256:5bf112519d4966b45a43e71b0d6765750c1eacd2384e977ee9d03632f7345972",
+    "sha256:7cbbe873697746da8588b7865ee9972c7bbe3bdb9a7ff04fe1afffbc63bbc9ad",
+    "sha256:0caefaa1a304f1e3eaea72d4fd96f1c53759d6e63b085c4d6ec9cd9d8b60d353",
+    "sha256:d13fc692a2b4879dada3a669ead936200662e4b801ed10bfdd59e6bb8f4fc9c3",
+    "sha256:efb48ae9515e1fc374bd005616d1921e7dfa76e39f8dfc0cbddb52a755870480",
+    "sha256:d79121eb44d622343ffd930f9f72b10939acbce0bca3d589dd8ea9d3682188df",
+    "sha256:8cf1cfa08819c86af5bd9f17bc597dbfa2a2d52f854ad9ebb7a21f02dd00ac7d"
+  ],
+  "files": {
+    "hermes_cli/config.py": "d8118b064bb442e10ce6a90e8e23c7f347b6ff532781febab206d9c652f3c7dd",
+    "hermes_cli/config_home.py": "85f5e604e745a7b74688b4ae2c930af96f228e661b8100cefd561f2640618e74",
+    "hermes_state.py": "968cd869f077d490a59b5f624958375fe455d6024e67cbc96b4ecf49981f3828",
+    "tools/environments/local.py": "d96c53a2755e0afc6566e790ae9489a825c4d790c51bfcc258c78aafc2a47a26",
+    "tools/tool_backend_helpers.py": "c52d8f8d40724b19b42dbe04bcb39ae17cf57254ce9c3c1a29f610ecc0adc6ec",
+    "tools/transcription_audio.py": "d36654c89ef59362c5103e7fc700aab8572eeb662e9cc5632fe351c6134b79af",
+    "tools/transcription_chunking.py": "7c8c06f8a0a94d37dd7ed2b28b89606878cd8ca8a3ba56b617ee49806b01c28a",
+    "tools/transcription_cloud.py": "f80c2bed58f92df369e3876e09610ade27a56ebf4d7a72bff4b821f59bf385c8",
+    "tools/transcription_command.py": "8d93d94f8524a35bb85eaf5d5216d59ce6769312fb6a481d23eaea7cc6c83906",
+    "tools/transcription_common.py": "5e0b91f2ffc6442be7a6d5c66f9b41f8100ab62dd8a09f568e7380ac1d6f1e53",
+    "tools/transcription_local.py": "d82aa4183bff0d2b27a6a5e8b615857bb77412dc398c6940c7c906c063dd9f98",
+    "tools/transcription_streaming.py": "3f6256c4d08f85132cf103d8c4b86ab047f496b867f6642059ab191f54f6db8b",
+    "tools/transcription_tools.py": "6056eda9ce3f0af9f8bdaf31f7928dc958563a66cdc2ee3b5f7157e3bd89c284",
+    "tools/transcription_whisper_cpp.py": "2ab9d50e465d98b15230814bf1a3b9195d65d49e73f53e8d254fc1412061b2fe",
+    "utils.py": "c46d55ef54828906b1de34bd38c1d0338b2ea25fa1c604538debc83d05dfa14d",
+    "pm/install.py": "4686aef2f72a00a3591195bf5e98eceba989b480ff847af9b98b229a06403274",
+    "pm/features.py": "6e00fd522362794d76219972be3b50bd2c3bc65e8279d3c22eb9ac1ec559bafb"
+  },
+  "pm_source_layer": "sha256:7895157ccb640a49f9763faa3de73b28f710f7f4fe56a4d9ae8d90fff6d8e446"
+}

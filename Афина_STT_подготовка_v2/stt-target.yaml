@@ -1,0 +1,7 @@
+stt:
+  enabled: true
+  provider: local_command
+  language: ru
+  local:
+    model: base
+    language: ru

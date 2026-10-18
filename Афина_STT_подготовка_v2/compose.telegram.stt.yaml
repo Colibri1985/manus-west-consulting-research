@@ -1,0 +1,13 @@
+services:
+  gateway:
+    image: athena-hermes-stt:fw1.2.1-av16.1.0-v2
+    pull_policy: never
+    environment:
+      HERMES_LOCAL_STT_COMMAND: "/opt/athena-stt/venv/bin/python /opt/athena-stt/transcribe.py {input_path} --output-dir {output_dir} --language {language}"
+    volumes:
+      - type: bind
+        source: /srv/hermes-agent/athena-stt-cache
+        target: /var/cache/athena-stt
+        read_only: true
+        bind:
+          create_host_path: false

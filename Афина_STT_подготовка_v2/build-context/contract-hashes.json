@@ -1,0 +1,12 @@
+{
+  "base_image_id": "sha256:373ddd5e6649f525b17993e1c885cdf1352127f8e98fd329140a73237125e52f",
+  "base_index_digest": "sha256:9774f4f39a9bb8c2f68ce728ed5e99ddbad282163be56764afacf88ed952b784",
+  "source_hashes": {
+    "tools/transcription_tools.py": "6056eda9ce3f0af9f8bdaf31f7928dc958563a66cdc2ee3b5f7157e3bd89c284",
+    "tools/transcription_local.py": "d82aa4183bff0d2b27a6a5e8b615857bb77412dc398c6940c7c906c063dd9f98",
+    "tools/transcription_audio.py": "d36654c89ef59362c5103e7fc700aab8572eeb662e9cc5632fe351c6134b79af",
+    "tools/transcription_common.py": "5e0b91f2ffc6442be7a6d5c66f9b41f8100ab62dd8a09f568e7380ac1d6f1e53",
+    "tools/environments/local.py": "d96c53a2755e0afc6566e790ae9489a825c4d790c51bfcc258c78aafc2a47a26",
+    "pm/install.py": "4686aef2f72a00a3591195bf5e98eceba989b480ff847af9b98b229a06403274"
+  }
+}
