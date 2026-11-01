@@ -1,0 +1,17 @@
+"""Process-local renderer environment; does not export global variables."""
+from pathlib import Path
+import os,subprocess
+ROOT=Path('/var/lib/hermes/workspace/tools/presentations')
+PREFIX=ROOT/'runtime'
+EXE=PREFIX/'usr/lib/libreoffice/program/soffice'
+def environment():
+    env=os.environ.copy()
+    env['LD_LIBRARY_PATH']=':'.join(str(x) for x in [PREFIX/'lib/x86_64-linux-gnu',PREFIX/'usr/lib/x86_64-linux-gnu',PREFIX/'usr/lib/libreoffice/program',PREFIX/'usr/lib',PREFIX/'lib'])
+    env['FONTCONFIG_FILE']=str(ROOT/'fonts.conf')
+    env['XDG_CACHE_HOME']=str(ROOT/'cache')
+    env['SAL_USE_VCLPLUGIN']='svp'
+    return env
+if __name__=='__main__':
+    p=subprocess.run([str(EXE),'--headless','-env:UserInstallation='+(ROOT/'lo-profile').as_uri(),'--version'],env=environment(),capture_output=True,text=True,timeout=40)
+    print('EXIT',p.returncode,p.stdout,p.stderr)
+    raise SystemExit(p.returncode)

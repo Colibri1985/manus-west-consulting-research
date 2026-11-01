@@ -1,0 +1,338 @@
+{
+  "scope": "No infrastructure changes; only current trusted renderer version probe, ldd, metadata and own temporary write probes.",
+  "execution_environment": {
+    "os": {
+      "NAME": "Debian GNU/Linux",
+      "ID": "debian",
+      "PRETTY_NAME": "Debian GNU/Linux 12 (bookworm)",
+      "VERSION_ID": "12",
+      "VERSION": "12 (bookworm)",
+      "VERSION_CODENAME": "bookworm",
+      "HOME_URL": "https://www.debian.org/",
+      "SUPPORT_URL": "https://www.debian.org/support",
+      "BUG_REPORT_URL": "https://bugs.debian.org/"
+    },
+    "architecture": "x86_64",
+    "uid": 10000,
+    "gid": 10000,
+    "user": "athena",
+    "collector_python": "/var/lib/hermes/workspace/tools/presentations/venv/bin/python",
+    "collector_cwd": "/var/lib/hermes/workspace",
+    "dockerenv_marker": true,
+    "container_note": "Container marker is an observation; host Docker image ID and gateway runtime are not inferred from the SSH executor."
+  },
+  "hermes": {
+    "cli_path": null,
+    "runtime_version": "not established from this separate SSH executor",
+    "reason": "The live Telegram gateway is a different runtime; skill version or local copied source is not its Hermes version."
+  },
+  "presentation_stack": {
+    "loaded_skill_api_path": "/var/lib/hermes/skills/productivity/powerpoint/SKILL.md",
+    "loaded_skill_version": "1.1.0",
+    "skill_helpers_api_directory": "/var/lib/hermes/skills/productivity/powerpoint/scripts",
+    "executor_skill_copy": "/home/athena/.hermes/skills/productivity/powerpoint/SKILL.md",
+    "builder_actually_used": "/var/lib/hermes/workspace/projects/1c-digital-analyst-presentation/build_deck.py",
+    "actual_builder_interpreter": "/var/lib/hermes/workspace/tools/presentations/venv/bin/python",
+    "note": "The task used custom build_deck.py with python-pptx, not the bundled pptx_create.py.",
+    "python-pptx": "1.0.2",
+    "pypdfium2": "5.14.0"
+  },
+  "bootstrap_renderer_source": "\"\"\"Owner-approved rootless unpacking of renderer dependencies. No dpkg install/configure.\"\"\"\nfrom pathlib import Path\nimport subprocess,re,os,json\nROOT=Path('/var/lib/hermes/workspace/tools/presentations')\nCONF=ROOT/'apt.conf';PKGS=ROOT/'packages';PREFIX=ROOT/'runtime'\nbase=['apt-get','-c',str(CONF)]\nsim=subprocess.run(base+['-s','install','--no-install-recommends','libreoffice-impress','fonts-liberation','fonts-noto-mono'],capture_output=True,text=True,check=True)\npackages=[a+'='+b for a,b in re.findall(r'^Inst (\\S+) \\((\\S+)',sim.stdout,re.M)]\nassert packages and os.getuid()!=0\nsubprocess.run(base+['download',*packages],cwd=PKGS,check=True)\narchives=sorted(PKGS.glob('*.deb'))\nassert len(archives)==len(packages),(len(archives),len(packages))\nfor i,p in enumerate(archives,1):\n subprocess.run(['dpkg-deb','-x',str(p),str(PREFIX)],check=True)\nprint('PRIVATE_DEB_EXTRACTION_COMPLETE',len(archives),flush=True)\nenv=os.environ.copy()\nenv['LD_LIBRARY_PATH']=':'.join(map(str,[PREFIX/'lib/x86_64-linux-gnu',PREFIX/'usr/lib/x86_64-linux-gnu',PREFIX/'usr/lib/libreoffice/program',PREFIX/'usr/lib',PREFIX/'lib']))\nenv['FONTCONFIG_FILE']=str(ROOT/'fonts.conf')\nenv['XDG_CACHE_HOME']=str(ROOT/'cache')\nenv['SAL_USE_VCLPLUGIN']='svp'\nlo=PREFIX/'usr/lib/libreoffice/program/soffice'\np=subprocess.run([str(lo),'--headless','-env:UserInstallation='+ (ROOT/'lo-profile').as_uri(),'--version'],env=env,capture_output=True,text=True,timeout=45)\nprint('RENDERER_PROBE_EXIT',p.returncode,'STDOUT',p.stdout,'STDERR',p.stderr,flush=True)\n(ROOT/'runtime-manifest.json').write_text(json.dumps({'packages':packages,'prefix':str(PREFIX),'renderer':str(lo),'probe_exit':p.returncode,'probe_stdout':p.stdout,'probe_stderr':p.stderr,'installation':'private unpack only; no package registration or maintainer scripts'},indent=2))\nif p.returncode:raise SystemExit(p.returncode)\n",
+  "runtime_env_source": "\"\"\"Process-local renderer environment; does not export global variables.\"\"\"\nfrom pathlib import Path\nimport os,subprocess\nROOT=Path('/var/lib/hermes/workspace/tools/presentations')\nPREFIX=ROOT/'runtime'\nEXE=PREFIX/'usr/lib/libreoffice/program/soffice'\ndef environment():\n    env=os.environ.copy()\n    env['LD_LIBRARY_PATH']=':'.join(str(x) for x in [PREFIX/'lib/x86_64-linux-gnu',PREFIX/'usr/lib/x86_64-linux-gnu',PREFIX/'usr/lib/libreoffice/program',PREFIX/'usr/lib',PREFIX/'lib'])\n    env['FONTCONFIG_FILE']=str(ROOT/'fonts.conf')\n    env['XDG_CACHE_HOME']=str(ROOT/'cache')\n    env['SAL_USE_VCLPLUGIN']='svp'\n    return env\nif __name__=='__main__':\n    p=subprocess.run([str(EXE),'--headless','-env:UserInstallation='+(ROOT/'lo-profile').as_uri(),'--version'],env=environment(),capture_output=True,text=True,timeout=40)\n    print('EXIT',p.returncode,p.stdout,p.stderr)\n    raise SystemExit(p.returncode)\n",
+  "bootstrap_manifest": {
+    "packages": [
+      "libassuan0=2.5.5-5",
+      "gpgconf=2.2.40-1.1+deb12u2",
+      "libksba8=1.6.3-2",
+      "libnpth0=1.6-3",
+      "dirmngr=2.2.40-1.1+deb12u2",
+      "libpng16-16=1.6.39-2+deb12u6",
+      "libfreetype6=2.12.1+dfsg-5+deb12u4",
+      "fonts-liberation=1:1.07.4-11",
+      "fontconfig-config=2.14.1-4",
+      "libfontconfig1=2.14.1-4",
+      "fontconfig=2.14.1-4",
+      "fonts-noto-mono=20201225-1",
+      "fonts-opensymbol=4:102.12+LibO7.4.7-1+deb12u14",
+      "gnupg-l10n=2.2.40-1.1+deb12u2",
+      "gnupg-utils=2.2.40-1.1+deb12u2",
+      "gpg=2.2.40-1.1+deb12u2",
+      "pinentry-curses=1.2.1-1",
+      "gpg-agent=2.2.40-1.1+deb12u2",
+      "gpg-wks-client=2.2.40-1.1+deb12u2",
+      "gpg-wks-server=2.2.40-1.1+deb12u2",
+      "gpgsm=2.2.40-1.1+deb12u2",
+      "gnupg=2.2.40-1.1+deb12u2",
+      "iso-codes=4.15.0-1",
+      "libabsl20220623=20220623.1-1+deb12u2",
+      "libavahi-common-data=0.8-10+deb12u1",
+      "libavahi-common3=0.8-10+deb12u1",
+      "libdbus-1-3=1.14.10-1~deb12u1",
+      "libavahi-client3=0.8-10+deb12u1",
+      "libboost-filesystem1.74.0=1.74.0+ds1-21",
+      "libboost-iostreams1.74.0=1.74.0+ds1-21",
+      "libboost-thread1.74.0=1.74.0+ds1-21",
+      "libicu72=72.1-3+deb12u1",
+      "libboost-locale1.74.0=1.74.0+ds1-21",
+      "libbox2d2=2.4.1-3",
+      "libpixman-1-0=0.42.2-1",
+      "libxau6=1:1.0.9-1",
+      "libxdmcp6=1:1.1.2-3",
+      "libxcb1=1.15-1",
+      "libx11-data=2:1.8.4-2+deb12u2",
+      "libx11-6=2:1.8.4-2+deb12u2",
+      "libxcb-render0=1.15-1",
+      "libxcb-shm0=1.15-1",
+      "libxext6=2:1.3.4-1+b1",
+      "libxrender1=1:0.9.10-1.1",
+      "libcairo2=1.16.0-7",
+      "libcap2-bin=1:2.66-4+deb12u3+b1",
+      "liblcms2-2=2.14-2+deb12u1",
+      "librevenge-0.0-0=0.0.5-3",
+      "libcdr-0.1-1=0.1.6-2+b2",
+      "libclucene-core1v5=2.3.3.4+dfsg-1.1",
+      "libclucene-contribs1v5=2.3.3.4+dfsg-1.1",
+      "libcups2=2.4.2-3+deb12u9",
+      "libglib2.0-0=2.74.6-2+deb12u9",
+      "libdconf1=0.40.0-4",
+      "libdeflate0=1.14-1",
+      "libelf1=0.188-2.1",
+      "libdw1=0.188-2.1",
+      "libeot0=0.01-5+b1",
+      "libepoxy0=1.5.10-1",
+      "libxml2=2.9.14+dfsg-1.3~deb12u6",
+      "liblangtag-common=0.6.4-2",
+      "liblangtag1=0.6.4-2",
+      "libetonyek-0.1-1=0.1.10-3+b1",
+      "libexttextcat-data=3.4.5-1",
+      "libexttextcat-2.0-0=3.4.5-1",
+      "libfreehand-0.1-1=0.1.2-3",
+      "libgpgme11=1.18.0-3+b1",
+      "libgpgmepp6=1.18.0-3+b1",
+      "libgraphite2-3=1.3.14-1+deb12u1",
+      "libunwind8=1.6.2-3",
+      "libgstreamer1.0-0=1.22.0-2+deb12u1",
+      "liborc-0.4-0=1:0.4.33-2",
+      "libgstreamer-plugins-base1.0-0=1.22.0-3+deb12u7",
+      "libharfbuzz0b=6.0.0+dfsg-3",
+      "libharfbuzz-icu0=6.0.0+dfsg-3",
+      "libhunspell-1.7-0=1.7.1-1",
+      "libhyphen0=2.8.8-7",
+      "x11-common=1:7.7+23",
+      "libice6=2:1.0.10-1",
+      "libjbig0=2.1-6.1",
+      "libjpeg62-turbo=1:2.1.5-2",
+      "liblerc4=4.0.0+ds-2",
+      "libltdl7=2.4.7-7~deb12u1",
+      "libmhash2=0.9.9.9-9",
+      "libmspub-0.1-1=0.1.4-3+b3",
+      "libmwaw-0.3-3=0.3.21-1",
+      "libmythes-1.2-0=2:1.2.5-1",
+      "libnspr4=2:4.35-1",
+      "libnss3=2:3.87.1-1+deb12u4",
+      "libnumbertext-data=1.0.11-1",
+      "libnumbertext-1.0-0=1.0.11-1",
+      "libodfgen-0.1-1=0.1.8-2",
+      "libopenjp2-7=2.5.0-2+deb12u3",
+      "liborcus-parser-0.17-0=0.17.2-2+b2",
+      "liborcus-0.17-0=0.17.2-2+b2",
+      "libpagemaker-0.0-0=0.0.4-1",
+      "libwebp7=1.2.4-0.2+deb12u1",
+      "libtiff6=4.5.0-6+deb12u4",
+      "libpoppler126=22.12.0-2+deb12u3",
+      "libqxp-0.0-0=0.0.2-1+b3",
+      "libxslt1.1=1.1.35-1+deb12u4",
+      "libyajl2=2.1.0-3+deb12u2",
+      "libraptor2-0=2.0.15-4+deb12u1",
+      "librasqal3=0.9.33-2",
+      "librdf0=1.0.17-3",
+      "libreoffice-style-colibre=4:7.4.7-1+deb12u14",
+      "libuno-sal3=4:7.4.7-1+deb12u14",
+      "libuno-salhelpergcc3-3=4:7.4.7-1+deb12u14",
+      "libuno-cppu3=4:7.4.7-1+deb12u14",
+      "uno-libs-private=4:7.4.7-1+deb12u14",
+      "libuno-cppuhelpergcc3-3=4:7.4.7-1+deb12u14",
+      "libuno-purpenvhelpergcc3-3=4:7.4.7-1+deb12u14",
+      "ure=4:7.4.7-1+deb12u14",
+      "libreoffice-common=4:7.4.7-1+deb12u14",
+      "libsm6=2:1.2.3-1",
+      "libx11-xcb1=2:1.8.4-2+deb12u2",
+      "libxinerama1=2:1.1.4-3",
+      "libxmlsec1=1.2.37-2",
+      "libxmlsec1-nss=1.2.37-2",
+      "libxrandr2=2:1.5.2-2+b1",
+      "libzxing2=1.4.0-3+b1",
+      "libreoffice-core=4:7.4.7-1+deb12u14",
+      "libstaroffice-0.0-0=0.0.7-1",
+      "libvisio-0.1-1=0.1.7-1+b3",
+      "libwpd-0.10-10=0.10.3-2+b1",
+      "libwpg-0.3-3=0.3.3-1",
+      "libzmf-0.0-0=0.0.2-1+b5",
+      "libreoffice-draw=4:7.4.7-1+deb12u14",
+      "libreoffice-impress=4:7.4.7-1+deb12u14"
+    ],
+    "prefix": "/var/lib/hermes/workspace/tools/presentations/runtime",
+    "renderer": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/soffice",
+    "probe_exit": 127,
+    "probe_stdout": "",
+    "probe_stderr": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/soffice.bin: error while loading shared libraries: libdbus-1.so.3: cannot open shared object file: No such file or directory\n",
+    "installation": "private unpack only; no package registration or maintainer scripts"
+  },
+  "bootstrap_manifest_note": "Historical first probe only; its exit 127 is not the latest renderer status.",
+  "necessary_environment": {
+    "HOME": "/home/athena",
+    "TMPDIR": null,
+    "TMP": null,
+    "TEMP": null,
+    "LD_LIBRARY_PATH": "/var/lib/hermes/workspace/tools/presentations/runtime/lib/x86_64-linux-gnu:/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu:/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program:/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib:/var/lib/hermes/workspace/tools/presentations/runtime/lib",
+    "FONTCONFIG_FILE": "/var/lib/hermes/workspace/tools/presentations/fonts.conf",
+    "XDG_CACHE_HOME": "/var/lib/hermes/workspace/tools/presentations/cache",
+    "SAL_USE_VCLPLUGIN": "svp",
+    "URE_BOOTSTRAP": null,
+    "UNO_PATH": null
+  },
+  "effective_temp_directory": "/tmp",
+  "trusted_executable": {
+    "path": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/soffice.bin",
+    "sha256": "49c0b1b896d10660ea223c00c45c91a72b94e8452bbf3b70b6b6d73957c05f20",
+    "mode": "0o755",
+    "uid": 10000
+  },
+  "current_renderer_probe": {
+    "argv": [
+      "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/soffice",
+      "--headless",
+      "-env:UserInstallation=file:///var/lib/hermes/workspace/tools/presentations/lo-profile",
+      "--version"
+    ],
+    "cwd": "/var/lib/hermes/workspace/projects/1c-digital-analyst-presentation",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 139
+  },
+  "current_ldd_soffice_bin": {
+    "argv": [
+      "/usr/bin/ldd",
+      "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/soffice.bin"
+    ],
+    "cwd": "/var/lib/hermes/workspace/projects/1c-digital-analyst-presentation",
+    "stdout": "\tlinux-vdso.so.1 (0x00007fc87ec0a000)\n\tlibuno_sal.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libuno_sal.so.3 (0x00007fc87eb95000)\n\tlibmergedlo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libmergedlo.so (0x00007fc87a800000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fc87a61e000)\n\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fc87eb74000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fc87a404000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fc87a324000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fc87eb52000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fc87ec0c000)\n\tlibepoxy.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007fc87a1f5000)\n\tlibgpgmepp.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgpgmepp.so.6 (0x00007fc87eae5000)\n\tlibicuuc.so.72 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libicuuc.so.72 (0x00007fc879ff7000)\n\tlibnss3.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libnss3.so (0x00007fc879e9e000)\n\tlibsmime3.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libsmime3.so (0x00007fc87eab4000)\n\tlibplc4.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libplc4.so (0x00007fc87eaad000)\n\tlibnspr4.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libnspr4.so (0x00007fc879e5c000)\n\tlibdconf.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libdconf.so.1 (0x00007fc879e48000)\n\tlibgio-2.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fc879c68000)\n\tlibgobject-2.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fc879c09000)\n\tlibglib-2.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fc879ad0000)\n\tlibdbus-1.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007fc879a7a000)\n\tlibicui18n.so.72 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libicui18n.so.72 (0x00007fc879600000)\n\tlibcurl-gnutls.so.4 => /lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x00007fc8799d0000)\n\tlibxml2.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fc879454000)\n\tlibxslt.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libxslt.so.1 (0x00007fc87998d000)\n\tlibexslt.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libexslt.so.0 (0x00007fc879975000)\n\tlibexpat.so.1 => /lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fc879949000)\n\tlibclucene-core.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libclucene-core.so.1 (0x00007fc8792b4000)\n\tlibclucene-contribs-lib.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libclucene-contribs-lib.so.1 (0x00007fc879251000)\n\tlibexttextcat-2.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libexttextcat-2.0.so.0 (0x00007fc879000000)\n\tlibhunspell-1.7.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libhunspell-1.7.so.0 (0x00007fc878f89000)\n\tlibhyphen.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libhyphen.so.0 (0x00007fc879942000)\n\tlibmythes-1.2.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libmythes-1.2.so.0 (0x00007fc87993d000)\n\tlibnumbertext-1.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libnumbertext-1.0.so.0 (0x00007fc878f36000)\n\tliborcus-0.17.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/liborcus-0.17.so.0 (0x00007fc878df0000)\n\tlibboost_locale.so.1.74.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libboost_locale.so.1.74.0 (0x00007fc878d0c000)\n\tlibrdf.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/librdf.so.0 (0x00007fc879214000)\n\tlibraptor2.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libraptor2.so.0 (0x00007fc878ca7000)\n\tlibgraphite2.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fc878c7d000)\n\tlibharfbuzz-icu.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0 (0x00007fc879936000)\n\tlibharfbuzz.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fc878b79000)\n\tliblcms2.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fc878b16000)\n\tlibeot.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libeot.so.0 (0x00007fc878b06000)\n\tlibjpeg.so.62 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fc878a73000)\n\tlibpng16.so.16 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fc878a3d000)\n\tlibtiff.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libtiff.so.6 (0x00007fc8789b1000)\n\tlibwebp.so.7 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libwebp.so.7 (0x00007fc87893f000)\n\tlibX11.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fc8787fd000)\n\tlibXext.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fc8787e8000)\n\tlibcairo.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fc8786c4000)\n\tlibcups.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libcups.so.2 (0x00007fc878627000)\n\tlibfontconfig.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fc8785dc000)\n\tlibfreetype.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fc878512000)\n\tlibuno_cppu.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libuno_cppu.so.3 (0x00007fc8784e5000)\n\tlibuno_cppuhelpergcc3.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libuno_cppuhelpergcc3.so.3 (0x00007fc878406000)\n\tlibi18nlangtag.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libi18nlangtag.so (0x00007fc8783e1000)\n\tlibjvmaccesslo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libjvmaccesslo.so (0x00007fc87920b000)\n\tlibjvmfwklo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libjvmfwklo.so (0x00007fc8783c1000)\n\tlibuno_salhelpergcc3.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libuno_salhelpergcc3.so.3 (0x00007fc8783b8000)\n\tlibxmlreaderlo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libxmlreaderlo.so (0x00007fc8783ad000)\n\tlibclewlo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libclewlo.so (0x00007fc8783a6000)\n\tlibskialo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libskialo.so (0x00007fc877c00000)\n\tlibpdfiumlo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libpdfiumlo.so (0x00007fc877800000)\n\tlibdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007fc879206000)\n\tlibgpgme.so.11 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgpgme.so.11 (0x00007fc878352000)\n\tlibicudata.so.72 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libicudata.so.72 (0x00007fc875a00000)\n\tlibnssutil3.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libnssutil3.so (0x00007fc877bce000)\n\tlibplds4.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libplds4.so (0x00007fc87834d000)\n\tlibgmodule-2.0.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fc878347000)\n\tlibmount.so.1 => /lib/x86_64-linux-gnu/libmount.so.1 (0x00007fc87599d000)\n\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fc877ba0000)\n\tlibffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x00007fc878339000)\n\tlibpcre2-8.so.0 => /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fc875903000)\n\tlibsystemd.so.0 => /lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fc875833000)\n\tlibnghttp2.so.14 => /lib/x86_64-linux-gnu/libnghttp2.so.14 (0x00007fc875804000)\n\tlibidn2.so.0 => /lib/x86_64-linux-gnu/libidn2.so.0 (0x00007fc8757d3000)\n\tlibrtmp.so.1 => /lib/x86_64-linux-gnu/librtmp.so.1 (0x00007fc8777df000)\n\tlibssh2.so.1 => /lib/x86_64-linux-gnu/libssh2.so.1 (0x00007fc875792000)\n\tlibpsl.so.5 => /lib/x86_64-linux-gnu/libpsl.so.5 (0x00007fc87577e000)\n\tlibnettle.so.8 => /lib/x86_64-linux-gnu/libnettle.so.8 (0x00007fc875730000)\n\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007fc875511000)\n\tlibgssapi_krb5.so.2 => /lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x00007fc8754be000)\n\tlibldap-2.5.so.0 => /lib/x86_64-linux-gnu/libldap-2.5.so.0 (0x00007fc87545f000)\n\tliblber-2.5.so.0 => /lib/x86_64-linux-gnu/liblber-2.5.so.0 (0x00007fc87544f000)\n\tlibzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fc875393000)\n\tlibbrotlidec.so.1 => /lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fc875386000)\n\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fc875357000)\n\tlibgcrypt.so.20 => /lib/x86_64-linux-gnu/libgcrypt.so.20 (0x00007fc875210000)\n\tlibclucene-shared.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libclucene-shared.so.1 (0x00007fc8751ed000)\n\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007fc8777d6000)\n\tliborcus-parser-0.17.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/liborcus-parser-0.17.so.0 (0x00007fc87519d000)\n\tlibboost_filesystem.so.1.74.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 (0x00007fc87517c000)\n\tlibboost_iostreams.so.1.74.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libboost_iostreams.so.1.74.0 (0x00007fc875164000)\n\tlibboost_thread.so.1.74.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 (0x00007fc875141000)\n\tlibrasqal.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/librasqal.so.3 (0x00007fc8750c5000)\n\tlibltdl.so.7 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libltdl.so.7 (0x00007fc8750ba000)\n\tlibdb-5.3.so => /lib/x86_64-linux-gnu/libdb-5.3.so (0x00007fc874ef8000)\n\tlibyajl.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libyajl.so.2 (0x00007fc874eec000)\n\tlibLerc.so.4 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libLerc.so.4 (0x00007fc874e54000)\n\tlibjbig.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libjbig.so.0 (0x00007fc874e43000)\n\tlibdeflate.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libdeflate.so.0 (0x00007fc874e1d000)\n\tlibxcb.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fc874df1000)\n\tlibpixman-1.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fc874d46000)\n\tlibxcb-shm.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fc874d41000)\n\tlibxcb-render.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fc874d33000)\n\tlibXrender.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fc874d26000)\n\tlibavahi-common.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libavahi-common.so.3 (0x00007fc874d16000)\n\tlibavahi-client.so.3 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libavahi-client.so.3 (0x00007fc874d03000)\n\tlibreglo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libreglo.so (0x00007fc874ce7000)\n\tlibunoidllo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libunoidllo.so (0x00007fc874c8c000)\n\tliblangtag.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/liblangtag.so.1 (0x00007fc874c65000)\n\tlibX11-xcb.so.1 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libX11-xcb.so.1 (0x00007fc874c5e000)\n\tlibopenjp2.so.7 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libopenjp2.so.7 (0x00007fc874bfa000)\n\tlibabsl_bad_optional_access.so.20220623 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libabsl_bad_optional_access.so.20220623 (0x00007fc874bf5000)\n\tlibassuan.so.0 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libassuan.so.0 (0x00007fc874bdf000)\n\tlibgpg-error.so.0 => /lib/x86_64-linux-gnu/libgpg-error.so.0 (0x00007fc874bb7000)\n\tlibblkid.so.1 => /lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fc874b5e000)\n\tlibcap.so.2 => /lib/x86_64-linux-gnu/libcap.so.2 (0x00007fc874b52000)\n\tliblz4.so.1 => /lib/x86_64-linux-gnu/liblz4.so.1 (0x00007fc874b2c000)\n\tlibunistring.so.2 => /lib/x86_64-linux-gnu/libunistring.so.2 (0x00007fc874976000)\n\tlibhogweed.so.6 => /lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007fc87492d000)\n\tlibgmp.so.10 => /lib/x86_64-linux-gnu/libgmp.so.10 (0x00007fc8748aa000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007fc874420000)\n\tlibp11-kit.so.0 => /lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007fc8742ec000)\n\tlibtasn1.so.6 => /lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007fc8742d7000)\n\tlibkrb5.so.3 => /lib/x86_64-linux-gnu/libkrb5.so.3 (0x00007fc8741fd000)\n\tlibk5crypto.so.3 => /lib/x86_64-linux-gnu/libk5crypto.so.3 (0x00007fc8741ce000)\n\tlibcom_err.so.2 => /lib/x86_64-linux-gnu/libcom_err.so.2 (0x00007fc8741c8000)\n\tlibkrb5support.so.0 => /lib/x86_64-linux-gnu/libkrb5support.so.0 (0x00007fc8741ba000)\n\tlibsasl2.so.2 => /lib/x86_64-linux-gnu/libsasl2.so.2 (0x00007fc87419d000)\n\tlibbrotlicommon.so.1 => /lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fc87417a000)\n\tlibbz2.so.1.0 => /lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fc874165000)\n\tlibmhash.so.2 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libmhash.so.2 (0x00007fc874137000)\n\tlibuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x00007fc87412d000)\n\tlibXau.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fc874128000)\n\tlibXdmcp.so.6 => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fc873e00000)\n\tlibstorelo.so => /var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/libstorelo.so (0x00007fc87410c000)\n\tlibkeyutils.so.1 => /lib/x86_64-linux-gnu/libkeyutils.so.1 (0x00007fc874105000)\n\tlibresolv.so.2 => /lib/x86_64-linux-gnu/libresolv.so.2 (0x00007fc8740f4000)\n\tlibbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007fc8740de000)\n\tlibmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x00007fc8740cf000)\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "ldd_missing": [],
+  "ldd_note": "Only the already deployed trusted soffice.bin was passed to ldd. A clean ldd does not validate UNO registration or dynamically loaded components.",
+  "historical_deployment_exception": {
+    "provenance": "exact stderr observed in earlier tool results in this chat, before the private x86_64 unorc was added",
+    "stdout": "",
+    "stderr": "terminate called after throwing an instance of 'com::sun::star::uno::DeploymentException'\n",
+    "exit_code": 134,
+    "additional_exception_message": "not printed",
+    "cpp_stack_trace": "not captured or printed; not reconstructed"
+  },
+  "directory_checks": [
+    {
+      "path": "/home/athena",
+      "exists": true,
+      "is_directory": true,
+      "write_probe": "created_and_removed_own_temporary_file",
+      "os_access_write": true
+    },
+    {
+      "path": "/tmp",
+      "exists": true,
+      "is_directory": true,
+      "write_probe": "created_and_removed_own_temporary_file",
+      "os_access_write": true
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations/lo-profile",
+      "exists": false,
+      "is_directory": false,
+      "write_probe": "not_run",
+      "nearest_existing_parent": "/var/lib/hermes/workspace/tools/presentations"
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations/diagnostic-profile",
+      "exists": false,
+      "is_directory": false,
+      "write_probe": "not_run",
+      "nearest_existing_parent": "/var/lib/hermes/workspace/tools/presentations"
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations/diagnostic-profile-2",
+      "exists": false,
+      "is_directory": false,
+      "write_probe": "not_run",
+      "nearest_existing_parent": "/var/lib/hermes/workspace/tools/presentations"
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations/trace-profile",
+      "exists": false,
+      "is_directory": false,
+      "write_probe": "not_run",
+      "nearest_existing_parent": "/var/lib/hermes/workspace/tools/presentations"
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations/lo-profile/user",
+      "exists": false,
+      "is_directory": false,
+      "write_probe": "not_run",
+      "nearest_existing_parent": "/var/lib/hermes/workspace/tools/presentations"
+    },
+    {
+      "path": "/var/lib/hermes/workspace/tools/presentations",
+      "exists": true,
+      "is_directory": true,
+      "write_probe": "created_and_removed_own_temporary_file",
+      "os_access_write": true
+    }
+  ],
+  "same_user_renderer_processes_after_probe": [],
+  "parallelism_note": "Point-in-time observation of same-user renderer processes; it does not prove absence of overlap during earlier failures.",
+  "known_changes_already_made": [
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/bootstrap_renderer.py",
+      "change": "LD_LIBRARY_PATH extended with private runtime/lib/x86_64-linux-gnu and runtime/lib; originally only usr/lib paths were included."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime_env.py",
+      "change": "Process-local LD_LIBRARY_PATH, FONTCONFIG_FILE, XDG_CACHE_HOME and SAL_USE_VCLPLUGIN=svp; no global environment export."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/fundamentalrc",
+      "change": "BRAND_BASE_DIR and CONFIGURATION_LAYERS changed from system locations to the private unpacked prefix."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/program/sofficerc",
+      "change": "FHS_CONFIG_FILE relocated to private etc/libreoffice/sofficerc."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/libreoffice/share",
+      "change": "Four absolute symlinks for registry, psprint.conf, uno_packages/cache and prereg/bundled were redirected to corresponding files under the private prefix."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/lib/x86_64-linux-gnu/unorc",
+      "change": "New private UNO bootstrap file created after strace observed missing unorc next to loaded UNO libraries. Subsequent version probe changed from exit 134 to exit 139; this is NOT a successful fix."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/apt.conf",
+      "change": "Private apt lists/cache/log paths; post-invoke cleanup hooks cleared after an initial system-cache cleanup attempt returned Permission denied. No successful system-cache deletion is established."
+    },
+    {
+      "file": "/var/lib/hermes/workspace/tools/presentations/runtime/usr/bin/strace",
+      "change": "Diagnostic strace package unpacked privately before the latest no-more-packages instruction; no packages added by this collection."
+    }
+  ],
+  "observed_file_trace": {
+    "path": "/var/lib/hermes/workspace/projects/1c-digital-analyst-presentation/renderer-file-trace.log",
+    "summary": "Earlier trace observed ENOENT for private usr/lib/x86_64-linux-gnu/unorc. This is evidence about a missing lookup, not a C++ stack trace."
+  },
+  "delivery_status": {
+    "pptx_created": true,
+    "markdown_created": true,
+    "structure_tests": "5 tests passed in actual preceding run",
+    "pdf_exported": false,
+    "visual_render_verified": false
+  }
+}

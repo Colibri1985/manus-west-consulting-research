@@ -1,0 +1,25 @@
+"""Owner-approved rootless unpacking of renderer dependencies. No dpkg install/configure."""
+from pathlib import Path
+import subprocess,re,os,json
+ROOT=Path('/var/lib/hermes/workspace/tools/presentations')
+CONF=ROOT/'apt.conf';PKGS=ROOT/'packages';PREFIX=ROOT/'runtime'
+base=['apt-get','-c',str(CONF)]
+sim=subprocess.run(base+['-s','install','--no-install-recommends','libreoffice-impress','fonts-liberation','fonts-noto-mono'],capture_output=True,text=True,check=True)
+packages=[a+'='+b for a,b in re.findall(r'^Inst (\S+) \((\S+)',sim.stdout,re.M)]
+assert packages and os.getuid()!=0
+subprocess.run(base+['download',*packages],cwd=PKGS,check=True)
+archives=sorted(PKGS.glob('*.deb'))
+assert len(archives)==len(packages),(len(archives),len(packages))
+for i,p in enumerate(archives,1):
+ subprocess.run(['dpkg-deb','-x',str(p),str(PREFIX)],check=True)
+print('PRIVATE_DEB_EXTRACTION_COMPLETE',len(archives),flush=True)
+env=os.environ.copy()
+env['LD_LIBRARY_PATH']=':'.join(map(str,[PREFIX/'lib/x86_64-linux-gnu',PREFIX/'usr/lib/x86_64-linux-gnu',PREFIX/'usr/lib/libreoffice/program',PREFIX/'usr/lib',PREFIX/'lib']))
+env['FONTCONFIG_FILE']=str(ROOT/'fonts.conf')
+env['XDG_CACHE_HOME']=str(ROOT/'cache')
+env['SAL_USE_VCLPLUGIN']='svp'
+lo=PREFIX/'usr/lib/libreoffice/program/soffice'
+p=subprocess.run([str(lo),'--headless','-env:UserInstallation='+ (ROOT/'lo-profile').as_uri(),'--version'],env=env,capture_output=True,text=True,timeout=45)
+print('RENDERER_PROBE_EXIT',p.returncode,'STDOUT',p.stdout,'STDERR',p.stderr,flush=True)
+(ROOT/'runtime-manifest.json').write_text(json.dumps({'packages':packages,'prefix':str(PREFIX),'renderer':str(lo),'probe_exit':p.returncode,'probe_stdout':p.stdout,'probe_stderr':p.stderr,'installation':'private unpack only; no package registration or maintainer scripts'},indent=2))
+if p.returncode:raise SystemExit(p.returncode)
