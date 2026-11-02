@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>БДДС — Прототип (Афина)</title>
+<style>
+:root{--bg:#0b0d14;--card:#12131e;--text:#e8e8ec;--accent:#c8a86a;--danger:#c85a5a;--ok:#6aa87a;--muted:#8a8b9a;}
+*{box-sizing:border-box;font-family:system-ui,sans-serif;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);line-height:1.45;padding:1.2rem;min-height:100vh}
+header{margin-bottom:1rem}
+header h1{font-size:1.4rem;color:var(--accent);letter-spacing:.02em}
+header p{color:var(--muted);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin-bottom:1rem}
+.card{background:var(--card);border:1px solid #1a1b28;border-radius:.7rem;padding:.8rem}
+.card label{display:block;color:var(--muted);font-size:.72rem;margin-bottom:.25rem}
+.card input,.card select{width:100%;background:#0b0d14;color:var(--text);border:1px solid #2a2b3a;border-radius:.35rem;padding:.35rem .45rem;font-size:.85rem}
+.tabs{display:flex;gap:.3rem;border-bottom:1px solid #1a1b28;margin-bottom:.8rem;padding-bottom:.3rem;flex-wrap:wrap}
+.tab{background:#0b0d14;border:1px solid #1a1b28;border-radius:.35rem .35rem 0 0;padding:.35rem .7rem;cursor:pointer;color:var(--muted);font-size:.8rem}
+.tab.active{background:var(--card);color:var(--accent);border-bottom-color:var(--card)}
+.section{background:var(--card);border:1px solid #1a1b28;border-radius:.7rem;padding:1rem;margin-bottom:.8rem}
+.section h2{font-size:1rem;color:var(--accent);margin-bottom:.6rem}
+.table{width:100%;border-collapse:collapse;font-size:.82rem}
+.table th{color:var(--muted);text-align:left;padding:.35rem .3rem;border-bottom:1px solid #2a2b3a}
+.table td{padding:.3rem .3rem;border-bottom:1px solid #181924;vertical-align:top}
+.badge{display:inline-block;padding:.1rem .35rem;border-radius:.25rem;font-size:.7rem;background:#1a1b28;color:var(--text);border:1px solid #2a2b3a}
+.alert{padding:.6rem .7rem;border-radius:.4rem;margin:.4rem 0;font-size:.85rem}
+.alert.warn{background:rgba(200,160,90,.1);border:1px solid rgba(200,160,90,.3);color:var(--accent)}
+.alert.info{background:rgba(106,168,122,.1);border:1px solid rgba(106,168,122,.3);color:var(--ok)}
+.footer{color:var(--muted);font-size:.75rem;margin-top:1rem}
+</style>
+</head>
+<body>
+<header>
+<h1>БДДС — Прототип</h1>
+<p>Автономный HTML. Данные: Shablon-BDDS.xlsx (реальные статьи из шаблона). Параметры без подтверждения явны.</p>
+</header>
+
+<div class="grid">
+<div class="card"><label>Проект / БЦ</label><input id="proj" value="БЦ (пример)" /></div>
+<div class="card"><label>ЦФО</label><input id="cfo" value="Управление коммерческой недвижимостью" readonly /></div>
+<div class="card"><label>Период с</label><input id="dateFrom" type="date" /></div>
+<div class="card"><label>Период по</label><input id="dateTo" type="date" /></div>
+<div class="card"><label>Единицы</label><select id="units"><option>рубли</option><option>тыс. руб.</option></select></div>
+<div class="card"><label>Нач. остаток денег</label><input id="initBal" type="number" value="0" step="0.01" /></div>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('overview',this)">Обзор бюджета</button>
+<button class="tab" onclick="showTab('dirs',this)">Справочники</button>
+<button class="tab" onclick="showTab('income',this)">Доходы</button>
+<button class="tab" onclick="showTab('works',this)">Работы и платежи</button>
+<button class="tab" onclick="showTab('staff',this)">Персонал</button>
+<button class="tab" onclick="showTab('registry',this)">Реестр</button>
+<button class="tab" onclick="showTab('bdds',this)">БДДС и экспорт</button>
+</div>
+
+<!-- Обзор -->
+<div id="tab-overview" class="section">
+<h2>Обзор бюджета</h2>
+<p>Статус: <span class="badge">Черновик</span> <span id="unsaved" class="badge" style="display:none">Несохранённые изменения</span></p>
+<div class="alert info">Для параметров, не подтверждённых в шаблоне (налоговые ставки по годам, гарантированная совместимость с БИТ 3.1.17.6), показан статус «Требуется настройка».</div>
+<table class="table">
+<thead><tr><th>Показатель</th><th>Значение</th></tr></thead>
+<tbody>
+<tr><td>Поступления (план)</td><td id="sumIn">—</td></tr>
+<tr><td>Выплаты (план)</td><td id="sumOut">—</td></tr>
+<tr><td>Чистый денежный поток</td><td id="sumNet">—</td></tr>
+<tr><td>Ошибки / замечания</td><td>0 (проверка не выполнялась автоматически)</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Справочники -->
+<div id="tab-dirs" class="section" style="display:none">
+<h2>Справочники статей (из Shablon-BDDS.xlsx)</h2>
+<p>Статьи с постоянными внутренними ID. Группы (`.000`) не принимают прямой ввод; суммы формируются из дочерних.</p>
+<table class="table">
+<thead><tr><th>Код</th><th>Наименование</th><th>Тип статьи</th><th>Направление</th><th>НДС</th><th>Группа</th></tr></thead>
+<tbody id="dirBody"></tbody>
+</table>
+<div class="alert warn">Новые подстатьи (например, детализация вентиляции) — кандидат на согласование. Статус «Кодификатор не согласован».</div>
+</div>
+
+<!-- Доходы -->
+<div id="tab-income" class="section" style="display:none">
+<h2>Доходы</h2>
+<p>Разделы: эксплуатация, коммунальные услуги, дополнительные услуги, капитальный ремонт.</p>
+<table class="table">
+<thead><tr><th>Категория</th><th>Статья</th><th>База / тариф</th><th>Период</th><th>Начисление</th></tr></thead>
+<tbody>
+<tr><td>Эксплуатация — офисы</td><td>701.100</td><td>Тариф × площадь</td><td>Явно задаётся</td><td>—</td></tr>
+<tr><td>Эксплуатация — стритретейл</td><td>701.100</td><td>Тариф × площадь</td><td>Явно задаётся</td><td>—</td></tr>
+<tr><td>Коммунальные услуги</td><td>701.300</td><td>= расход по КУ</td><td>—</td><td>—</td></tr>
+<tr><td>Допуслуги (клининг)</td><td>701.203</td><td>Доход / (1 + %/100) = расход</td><td>—</td><td>—</td></tr>
+<tr><td>Капремонт</td><td>701.400</td><td>Ставка × площадь</td><td>Период ставки явный</td><td>—</td></tr>
+</tbody>
+</table>
+<div class="alert warn">Формула для допуслуг: расход = доход / (1 + процент / 100). Пример: доход 120, % 20% → расход 100. Статус: требует подтверждения до производственного использования.</div>
+</div>
+
+<!-- Работы и платежи -->
+<div id="tab-works" class="section" style="display:none">
+<h2>Работы, услуги и платежи</h2>
+<p>График выполнения, стоимость и график денежных платежей — раздельно. Периодичность: разово, еженедельно, ежемесячно, каждые N мес., ежегодно, сезонное окно, ручные даты.</p>
+<table class="table">
+<thead><tr><th>Статья</th><th>Описание</th><th>Периодичность</th><th>Условия оплаты</th><th>График денег</th></tr></thead>
+<tbody>
+<tr><td>702.0201 (лифты)</td><td>ТО лифтов</td><td>Ежемесячно</td><td>Постоплата</td><td>—</td></tr>
+<tr><td>702.0209 (водоснабжение)</td><td>ТО и ТР</td><td>Ежемесячно / сезон</td><td>Смешанная</td><td>—</td></tr>
+<tr><td>702.0212 (уборка МОП)</td><td>Клининг</td><td>Еженедельно</td><td>Аванс + остаток</td><td>—</td></tr>
+<tr><td>Материалы (коврики)</td><td>Еженедельно</td><td>Раз в месяц</td><td>—</td></tr>
+<tr><td>ИТП / кондиционирование</td><td>ТО</td><td>Ежеквартально</td><td>—</td><td>—</td></tr>
+<tr><td>Очистка ИТП</td><td>Один раз в год (июль–август)</td><td>Сезонное окно, 1 событие</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+<div class="alert info">Для 29–31 числа предусмотрено правило короткого месяца. Рабочий календарь не реализован — рабочие дни отключены.</div>
+</div>
+
+<!-- Персонал -->
+<div id="tab-staff" class="section" style="display:none">
+<h2>Персонал</h2>
+<p>Мини-ШР, начисления и налоги, денежные выплаты. Налоговый профиль: статус «Не подтверждён».</p>
+<div class="alert warn">Расчёт предварительный. Налоговые ставки не подтверждены для текущего года. Не применять индивидуальные пороги к общей зарплате нескольких работников.</div>
+<table class="table">
+<thead><tr><th>Должность</th><th>Категория</th><th>% на БЦ</th><th>Зарплата на руки</th><th>Премия</th></tr></thead>
+<tbody>
+<tr><td>Администрация</td><td>Адм.</td><td>100%</td><td>—</td><td>—</td></tr>
+<tr><td>Клиентский сервис</td><td>Клиент.</td><td>100%</td><td>—</td><td>—</td></tr>
+<tr><td>Производственный</td><td>Производ.</td><td>100%</td><td>—</td><td>—</td></tr>
+<tr><td>Сантехник / электрик</td><td>Производ.</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Реестр -->
+<div id="tab-registry" class="section" style="display:none">
+<h2>Реестр и редактирование</h2>
+<p>Два представления: исходные записи и рассчитанные поступления/выплаты. При исправлении ID сохраняется; связанные платежи заменяются; дубли не появляются.</p>
+<div class="alert info">Удаление — с подтверждением. Ручные графики не стираются молча; при конфликте с новой суммой показывается запрос на исправление.</div>
+</div>
+
+<!-- БДДС и экспорт -->
+<div id="tab-bdds" class="section" style="display:none">
+<h2>БДДС и экспорт</h2>
+<p>Матрица: кодификатор | статья | месяцы | итого. Группы — сумма дочерних. События вне горизонта показываются отдельным списком.</p>
+<table class="table">
+<thead><tr><th>Код</th><th>Статья</th><th>Итого</th><th>Детализация</th></tr></thead>
+<tbody>
+<tr><td>701.000</td><td>Поступления по операционной деятельности УК</td><td>—</td><td>—</td></tr>
+<tr><td>702.000</td><td>Выплаты по операционной деятельности</td><td>—</td><td>—</td></tr>
+<tr><td>701.400</td><td>Поступление взносов на капитальный ремонт</td><td>—</td><td>—</td></tr>
+<tr><td>703.100</td><td>Поступления от продажи ОС и НМА</td><td>—</td><td>—</td></tr>
+<tr><td>704.100</td><td>Приобретение ОС и НМА</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+<div class="alert info">Правило знаков: поступления — положительные, выплаты — отрицательные (или наоборот — явно задокументировано в интерфейсе). БДДС = денежные события по датам, не начисления.</div>
+<hr>
+<h3>Экспорт</h3>
+<p>Рабочий JSON сохраняется отдельным файлом. Проверочный XLSX и сметная детализация — подготовлены как концепции; адаптер БИТ показывает статус: <strong>«Требуется подтверждённый формат»</strong>. Формат загрузки 3.1.17.6 не подтверждён — производственный загрузочный файл не формируется.</p>
+<div class="alert info">Материальное описание (`materialDescription`) сохраняется и редактируется, но исключается из будущего файла БИТ (ни в колонках, ни в комментариях).</div>
+
+<div style="margin-top:.6rem;display:flex;gap:.5rem;flex-wrap:wrap">
+<button onclick="saveJSON()" style="padding:.35rem .7rem;background:var(--accent);color:#0b0d14;border:none;border-radius:.3rem;cursor:pointer;font-weight:bold">Сохранить JSON</button>
+<button onclick="openJSON()" style="padding:.35rem .7rem;background:#2a2b3a;color:var(--text);border:1px solid #3a3b4a;border-radius:.3rem;cursor:pointer">Открыть JSON</button>
+<button onclick="checkBudget()" style="padding:.35rem .7rem;background:var(--ok);color:#0b0d14;border:none;border-radius:.3rem;cursor:pointer;font-weight:bold">Проверить</button>
+<button onclick="showTab('bdds',document.querySelector('.tabs .tab:last-child'))" style="padding:.35rem .7rem;background:#2a2b3a;color:var(--text);border:1px solid #3a3b4a;border-radius:.3rem;cursor:pointer">Статус БИТ-адаптера</button>
+</div>
+</div>
+
+<div class="footer">
+<p><strong>Ограничения:</strong> налоговые ставки и льготы не подтверждены; год бюджета не задан; кодификаторы новых подстатей требуют согласования; гарантированная совместимость с БИТ.ФИНАНС 3.1.17.6 не заявлена; штатный формат обратной загрузки в БИТ не подтверждён.</p>
+<p>Неподтверждённые правила делаются явно настраиваемыми. При отсутствии обязательного параметра показывается «Требуется настройка».</p>
+<p>Образ: Афина — дарую ясность в делах.</p>
+</div>
+
+<script>
+// Data model based on actual Shablon-BDDS.xlsx content
+const articles = [
+  {id:'a1', code:'700.000', name:'ДЕЯТЕЛЬНОСТЬ УК', parentId:null, isGroup:true, isInputAllowed:false, active:true},
+  {id:'a2', code:'701.000', name:'Поступления по операционной деятельности УК', parentId:'a1', isGroup:true, isInputAllowed:false, active:true},
+  {id:'a3', code:'701.100', name:'Поступления от оказания эксплуатационных услуг', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a4', code:'701.201', name:'Поступление от ДУ (клиентские услуги)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a5', code:'701.202', name:'Поступление от ДУ (ежемесячное ТО)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a6', code:'701.203', name:'Поступление от ДУ (клининг)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a7', code:'701.204', name:'Поступление от ДУ (аренда)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a8', code:'701.205', name:'Поступление от ДУ (агентские услуги)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a9', code:'701.206', name:'Поступление от ДУ (наземная парковка)', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a10', code:'701.300', name:'Поступления от оказания коммунальных услуг', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a11', code:'701.400', name:'Поступление взносов на капитальный ремонт', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a12', code:'701.500', name:'Прочие поступления по операционной деятельности УК', parentId:'a2', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a13', code:'702.000', name:'Выплаты по операционной деятельности', parentId:'a1', isGroup:true, isInputAllowed:false, active:true},
+  {id:'a14', code:'702.0101', name:'Заработная плата УК', parentId:'a13', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a15', code:'702.0205', name:'ТО и ТР систем вентиляции и кондиционирования', parentId:'a13', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a16', code:'702.0209', name:'ТО и ТР систем водоснабжения и канализации', parentId:'a13', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a17', code:'702.0210', name:'ТО и ТР систем электроснабжения', parentId:'a13', isGroup:false, isInputAllowed:true, active:true},
+  {id:'a18', code:'702.0212', name:'Расходы УК на уборку МОП и территории', parentId:'a13', isGroup:false, isInputAllowed:true, active:true}
+];
+
+function renderDirs() {
+  const tbody = document.getElementById('dirBody');
+  tbody.innerHTML = '';
+  articles.forEach(a => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><strong>${a.code}</strong></td><td>${a.name}</td><td>${a.isGroup ? 'Группа' : 'Статья'}</td><td>${a.parentId ? 'Подстатья' : (a.isGroup ? 'Группа' : '—')}</td><td>—</td><td>${a.active ? '<span style="color:var(--ok)">Активно</span>' : '<span style="color:var(--danger)">Неактивно</span>'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['overview','dirs','income','works','staff','registry','bdds'].forEach(i => {
+    document.getElementById('tab-'+i).style.display = (i === id) ? 'block' : 'none';
+  });
+  if (id === 'dirs') renderDirs();
+  document.getElementById('unsaved').style.display = 'none';
+}
+
+function saveJSON() {
+  const data = {
+    schemaVersion: '1.0',
+    project: document.getElementById('proj').value,
+    cfo: 'Управление коммерческой недвижимостью',
+    periodStart: document.getElementById('dateFrom').value || null,
+    periodEnd: document.getElementById('dateTo').value || null,
+    units: document.getElementById('units').value,
+    initialBalance: parseFloat(document.getElementById('initBal').value) || 0,
+    articles: articles,
+    settings: {taxProfileConfirmed: false, bitMappingConfirmed: false, year: 'НЕ ЗАДАН'},
+    note: 'Черновик. Параметры требуют настройки. Формат БИТ не подтверждён.'
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `BDDS_budget_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  document.getElementById('unsaved').style.display = 'inline';
+}
+
+function openJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        document.getElementById('proj').value = data.project || '';
+        document.getElementById('dateFrom').value = data.periodStart || '';
+        document.getElementById('dateTo').value = data.periodEnd || '';
+        document.getElementById('initBal').value = data.initialBalance || 0;
+        alert('Бюджет загружен. Версия схемы: ' + (data.schemaVersion || 'неизвестна'));
+      } catch (err) {
+        alert('Ошибка чтения JSON: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function checkBudget() {
+  const missing = [];
+  if (!document.getElementById('dateFrom').value) missing.push('начало периода');
+  if (!document.getElementById('dateTo').value) missing.push('окончание периода');
+  if (missing.length > 0) {
+    alert('Требуется настройка: ' + missing.join(', '));
+  } else {
+    alert('Проверка выполнена. Черновик готов для экспорта JSON. БИТ-адаптер: требуется подтверждённый формат.');
+  }
+}
+
+window.onload = () => { renderDirs(); };
+</script>
+</body>
+</html>

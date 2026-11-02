@@ -1,0 +1,485 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""athena-github-token: ручной выпуск короткоживущего токена GitHub App (только чтение).
+
+Назначение: этап 1 подключения Афины к Colibri1985/Athena.
+Запускается на хосте от root из root-владельческой копии (не из workspace):
+
+    sudo athena-github-token read [--token-dir КАТАЛОГ]
+    sudo athena-github-token read --dry-run [--test-key ПУТЬ]   # без сети и без записи
+    sudo athena-github-token status
+    sudo athena-github-token off [--force-delete]                # отозвать токен в GitHub, затем удалить файл
+
+Приватный ключ читается только с хоста. Ключ, JWT и токен никогда не печатаются,
+не передаются в аргументах командной строки и пишутся только в файл токена.
+Только стандартная библиотека Python 3 и команда openssl.
+"""
+import argparse
+import base64
+import datetime
+import json
+import os
+import re
+import stat as _stat
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.request
+
+APP_ID = 5570755
+EXPECTED_SLUG = "athena-colibri1985"
+OWNER = "Colibri1985"
+REPO = "Athena"
+KEY_DIR = "/etc/athena-github"
+KEY_PATH = KEY_DIR + "/athena-colibri1985.pem"
+# Допустимые каталоги токена; выбор по --token-dir, по умолчанию первый.
+ALLOWED_TOKEN_DIRS = (
+    "/srv/hermes-agent/github-token",
+    "/srv/hermes-agent/telegram-data/workspace/.gh-token",
+)
+TOKEN_DIR = ALLOWED_TOKEN_DIRS[0]
+TOKEN_GID = 10000
+API_BASE = "https://api.github.com"
+API_VERSION = "2022-11-28"
+STRICT = True  # проверка владельца root; отключается только в тестах
+TIMEOUT = 20
+MAX_TOKEN_LIFETIME = 7200  # секунд; токен установки у GitHub живёт около часа
+READ_PERMISSIONS = {
+    "metadata": "read",
+    "contents": "read",
+    "issues": "read",
+    "pull_requests": "read",
+    "actions": "read",
+    "administration": "read",
+}
+# Состояния отзыва, после которых файл токена можно удалять.
+CONFIRMED_STATES = ("revoked_verified", "already_invalid")
+
+
+class Fail(Exception):
+    pass
+
+
+_SECRET_PATTERNS = [re.compile(p) for p in (
+    r"gh[pousr]_[A-Za-z0-9_]{16,}",
+    r"github_pat_[A-Za-z0-9_]{16,}",
+    r"eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]*",
+    r"-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)",
+)]
+
+
+def redact(text):
+    text = str(text)
+    for rx in _SECRET_PATTERNS:
+        text = rx.sub("[REDACTED]", text)
+    return text
+
+
+def now_iso():
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def b64url(data):
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
+
+
+def _check_path(path, want_dir, want_mode, what, want_gid=None):
+    try:
+        st = os.lstat(path)
+    except FileNotFoundError:
+        raise Fail("%s не найден: %s" % (what, path))
+    if _stat.S_ISLNK(st.st_mode):
+        raise Fail("%s — символическая ссылка, отказ" % what)
+    if want_dir and not _stat.S_ISDIR(st.st_mode):
+        raise Fail("%s не является каталогом" % what)
+    if not want_dir and not _stat.S_ISREG(st.st_mode):
+        raise Fail("%s не является обычным файлом" % what)
+    mode = _stat.S_IMODE(st.st_mode)
+    if mode != want_mode:
+        raise Fail("%s: права %o, нужны %o" % (what, mode, want_mode))
+    if STRICT and st.st_uid != 0:
+        raise Fail("%s: владелец uid %d, нужен 0" % (what, st.st_uid))
+    if want_gid is not None and st.st_gid != want_gid:
+        raise Fail("%s: группа gid %d, нужна %d" % (what, st.st_gid, want_gid))
+
+
+def check_key():
+    gid = 0 if STRICT else None
+    _check_path(KEY_DIR, True, 0o700, "каталог ключа", gid)
+    _check_path(KEY_PATH, False, 0o600, "файл ключа", gid)
+
+
+def check_token_dir():
+    _check_path(TOKEN_DIR, True, 0o750, "каталог токена", TOKEN_GID)
+
+
+def require_root():
+    if STRICT and os.geteuid() != 0:
+        raise Fail("нужен root (запуск через sudo)")
+
+
+def make_jwt(key_path, app_id=None, now=None):
+    app_id = APP_ID if app_id is None else app_id
+    now = int(time.time()) if now is None else int(now)
+    header = {"alg": "RS256", "typ": "JWT"}
+    payload = {"iat": now - 60, "exp": now + 540, "iss": app_id}
+    signing_input = (
+        b64url(json.dumps(header, separators=(",", ":")).encode("utf-8"))
+        + "."
+        + b64url(json.dumps(payload, separators=(",", ":")).encode("utf-8"))
+    ).encode("ascii")
+    try:
+        r = subprocess.run(
+            ["openssl", "dgst", "-sha256", "-sign", key_path],
+            input=signing_input, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired) as e:
+        raise Fail("openssl недоступен или завис: %s" % type(e).__name__)
+    if r.returncode != 0 or not r.stdout:
+        raise Fail("openssl не смог подписать (код %d); проверьте формат ключа" % r.returncode)
+    return signing_input.decode("ascii") + "." + b64url(r.stdout)
+
+
+def api(method, path, bearer, body=None):
+    headers = {
+        "Authorization": "Bearer " + bearer,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": API_VERSION,
+        "User-Agent": "athena-github-token",
+    }
+    data = None
+    if body is not None:
+        data = json.dumps(body).encode("utf-8")
+        headers["Content-Type"] = "application/json"
+    req = urllib.request.Request(API_BASE + path, data=data, method=method, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            raw = resp.read()
+            status = resp.status
+    except urllib.error.HTTPError as e:
+        raw = e.read()
+        status = e.code
+    except (urllib.error.URLError, OSError) as e:
+        raise Fail("сетевая ошибка при обращении к GitHub: %s" % type(e).__name__)
+    try:
+        parsed = json.loads(raw.decode("utf-8")) if raw else {}
+    except ValueError:
+        parsed = {"message": raw[:200].decode("utf-8", "replace")}
+    if not isinstance(parsed, dict):
+        parsed = {}
+    return status, parsed
+
+
+def err_text(parsed):
+    return redact(parsed.get("message", ""))[:200]
+
+
+def revoke_and_verify(token):
+    """Отзывает токен и проверяет результат. Возвращает (состояние, пояснение).
+
+    Один DELETE доказательством не считается: после HTTP 204 токен проверяется запросом,
+    который у отозванного токена должен вернуть 401.
+    Состояния: revoked_verified, already_invalid (можно удалять файл);
+    revoked_unverified, still_valid, unconfirmed (файл удалять нельзя).
+    """
+    try:
+        st, body = api("DELETE", "/installation/token", token)
+    except Fail as e:
+        return "unconfirmed", str(e)
+    if st == 401:
+        return "already_invalid", "GitHub: токен уже недействителен"
+    if st != 204:
+        return "unconfirmed", "DELETE: HTTP %d %s" % (st, err_text(body))
+    try:
+        st2, _ = api("GET", "/installation/repositories", token)
+    except Fail as e:
+        return "revoked_unverified", "DELETE=204, проверка недоступна: %s" % e
+    if st2 == 401:
+        return "revoked_verified", "DELETE=204; повторный запрос с токеном вернул 401"
+    if st2 == 200:
+        return "still_valid", "DELETE=204, но токен всё ещё принимается GitHub"
+    return "revoked_unverified", "DELETE=204; проверка вернула HTTP %d" % st2
+
+
+def read_token_file(path):
+    try:
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        with os.fdopen(fd, "r", encoding="utf-8") as f:
+            token = f.read().strip()
+    except (OSError, UnicodeDecodeError):
+        raise Fail("не удалось прочитать файл токена")
+    if not re.fullmatch(r"[A-Za-z0-9_]{20,255}", token):
+        raise Fail("содержимое файла токена не похоже на токен")
+    return token
+
+
+def check_expires(value):
+    """Возвращает текст проблемы или None."""
+    if not isinstance(value, str):
+        return "в ответе нет expires_at"
+    try:
+        dt = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
+    except ValueError:
+        return "expires_at не в ожидаемом формате"
+    left = dt.timestamp() - time.time()
+    if left <= 0:
+        return "expires_at уже в прошлом"
+    if left > MAX_TOKEN_LIFETIME:
+        return "expires_at слишком далеко (%d с)" % left
+    return None
+
+
+def issue_token():
+    jwt = make_jwt(KEY_PATH)
+    st, app = api("GET", "/app", jwt)
+    if st != 200:
+        raise Fail("GET /app: HTTP %d %s" % (st, err_text(app)))
+    if app.get("slug") != EXPECTED_SLUG or app.get("id") != APP_ID:
+        raise Fail("GET /app вернул другое приложение (slug=%s, id=%s)"
+                   % (redact(app.get("slug")), app.get("id")))
+    st, inst = api("GET", "/repos/%s/%s/installation" % (OWNER, REPO), jwt)
+    if st != 200:
+        raise Fail("GET installation: HTTP %d %s" % (st, err_text(inst)))
+    if inst.get("repository_selection") != "selected":
+        raise Fail("установка не ограничена выбранными репозиториями (repository_selection=%s)"
+                   % redact(inst.get("repository_selection")))
+    if (inst.get("account") or {}).get("login") != OWNER:
+        raise Fail("установка принадлежит другому аккаунту")
+    if inst.get("suspended_at"):
+        raise Fail("установка приостановлена")
+    inst_id = inst.get("id")
+    if not isinstance(inst_id, int):
+        raise Fail("в ответе нет числового id установки")
+    body = {"repositories": [REPO], "permissions": dict(READ_PERMISSIONS)}
+    st, tok = api("POST", "/app/installations/%d/access_tokens" % inst_id, jwt, body)
+    token = tok.get("token")
+    if st != 201 or not isinstance(token, str) or not token:
+        raise Fail("выпуск токена: HTTP %d %s" % (st, err_text(tok)))
+    problems = []
+    repos = [r.get("name") for r in (tok.get("repositories") or []) if isinstance(r, dict)]
+    if repos != [REPO]:
+        problems.append("репозитории в токене: %s" % redact(repos))
+    if tok.get("repository_selection") != "selected":
+        problems.append("repository_selection токена не selected")
+    perms = tok.get("permissions") or {}
+    missing = sorted(set(READ_PERMISSIONS) - set(perms))
+    if missing:
+        problems.append("в токене нет ожидаемых прав: " + ", ".join(missing))
+    bad = sorted(k for k, v in perms.items() if k not in READ_PERMISSIONS or v != "read")
+    if bad:
+        problems.append("права вне только-чтения: " + ", ".join(bad))
+    exp_problem = check_expires(tok.get("expires_at"))
+    if exp_problem:
+        problems.append(exp_problem)
+    if problems:
+        state, detail = revoke_and_verify(token)
+        msg = "; ".join(problems) + "; отзыв токена: %s (%s); файл не записан" % (state, detail)
+        if state not in CONFIRMED_STATES:
+            msg += ". ВНИМАНИЕ: токен может оставаться действительным (expires_at: %s)" \
+                   % redact(tok.get("expires_at"))[:40]
+        raise Fail(msg)
+    info = {
+        "app_slug": app.get("slug"),
+        "installation_id": inst_id,
+        "repositories": repos,
+        "permissions": perms,
+        "expires_at": tok.get("expires_at"),
+    }
+    return token, info
+
+
+def write_atomic(dirpath, name, data, mode=0o640, overwrite=True):
+    """Атомарная запись через временный файл. overwrite=False: не заменять существующий файл."""
+    tmp = os.path.join(dirpath, ".%s.tmp-%d" % (name, os.getpid()))
+    final = os.path.join(dirpath, name)
+    old = os.umask(0o077)
+    try:
+        fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        with os.fdopen(fd, "wb") as f:
+            f.write(data)
+            f.flush()
+            os.fchown(f.fileno(), 0 if STRICT else os.getuid(), TOKEN_GID)
+            os.fchmod(f.fileno(), mode)
+            os.fsync(f.fileno())
+        if overwrite:
+            os.replace(tmp, final)
+        else:
+            os.link(tmp, final)  # FileExistsError, если файл уже есть
+            os.unlink(tmp)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+    finally:
+        os.umask(old)
+
+
+def abort_after_issue(token, expires_at):
+    """Запись после выпуска не удалась: отозвать токен с проверкой и привести каталог в чистое состояние.
+
+    Файл token удаляется только если он наш (содержимое совпадает) и отзыв подтверждён.
+    """
+    state, detail = revoke_and_verify(token)
+    path = os.path.join(TOKEN_DIR, "token")
+    notes = []
+    try:
+        if os.path.lexists(path):
+            try:
+                ours = (read_token_file(path) == token)
+            except Fail:
+                ours = False
+            if not ours:
+                notes.append("найденный файл токена не наш, не тронут")
+            elif state in CONFIRMED_STATES:
+                os.unlink(path)
+                notes.append("файл токена удалён")
+            else:
+                notes.append("файл токена оставлен для повторного отзыва: athena-github-token off")
+        else:
+            notes.append("файла токена нет")
+        _cleanup_tmp()
+    except OSError as e:
+        notes.append("ошибка очистки: " + type(e).__name__)
+    present = os.path.lexists(path)
+    status = {"token_present": present, "issue_failed": True, "revocation": state,
+              "expires_at": expires_at, "failed_at": now_iso()}
+    try:
+        write_atomic(TOKEN_DIR, "status.json",
+                     (json.dumps(status, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    except Exception:
+        notes.append("status.json не обновлён")
+    text = "отзыв токена: %s (%s); %s" % (state, detail, "; ".join(notes))
+    if state not in CONFIRMED_STATES:
+        text += ". ВНИМАНИЕ: токен может оставаться действительным до %s" % redact(expires_at)[:40]
+    return text
+
+
+def cmd_read(args):
+    if args.test_key and not args.dry_run:
+        raise Fail("--test-key допустим только вместе с --dry-run")
+    if args.dry_run:
+        if args.test_key:
+            key = args.test_key
+        else:
+            require_root()
+            check_key()
+            key = KEY_PATH
+        make_jwt(key)
+        print("dry-run: JWT подписан; сеть и каталог токена не использовались")
+        return 0
+    require_root()
+    check_key()
+    check_token_dir()
+    if os.path.lexists(os.path.join(TOKEN_DIR, "token")):
+        raise Fail("файл токена уже существует: новый токен не выпускается. "
+                   "Сначала выполните: athena-github-token off")
+    token, info = issue_token()
+    try:
+        write_atomic(TOKEN_DIR, "token", (token + "\n").encode("utf-8"), overwrite=False)
+        status = dict(info)
+        status.update({"token_present": True, "issued_at": now_iso()})
+        write_atomic(TOKEN_DIR, "status.json",
+                     (json.dumps(status, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    except BaseException as e:
+        outcome = abort_after_issue(token, info.get("expires_at"))
+        if isinstance(e, (KeyboardInterrupt, SystemExit)):
+            print("ПРЕРВАНО: " + outcome, file=sys.stderr)
+            raise
+        raise Fail("запись после выпуска не удалась (%s): %s" % (type(e).__name__, outcome))
+    print("Токен выпущен и записан в %s/token (содержимое не выводится)" % TOKEN_DIR)
+    print("приложение: %s; установка: %d" % (info["app_slug"], info["installation_id"]))
+    print("репозитории: %s" % ", ".join(info["repositories"]))
+    print("права: %s" % ", ".join("%s=%s" % kv for kv in sorted(info["permissions"].items())))
+    print("действует до: %s" % info["expires_at"])
+    print("Файл токена нужно удалить после проверки: athena-github-token off")
+    return 0
+
+
+def _cleanup_tmp():
+    try:
+        names = os.listdir(TOKEN_DIR)
+    except OSError:
+        return
+    for n in names:
+        if n.startswith((".token.tmp-", ".status.json.tmp-")):
+            try:
+                os.unlink(os.path.join(TOKEN_DIR, n))
+            except OSError:
+                pass
+
+
+def cmd_off(args):
+    require_root()
+    check_token_dir()
+    path = os.path.join(TOKEN_DIR, "token")
+    force = bool(getattr(args, "force_delete", False))
+    existed = os.path.lexists(path)
+    revocation = "n/a (файла не было)"
+    if existed:
+        try:
+            state, detail = revoke_and_verify(read_token_file(path))
+            if state not in CONFIRMED_STATES:
+                raise Fail("отзыв не подтверждён: %s (%s)" % (state, detail))
+            revocation = state
+        except Fail as e:
+            if not force:
+                raise Fail("%s; файл токена НЕ удалён. Повторите позже или используйте --force-delete "
+                           "(токен тогда останется действительным до истечения срока)" % e)
+            revocation = "unconfirmed (--force-delete)"
+        os.unlink(path)
+        if os.path.lexists(path):
+            raise Fail("файл токена всё ещё существует после удаления")
+    _cleanup_tmp()
+    st = {"token_present": False, "removed_at": now_iso(), "revocation": revocation}
+    write_atomic(TOKEN_DIR, "status.json", (json.dumps(st, indent=2) + "\n").encode("utf-8"))
+    if existed:
+        print("отзыв токена в GitHub: %s" % revocation)
+        print("файл токена удалён; повторная проверка: файла нет")
+    else:
+        print("файла токена не было")
+    return 0
+
+
+def cmd_status(args):
+    require_root()
+    check_token_dir()
+    path = os.path.join(TOKEN_DIR, "token")
+    print("файл токена: %s" % ("ЕСТЬ" if os.path.lexists(path) else "нет"))
+    sp = os.path.join(TOKEN_DIR, "status.json")
+    if os.path.exists(sp):
+        with open(sp, "r", encoding="utf-8") as f:
+            print(redact(f.read()))
+    return 0
+
+
+def main(argv=None):
+    global TOKEN_DIR
+    parent = argparse.ArgumentParser(add_help=False)
+    parent.add_argument("--token-dir", default=ALLOWED_TOKEN_DIRS[0])
+    ap = argparse.ArgumentParser(prog="athena-github-token", description=__doc__.split("\n")[0])
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("read", parents=[parent])
+    r.add_argument("--dry-run", action="store_true")
+    r.add_argument("--test-key")
+    o = sub.add_parser("off", parents=[parent])
+    o.add_argument("--force-delete", action="store_true")
+    sub.add_parser("status", parents=[parent])
+    args = ap.parse_args(argv)
+    try:
+        if args.token_dir not in ALLOWED_TOKEN_DIRS:
+            raise Fail("каталог токена не из разрешённого списка")
+        TOKEN_DIR = args.token_dir
+        return {"read": cmd_read, "off": cmd_off, "status": cmd_status}[args.cmd](args)
+    except Fail as e:
+        print("ОШИБКА: " + redact(e), file=sys.stderr)
+        return 1
+    except Exception as e:  # не печатаем детали: они могут содержать секреты
+        print("ОШИБКА (непредвиденная): " + type(e).__name__, file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
