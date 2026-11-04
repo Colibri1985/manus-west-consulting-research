@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant A as Athena
+    participant R as Trusted Registry
+    participant S as Architect
+    participant V as Validator / Reviewer
+    participant C as Coordinator
+    participant O as Orca
+    participant W as Worker
+    A->>C: Task + project + scope
+    C->>R: Load pinned baseline and facts
+    C->>S: Analyze under baseline constraints
+    S->>R: Proposed overlay
+    R->>V: Validate scope, approvals, conflicts
+    alt Requires human decision
+        V->>A: Exact change for approval
+        A-->>V: Decision
+    end
+    V->>R: Approved immutable revision
+    C->>R: Build effective bundle
+    R-->>C: Bundle + digest
+    C->>O: worker-start in bound Run
+    O->>W: Task + verified role configuration
+    W->>O: heartbeat / question / worker_done
+    O-->>C: Delivery
+    C->>C: Persist effects and outbox
+    C->>O: Ack Delivery
+    C->>A: Result + commit + bundle digest
