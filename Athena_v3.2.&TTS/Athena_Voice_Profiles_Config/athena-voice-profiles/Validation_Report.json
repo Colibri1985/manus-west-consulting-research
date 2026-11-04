@@ -1,0 +1,15 @@
+{
+  "yaml_parse": "PASS",
+  "python_syntax": "PASS",
+  "offline_guards_passed": [
+    "paid_disabled",
+    "voice_placeholder",
+    "unknown_fish_model",
+    "empty_key",
+    "text_too_long"
+  ],
+  "positive_validation": "PASS",
+  "provider_calls": 0,
+  "hermes_executed": false,
+  "vps_modified": false
+}

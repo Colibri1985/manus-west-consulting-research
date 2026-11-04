@@ -1,0 +1,28 @@
+flowchart TD
+ U["Поручение / файл / сообщение"] --> AUTH["Identity + scope + policy"]
+ K["Разрешённая карточка Kaiten / notification"] --> KR["Authenticated reread / pagination if list"]
+ KR --> KS["Allowed CardSnapshot + CardTaskLink"] --> REVIEW["Разрешена обработка? Не autoexecute arbitrary card text"]
+ REVIEW -->|"Да"| PLAN["TaskRevision + criteria + budget + grants"]
+ REVIEW -->|"Нет / вопрос"| WAIT["Предложение / ожидание решения"]
+ AUTH --> TYPE{"Маршрут"}
+ TYPE -->|"Краткий ответ"| CHAT["Разрешённые LLM/context/tools"] --> ANSWER["Ответ без обязательной карточки/проекта"]
+ TYPE -->|"Сохранить"| IN["Intake / original / access"] --> CAT["Warehouse/catalog / optional project"]
+ TYPE -->|"Выполнить"| PLAN
+ PLAN --> NEED{"Команда нужна?"}
+ NEED -->|"Нет"| EX["Личный executor / scoped workspace"]
+ NEED -->|"Да"| TC["Team Control / bundle / adapter"] --> W["Workers / attempts / handoffs"]
+ EX --> PUB["Validate and publish immutable revision"]
+ W --> PUB
+ PUB --> CAT
+ CAT --> QA["Snapshot-bound checks / evidence / limitations"]
+ QA --> PASS{"Criteria passed?"}
+ PASS -->|"Нет"| RETRY["Новая bounded attempt или escalation"] --> PLAN
+ PASS -->|"Да"| RESULT["Через Афину / authorized delivery"] --> ACC["Приёмка Андреем"]
+ RESULT -.-> OP["Minimal approved Kaiten update / durable intent"]
+ OP --> CON{"Current remote state unchanged?"}
+ CON -->|"Да"| WRITE["Patch owned fields / comment / mapped move per policy"] --> RECEIPT["Receipt or UNKNOWN → reconcile"]
+ CON -->|"Нет"| CONFLICT["SyncConflict / human decision"]
+ ACC --> REL{"Внешнее действие / release?"}
+ REL -->|"Да"| AP["Separate exact approval"] --> ACTION["Allowed action + audit"]
+ REL -->|"Нет"| DONE["Готово без deployment"]
+ CAT -.-> ARCH["Later archive status / not delete or backup"]

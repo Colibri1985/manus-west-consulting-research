@@ -1,0 +1,53 @@
+# Merge ONLY this tts section into the pinned Hermes config.yaml.
+# Default: Edge / Svetlana. No paid request and no automatic fallback.
+# New custom providers require the supplied adapter and verified Hermes command-provider support.
+tts:
+  provider: edge
+  speed: 1.0
+
+  edge:
+    voice: ru-RU-SvetlanaNeural
+    speed: 1.0
+    max_text_length: 4000
+
+  providers:
+    athena_elevenlabs:
+      type: command
+      command: >-
+        python3 /opt/athena/voice/tts_adapter.py
+        --backend openrouter
+        --input {input_path}
+        --output {output_path}
+        --model {model}
+        --voice {voice}
+      model: elevenlabs/eleven-v4-turbo
+      voice: REPLACE_WITH_CHOSEN_ELEVENLABS_VOICE_ID
+      output_format: mp3
+      voice_compatible: true
+      timeout: 90
+      max_text_length: 4000
+      env_passthrough:
+        - OPENROUTER_TTS_API_KEY
+        - ATHENA_PAID_TTS_ENABLED
+        - ATHENA_TTS_MAX_INPUT_CHARS
+
+    athena_fish:
+      type: command
+      command: >-
+        python3 /opt/athena/voice/tts_adapter.py
+        --backend fish
+        --input {input_path}
+        --output {output_path}
+        --model {model}
+        --voice {voice}
+      # Choose explicitly before enabling. Invalid values MUST NOT reach Fish API.
+      model: REPLACE_WITH_APPROVED_FISH_MODEL_ID
+      voice: REPLACE_WITH_CHOSEN_FISH_REFERENCE_ID
+      output_format: mp3
+      voice_compatible: true
+      timeout: 90
+      max_text_length: 4000
+      env_passthrough:
+        - FISH_TTS_API_KEY
+        - ATHENA_PAID_TTS_ENABLED
+        - ATHENA_TTS_MAX_INPUT_CHARS

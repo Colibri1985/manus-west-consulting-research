@@ -1,0 +1,8 @@
+field,authority,inbound,outbound,conflict_rule
+title/description,Kaiten,authorized snapshot → proposed TaskRevision,explicit patch only,human concurrent change → conflict
+due_date/assignees,Kaiten,context + constraints,only approved delegation,"reread/compare, no cached overwrite"
+board/column/lane,Kaiten,business progress intent,mapping policy + operation grant,manual move not release approval
+attempt/lease/fencing,Athena ledger,not edited remotely,aggregate only,remote text never starts attempt without validation
+checks/evidence,Athena evidence ledger,not substituted by checklist,summary + authorized refs,PASS bound to immutable snapshot
+payload/version,Warehouse/catalog,explicit authorized attachment input,safe result links/minimal approved attachment,no public share or full memory upload
+acceptance/release,Trusted Decision/Approval,verified user intent may propose decision,decision reflection,Done is not production grant

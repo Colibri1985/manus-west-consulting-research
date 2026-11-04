@@ -1,0 +1,24 @@
+{
+  "version": "3.2",
+  "source_v3_0_sha256": "f243f335e709b0be7274157371a9b76a39887364c279b44ab5c4de427aef68ac",
+  "base_3_1": "reconstructed from supplied 3.0 + accepted conversation decisions; generated 3.1 file unavailable",
+  "sections": 35,
+  "logical_entities": 53,
+  "kaiten_entities_added": 10,
+  "relationships": 64,
+  "mermaid_files": 6,
+  "architecture_alias_identical": true,
+  "unchanged_original_sections": [
+    9,
+    13,
+    15,
+    16,
+    19,
+    20
+  ],
+  "mermaid_renderer_executed": false,
+  "doc_compatibility_format": "RTF, not Word97 binary",
+  "docx_reopened": true,
+  "vps_modified": false,
+  "external_writes": false
+}

@@ -1,0 +1,38 @@
+flowchart LR
+ CHANNEL["Telegram / voice / dashboard"] --> HISTORY["Hermes native history / state.db"]
+ CHANNEL --> IN["warehouse/intake / originals + manifest"]
+ IN --> ROUTE["owner + scope + category"]
+ ROUTE --> PAYLOAD["standalone / one-off / library / projects / media"]
+ PAYLOAD --> CAT["Artifact catalog: ID revisions ACL lifecycle"]
+ HISTORY --> M["Single approved memory sender / event IDs"] --> HAPI["Honcho native API"]
+ HAPI --> HDB["Own PostgreSQL + pgvector / UUID"]
+ HAPI --> OR["OpenRouter authorized inference"]
+ KNOW["Obsidian/Wiki primary knowledge"] --> CONTEXT["Authorized task context projection"]
+ GOV["Trusted registry / grants and decisions"] --> CONTEXT
+ K["Kaiten authoritative live business fields"] --> AD["Scoped read/poll adapter; writes policy-gated"]
+ AD --> REF["KaitenCardRef / remote version / fetched_at"]
+ REF --> SNAP["Immutable authorized CardSnapshot"]
+ SNAP --> CONTEXT
+ CONTEXT --> TR["TaskRevision / immutable requirements"]
+ TR --> LEDGER["Run stage attempt handoff checks usage"]
+ REF --> LINK["CardTaskLink / not full board replication"]
+ LINK --> TR
+ LEDGER --> RESULT["ArtifactRevision / evidence refs"]
+ RESULT --> CAT
+ RESULT --> PROJECTION["Approved minimal progress/result projection"]
+ PROJECTION --> OP["IntegrationOperation intent/outbox/receipt"]
+ OP --> AD
+ AD -->|"patch only authorized fields"| K
+ AD --> STATE["Local cursor/events/conflicts / state/integrations/kaiten"]
+ STATE --> RECON["Reconcile current remote state before post-restore writes"]
+ RECON --> K
+ AD --> CONFLICT["Human concurrent edit → SyncConflict / decision"]
+ CAT --> ARCH["Archive status; not trash and not backup"]
+ WORK["work/jobs temporary"] --> PUB["Validate + versioned publish"] --> CAT
+ HDB --> BACK["VPS backup + local manifests"]
+ HISTORY --> BACK
+ CAT --> BACK
+ STATE --> BACK
+ LEDGER --> BACK
+ BACK --> WIN["Windows verified"] --> SSD["Kingston verified"] --> DR["Isolated restore test"]
+ K -.-> EXPORT["Hosted Kaiten backup/export separate and open"]

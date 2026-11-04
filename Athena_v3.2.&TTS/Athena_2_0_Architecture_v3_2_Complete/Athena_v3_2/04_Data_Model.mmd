@@ -1,0 +1,444 @@
+erDiagram
+  %% Logical target model, NOT upstream SQL DDL; nullable project and remote refs.
+  PRINCIPAL {
+    string id PK
+    string type
+    string status
+  }
+  EXTERNAL_IDENTITY {
+    string id PK
+    string principal_id FK
+    string channel
+    string external_id
+    string verified_at
+  }
+  CONTEXT_SCOPE {
+    string id PK
+    string principal_id FK
+    string environment
+    string privacy_domain
+    string project_id FK
+  }
+  PROJECT {
+    string id PK
+    string owner_id FK
+    string scope_id FK
+    string name
+    string version
+  }
+  BUSINESS_TASK {
+    string id PK
+    string project_id FK
+    string created_by FK
+    string current_revision
+    string status
+    string version
+  }
+  TASK_REVISION {
+    string id PK
+    string task_id FK
+    string revision
+    string objective
+    string payload_hash
+  }
+  WORKFLOW_RUN {
+    string id PK
+    string task_revision_id FK
+    string framework
+    string status
+    string budget_policy_ref
+  }
+  STAGE {
+    string id PK
+    string run_id FK
+    string role_revision_id FK
+    string status
+  }
+  EXECUTION_ATTEMPT {
+    string id PK
+    string stage_id FK
+    string bundle_id FK
+    string model_policy_id FK
+    string fencing_token
+    string lease_until
+    string status
+  }
+  ARTIFACT {
+    string id PK
+    string owner_id FK
+    string scope_id FK
+    string project_id FK
+    string access_policy_id FK
+    string retention_policy_id FK
+    string storage_category
+    string lifecycle_status
+  }
+  ARTIFACT_REVISION {
+    string id PK
+    string artifact_id FK
+    string revision
+    string storage_key
+    string sha256
+    string size_bytes
+    string validation_status
+    string source_ref
+  }
+  TASK_ARTIFACT_LINK {
+    string task_revision_id FK
+    string artifact_revision_id FK
+    string relation
+  }
+  ATTEMPT_ARTIFACT_LINK {
+    string attempt_id FK
+    string artifact_revision_id FK
+    string relation
+  }
+  ARTIFACT_PROJECT_LINK {
+    string project_id FK
+    string artifact_id FK
+    string relation
+  }
+  STORAGE_LOCATION {
+    string id PK
+    string logical_key
+    string mount_ref
+    string kind
+  }
+  ARTIFACT_LOCATION {
+    string artifact_revision_id FK
+    string storage_location_id FK
+    string is_primary
+  }
+  ACCESS_POLICY_REVISION {
+    string id PK
+    string scope_id FK
+    string revision
+    string hash
+  }
+  RETENTION_POLICY_REVISION {
+    string id PK
+    string revision
+    string rule_ref
+    string hold
+  }
+  HANDOFF {
+    string id PK
+    string producer_attempt_id FK
+    string task_revision_id FK
+    string input_snapshot
+    string output_snapshot
+    string status
+  }
+  CHECK_RESULT {
+    string id PK
+    string subject_snapshot
+    string criteria_revision
+    string status
+    string evidence_revision_id FK
+  }
+  DECISION {
+    string id PK
+    string task_revision_id FK
+    string actor_id FK
+    string kind
+    string outcome
+    string payload_hash
+  }
+  APPROVAL {
+    string id PK
+    string decision_id FK
+    string actor_id FK
+    string target_version
+    string scope
+    string expires_at
+    string consumed_at
+  }
+  POLICY_REVISION {
+    string id PK
+    string scope_id FK
+    string revision
+    string effect
+    string resource
+    string hash
+    string status
+  }
+  GOVERNANCE_BUNDLE {
+    string id PK
+    string scope_id FK
+    string manifest_hash
+    string status
+  }
+  BUNDLE_POLICY_LINK {
+    string bundle_id FK
+    string policy_revision_id FK
+  }
+  ROLE_PROFILE {
+    string id PK
+    string revision
+    string model_policy_id FK
+    string tool_scope
+  }
+  SKILL_REVISION {
+    string id PK
+    string revision
+    string source_commit
+    string hash
+    string status
+  }
+  ROLE_SKILL_LINK {
+    string role_id FK
+    string skill_revision_id FK
+  }
+  MODEL_POLICY_REVISION {
+    string id PK
+    string revision
+    string provider
+    string model_id
+    string max_cost
+  }
+  INBOX_MESSAGE {
+    string id PK
+    string source
+    string external_event_id
+    string payload_hash
+    string processed_at
+  }
+  ATTACHMENT_REF {
+    string id PK
+    string source_event_ref
+    string artifact_revision_id FK
+  }
+  OUTBOX_EVENT {
+    string id PK
+    string aggregate_id
+    string sequence
+    string payload_ref
+    string status
+  }
+  AUDIT_EVENT {
+    string id PK
+    string actor_id FK
+    string operation
+    string target
+    string utc
+    string safe_metadata
+  }
+  MEMORY_BINDING {
+    string id PK
+    string principal_id FK
+    string scope_id FK
+    string native_workspace_ref
+    string native_peer_ref
+  }
+  MEMORY_SYNC_EVENT {
+    string id PK
+    string binding_id FK
+    string source_event_id
+    string status
+    string native_refs
+  }
+  CORRECTION_RECORD {
+    string id PK
+    string binding_id FK
+    string source_refs
+    string supersedes
+    string tombstone_at
+    string status
+  }
+  HONCHO_NATIVE_REF {
+    string id PK
+    string binding_id FK
+    string native_session_ref
+    string native_message_ref
+  }
+  BUDGET_ACCOUNT {
+    string id PK
+    string scope_id FK
+    string limit
+    string currency
+    string period
+  }
+  BUDGET_RESERVATION {
+    string id PK
+    string attempt_id FK
+    string budget_account_id FK
+    string estimated
+    string status
+  }
+  USAGE_RECORD {
+    string id PK
+    string attempt_id FK
+    string provider_request_id
+    string cost
+    string status
+  }
+  BACKUP_SET {
+    string id PK
+    string point_in_time
+    string manifest_hash
+    string consistency
+    string status
+  }
+  BACKUP_COPY {
+    string id PK
+    string backup_set_id FK
+    string location_kind
+    string verified_at
+    string status
+  }
+  RESTORE_TEST {
+    string id PK
+    string backup_set_id FK
+    string target_isolation
+    string result
+    string evidence_ref
+  }
+  KAITEN_CONNECTION {
+    string id PK
+    string tenant_base_url
+    string credential_ref
+    string owner_id FK
+    string environment
+    string status
+  }
+  KAITEN_SCOPE_BINDING {
+    string id PK
+    string connection_id FK
+    string scope_id FK
+    string space_id
+    string board_id
+    string allowed_operations
+    string policy_revision
+  }
+  KAITEN_CARD_REF {
+    string id PK
+    string connection_id FK
+    string remote_card_id
+    string remote_version
+    string fetched_at
+    string visibility_status
+  }
+  CARD_TASK_LINK {
+    string id PK
+    string card_ref_id FK
+    string task_id FK
+    string mapping_policy_id FK
+    string link_kind
+    string status
+  }
+  CARD_SNAPSHOT {
+    string id PK
+    string card_ref_id FK
+    string remote_version
+    string content_hash
+    string authorized_payload_ref
+    string fetched_at
+  }
+  FIELD_MAPPING_POLICY {
+    string id PK
+    string revision
+    string field_ownership
+    string status_mapping
+    string allowed_mutations
+    string conflict_rules
+  }
+  INTEGRATION_OPERATION {
+    string id PK
+    string connection_id FK
+    string card_ref_id FK
+    string task_revision_id FK
+    string approval_id FK
+    string payload_hash
+    string idempotency_key
+    string state
+    string remote_receipt
+  }
+  SYNC_CURSOR {
+    string id PK
+    string scope_binding_id FK
+    string last_completed_scan
+    string watermark
+    string scan_state
+  }
+  INTEGRATION_EVENT {
+    string id PK
+    string connection_id FK
+    string remote_event_ref
+    string event_fingerprint
+    string verified_source
+    string status
+  }
+  SYNC_CONFLICT {
+    string id PK
+    string operation_id FK
+    string card_ref_id FK
+    string base_snapshot_ref
+    string remote_current_ref
+    string reason
+    string status
+    string decision_ref
+  }
+  PRINCIPAL ||--o{ EXTERNAL_IDENTITY : bindings
+  PRINCIPAL ||--o{ CONTEXT_SCOPE : scopes
+  PRINCIPAL ||--o{ PROJECT : owns
+  CONTEXT_SCOPE ||--o{ PROJECT : bounds
+  PROJECT o|--o{ BUSINESS_TASK : optional_project
+  BUSINESS_TASK ||--|{ TASK_REVISION : versions
+  TASK_REVISION ||--o{ WORKFLOW_RUN : runs
+  WORKFLOW_RUN ||--o{ STAGE : stages
+  STAGE ||--o{ EXECUTION_ATTEMPT : attempts
+  ROLE_PROFILE ||--o{ STAGE : assigned
+  PRINCIPAL ||--o{ ARTIFACT : owns
+  CONTEXT_SCOPE ||--o{ ARTIFACT : bounds
+  PROJECT o|--o{ ARTIFACT : optional_primary_project
+  ARTIFACT ||--|{ ARTIFACT_REVISION : versions
+  TASK_REVISION ||--o{ TASK_ARTIFACT_LINK : inputs_outputs
+  ARTIFACT_REVISION ||--o{ TASK_ARTIFACT_LINK : referenced
+  EXECUTION_ATTEMPT ||--o{ ATTEMPT_ARTIFACT_LINK : uses_produces
+  ARTIFACT_REVISION ||--o{ ATTEMPT_ARTIFACT_LINK : referenced
+  PROJECT ||--o{ ARTIFACT_PROJECT_LINK : links
+  ARTIFACT ||--o{ ARTIFACT_PROJECT_LINK : reused
+  ARTIFACT_REVISION ||--|{ ARTIFACT_LOCATION : located
+  STORAGE_LOCATION ||--o{ ARTIFACT_LOCATION : location
+  ACCESS_POLICY_REVISION ||--o{ ARTIFACT : controls
+  RETENTION_POLICY_REVISION ||--o{ ARTIFACT : retains
+  EXECUTION_ATTEMPT ||--o{ HANDOFF : produces
+  ARTIFACT_REVISION o|--o{ CHECK_RESULT : evidence
+  TASK_REVISION o|--o{ DECISION : target
+  DECISION ||--o{ APPROVAL : authorizes
+  PRINCIPAL ||--o{ APPROVAL : approves
+  GOVERNANCE_BUNDLE ||--o{ BUNDLE_POLICY_LINK : includes
+  POLICY_REVISION ||--o{ BUNDLE_POLICY_LINK : pinned
+  GOVERNANCE_BUNDLE ||--o{ EXECUTION_ATTEMPT : effective
+  MODEL_POLICY_REVISION ||--o{ EXECUTION_ATTEMPT : model_rules
+  ROLE_PROFILE ||--o{ ROLE_SKILL_LINK : uses
+  SKILL_REVISION ||--o{ ROLE_SKILL_LINK : version
+  ARTIFACT_REVISION ||--o{ ATTACHMENT_REF : attached
+  PRINCIPAL ||--o{ MEMORY_BINDING : memory_identity
+  CONTEXT_SCOPE ||--o{ MEMORY_BINDING : privacy
+  MEMORY_BINDING ||--o{ MEMORY_SYNC_EVENT : sync
+  MEMORY_BINDING ||--o{ CORRECTION_RECORD : correct
+  MEMORY_BINDING ||--o{ HONCHO_NATIVE_REF : native_api_refs
+  BUDGET_ACCOUNT ||--o{ BUDGET_RESERVATION : reserve
+  EXECUTION_ATTEMPT ||--o{ BUDGET_RESERVATION : cost
+  EXECUTION_ATTEMPT ||--o{ USAGE_RECORD : usage
+  BACKUP_SET ||--o{ BACKUP_COPY : copies
+  BACKUP_SET ||--o{ RESTORE_TEST : tests
+  PRINCIPAL ||--o{ KAITEN_CONNECTION : owns_connection
+  KAITEN_CONNECTION ||--o{ KAITEN_SCOPE_BINDING : allowlist
+  CONTEXT_SCOPE ||--o{ KAITEN_SCOPE_BINDING : bounds
+  KAITEN_CONNECTION ||--o{ KAITEN_CARD_REF : remote_refs
+  KAITEN_SCOPE_BINDING }o--o{ KAITEN_CARD_REF : authorized_projection
+  KAITEN_CARD_REF ||--o{ CARD_TASK_LINK : linked
+  BUSINESS_TASK ||--o{ CARD_TASK_LINK : linked
+  FIELD_MAPPING_POLICY ||--o{ CARD_TASK_LINK : mapping
+  KAITEN_CARD_REF ||--o{ CARD_SNAPSHOT : snapshots
+  CARD_SNAPSHOT }o--o{ TASK_REVISION : requirements_sources
+  KAITEN_CONNECTION ||--o{ INTEGRATION_OPERATION : intents
+  KAITEN_CARD_REF o|--o{ INTEGRATION_OPERATION : optional_target
+  TASK_REVISION o|--o{ INTEGRATION_OPERATION : optional_context
+  APPROVAL o|--o{ INTEGRATION_OPERATION : when_required
+  KAITEN_SCOPE_BINDING ||--o{ SYNC_CURSOR : scan_state
+  KAITEN_CONNECTION ||--o{ INTEGRATION_EVENT : notification
+  INTEGRATION_OPERATION o|--o{ SYNC_CONFLICT : conflicts
+  KAITEN_CARD_REF ||--o{ SYNC_CONFLICT : conflicting_card

@@ -1,0 +1,35 @@
+# ATHENA design registry; NOT a native Hermes config section.
+# A future UI/profile selector reads this file. Hermes itself reads config.yaml only.
+schema_version: "1.0"
+active_profile: svetlana
+selection_scope: hermes_profile
+switch_policy: next_reply
+fallback_policy: text_only
+profiles:
+  svetlana:
+    label: "Светлана — Edge, бесплатный онлайн"
+    hermes_provider: edge
+    backend: microsoft_edge_online
+    voice: ru-RU-SvetlanaNeural
+    deployment_status: configuration_only
+    external_processing: true
+    credentials_required: false
+  athena_natural:
+    label: "Афина — ElevenLabs через OpenRouter"
+    hermes_provider: athena_elevenlabs
+    backend: openrouter
+    model: elevenlabs/eleven-v4-turbo
+    voice: REPLACE_WITH_CHOSEN_ELEVENLABS_VOICE_ID
+    deployment_status: blocked_until_voice_key_budget_and_smoke
+    external_processing: true
+    credentials_required: true
+  athena_fish:
+    label: "Афина — Fish Audio, прямой API"
+    hermes_provider: athena_fish
+    backend: fish_direct
+    model: REPLACE_WITH_APPROVED_FISH_MODEL_ID
+    voice: REPLACE_WITH_CHOSEN_FISH_REFERENCE_ID
+    deployment_status: reserved_not_selected
+    external_processing: true
+    credentials_required: true
+# text_only is a UX/error policy for Athena, not a claim that Hermes implements this registry.

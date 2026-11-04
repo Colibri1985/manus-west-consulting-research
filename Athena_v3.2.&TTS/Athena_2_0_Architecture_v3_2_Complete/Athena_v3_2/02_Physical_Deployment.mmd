@@ -1,0 +1,42 @@
+flowchart TB
+ U["Андрей / Telegram / dashboard"] --> EDGE["Один proxy + TLS / VPN / auth"]
+ subgraph VPS["HostHatch — целевое размещение, не уже установленный стек"]
+  EDGE --> HR["Hermes runtime"]
+  HR --> EX["Executor / scoped inputs and job workspace"]
+  HR --> TC["Team Control / protected independent client"]
+  TC --> PDB[("Project DB / tasks attempts checks approvals")]
+  TC --> FA["Framework adapter: CrewAI OR CADTopo"] --> WK["Workers / limits and snapshots"]
+  HR --> HA["Honcho API / private memory interface"]
+  subgraph HSTACK["Own Honcho environment"]
+   HA --> HDB[("PostgreSQL + pgvector")]
+   HD["Deriver"] --> HDB
+   HA --> RED[("Redis cache")]
+   HD --> RED
+  end
+  HDB --> VOL["Dedicated FS / UUID / postgres"]
+  RED --> RDIR["Dedicated FS / redis"]
+  HR --> HOME["One native HERMES_HOME per profile"]
+  HR --> CAT["Trusted catalog / publication interface"]
+  TC --> CAT
+  EX --> PUB["Scoped publisher / no whole warehouse RW"]
+  WK --> PUB
+  PUB --> CAT --> WH["Persistent warehouse"]
+  HR --> KA["Kaiten adapter / process placement ADR"]
+  TC --> KA
+  KA --> KS["Own integration state / bindings cursor receipts snapshots"]
+  SEC["Secret refs / adapter-only token"] -.-> KA
+  GR["Trusted registry / model and access policy"] --> TC
+  GR --> KA
+  MON["Trusted monitoring / sync pending conflicts unknown"] -.-> KA
+ end
+ KA -->|"outbound HTTPS + Bearer"| K["External Kaiten tenant / allowed boards"]
+ K -.->|"optional future events; verify then authenticated reread"| KA
+ HA --> OR["OpenRouter embeddings 3-large/1536 + text models"]
+ HD --> OR
+ BK["Consistent backup / all required local data"] -.-> KS
+ BK -.-> HDB
+ BK -.-> WH
+ BK -.-> HOME
+ BK -.-> PDB
+ BK --> WIN["Windows → Kingston → isolated restore"]
+ K -.-> KEXP["Separate export/backup policy; not part of VPS image"]

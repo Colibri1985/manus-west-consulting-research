@@ -1,0 +1,63 @@
+flowchart TB
+  %% Target architecture: Kaiten planned, not deployed. Blocks are not containers.
+  U["АНДРЕЙ<br/>Telegram · голос · dashboard"]
+  A["АФИНА / HERMES<br/>identity · scope · policy"]
+  H["HONCHO — SELF-HOSTED<br/>API · Deriver · PostgreSQL/pgvector<br/>OpenRouter embeddings 1536"]
+  K["KAITEN — ПЛАНИРУЕТСЯ<br/>рабочая доска · сроки · исполнители<br/>не прежняя работающая интеграция"]
+  WIKI["OBSIDIAN / WIKI<br/>знания · источники · явные решения"]
+  E["ЛИЧНЫЙ EXECUTOR<br/>документы · архивы · код<br/>назначенные inputs / workspace"]
+  T["TEAM CONTROL<br/>TaskRevision · attempts · budget<br/>самостоятельный защищённый вход"]
+  KA["KAITEN ADAPTER<br/>allowlist · CardTaskLink · receipts<br/>read-first · writes по policy"]
+  DB["PROJECT DB<br/>execution ledger · handoff · checks<br/>не копия всей доски Kaiten"]
+  S["СКЛАД + РЕЕСТР<br/>standalone · one-off · library · projects<br/>ID · revisions · ACL · lifecycle"]
+  F["FRAMEWORK ADAPTER<br/>CrewAI ИЛИ CADTopo<br/>выбор остаётся открытым"]
+  G["TRUSTED REGISTRY<br/>правила · grants · approvals<br/>card text не разрешение"]
+  W["СПЕЦИАЛИСТЫ / WORKERS<br/>роли · модели · snapshots<br/>scoped workspaces"]
+  R["АРТЕФАКТЫ + ПРОВЕРКИ<br/>evidence · QA · limitations<br/>PASS для конкретной версии"]
+  RET["ВОЗВРАТ ЧЕРЕЗ АФИНУ<br/>результат · статус · источники"]
+  ACC["ПРИЁМКА АНДРЕЕМ<br/>отдельно от release approval"]
+  REL["RELEASE / ВНЕШНЕЕ ДЕЙСТВИЕ<br/>exact target · approved payload"]
+  B["BACKUP — АДМИНИСТРАТИВНО<br/>00:00 МСК → Windows → Kingston<br/>Kaiten remote DB не входит в VPS image"]
+  U --> A
+  A <--> H
+  A <--> WIKI
+  A --> E
+  A --> T
+  A --> KA
+  T --> KA
+  KA <--> K
+  T <--> DB
+  T --> G
+  T --> F
+  F --> W
+  E --> S
+  W --> S
+  S --> R
+  R --> RET
+  RET --> ACC
+  ACC --> REL
+  KA -.->|"stable refs"| DB
+  R -.->|"результат по policy"| KA
+  classDef blue fill:#dce9fb,stroke:#7c8da0,color:#203044
+  classDef purple fill:#e9e1fa,stroke:#7c8da0,color:#203044
+  classDef green fill:#ccefe5,stroke:#7c8da0,color:#203044
+  classDef yellow fill:#fff0cc,stroke:#7c8da0,color:#203044
+  classDef red fill:#f6dfe3,stroke:#7c8da0,color:#203044
+  class U blue
+  class A green
+  class H purple
+  class K purple
+  class WIKI purple
+  class E yellow
+  class T green
+  class KA green
+  class DB blue
+  class S blue
+  class F yellow
+  class G purple
+  class W yellow
+  class R blue
+  class RET green
+  class ACC green
+  class REL yellow
+  class B red
