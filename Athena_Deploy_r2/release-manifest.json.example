@@ -1,0 +1,14 @@
+{
+  "schema_version": "deploy-r2",
+  "source_commit": "985d9b1eb6cdc62b7a922188f7ee3cd17589d78f",
+  "status": "candidate_not_deployed",
+  "images": {},
+  "upstream_source_commits": {},
+  "compatibility_evidence": [],
+  "config_revision": null,
+  "database_heads": {},
+  "owner_approval_ref": null,
+  "backup_restore_evidence": null,
+  "redis_contract_verified": false,
+  "worker_framework_adr": null
+}

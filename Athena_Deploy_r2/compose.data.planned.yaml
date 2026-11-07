@@ -1,0 +1,61 @@
+name: athena-data
+services:
+  catalog:
+    restart: unless-stopped
+    security_opt:
+    - no-new-privileges:true
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: '5'
+        compress: 'true'
+    image: ${CATALOG_IMAGE:?required}
+    env_file:
+    - ./env/catalog.env
+    user: 10000:10000
+    read_only: true
+    cap_drop:
+    - ALL
+    init: true
+    stop_grace_period: 60s
+    mem_limit: ${CATALOG_MEMORY:?required}
+    cpus: ${CATALOG_CPUS:?required}
+    pids_limit: 128
+    tmpfs:
+    - /tmp:rw,nosuid,nodev,size=64m
+    volumes:
+    - type: bind
+      source: ${CATALOG_STATE:?required}
+      target: /state
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${WAREHOUSE_ROOT:?required}
+      target: /warehouse
+      read_only: false
+      bind:
+        create_host_path: false
+    secrets:
+    - catalog_auth_key
+    networks:
+      catalog_api:
+        aliases:
+        - catalog
+    healthcheck:
+      test:
+      - CMD
+      - /opt/athena/bin/healthcheck
+      - ready
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+secrets:
+  catalog_auth_key:
+    file: ${SECRET_DIR:?required}/catalog_auth_key
+networks:
+  catalog_api:
+    external: true
+    name: athena_catalog_api

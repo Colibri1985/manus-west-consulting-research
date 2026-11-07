@@ -1,0 +1,44 @@
+%% ACP-SEC-001 / revision 1 / PROPOSED / not implemented
+flowchart TB
+  IN["Verified ingress / object references"] --> READ["Read authorization before content load"]
+  READ -->|deny| DENY["DENY / safe reason; no payload"]
+  READ -->|allow| SCAN["Trusted transient scan + source labels before ordinary persistence"]
+  SCAN -->|Black / secret suspected| INCIDENT["BLOCK source packet; metadata-only incident; no auto continuation"]
+  SCAN -->|no known Black| POLICY["Deterministic PDP: actor + action + class + destination + policy revision"]
+  POLICY -->|unknown / unavailable / denied| DENY
+  POLICY -.-> ADV["Optional trusted-local Little LLM Gate: advice only"]
+  ADV -.-> POLICY
+  POLICY -->|Red: approved isolated destination only| PACK["Immutable packet revision + obligations"]
+  POLICY -->|Green: allowed destination| PACK
+  POLICY -->|Yellow cloud request| COPY["New derived copy + lineage + rescan"]
+  COPY -->|Black| INCIDENT
+  COPY -->|not eligible| DENY
+  COPY -->|eligible| APPROVE["Approval of exact copy + destination + policy revision"]
+  APPROVE -->|approved| PACK
+  APPROVE -->|not approved| DENY
+  PACK --> ATTEMPT["Model PEP: live rights, exact bytes/refs, actual backend, expiry, attempt"]
+  ATTEMPT -->|permit| GW["Model gateway; LiteLLM candidate; no direct bypass"]
+  ATTEMPT -->|reject| DENY
+  GW -->|local allowlist| LOCAL["Approved trusted local inference"]
+  GW -->|cloud allowlist, never Red/Black| CLOUD["Approved provider backend"]
+  LOCAL --> RESULT["Untrusted result; scan before reuse/persistence/output"]
+  CLOUD --> RESULT
+  GW -->|retry/fallback: new attempt check| ATTEMPT
+  RESULT -->|Black| INCIDENT
+  RESULT -->|new context / handoff| SCAN
+  RESULT -->|proposed tool action| TOOL["Typed Tool PEP + exact action approval if required"]
+  RESULT -->|final response| OUTPUT["Output/store PEP; channel/rights/stream checks"]
+  TOOL -->|deny| DENY
+  TOOL -->|allow| CONNECTOR["Scoped deterministic connector"]
+  STORE["Secret Store: isolated credential values"] --> BROKER["Credential binding + workload identity + auth-use policy"]
+  BROKER -->|credential only to authorized connector| CONNECTOR
+  CONNECTOR --> NET["Connector egress PEP: endpoint, method, fields, auth-use"]
+  NET --> SERVICE["Approved business service"]
+  SERVICE --> RESULT
+  OUTPUT --> USER["Authorized recipient / allowed store"]
+  POLICY -.-> AUDIT["Sanitized audit: references/reasons, no raw prompts/secrets/headers"]
+  TOOL -.-> AUDIT
+  INCIDENT -.-> AUDIT
+  ATTEMPT -.-> AUDIT
+  MEM["Honcho API / Deriver / embeddings"] --> SCAN
+  AUX["STT / TTS / title / compression / vision / workers"] --> SCAN

@@ -1,0 +1,163 @@
+name: athena-core
+services:
+  executor:
+    restart: unless-stopped
+    security_opt: &id001
+    - no-new-privileges:true
+    logging: &id002
+      driver: local
+      options:
+        max-size: 10m
+        max-file: '5'
+        compress: 'true'
+    image: ${EXECUTOR_IMAGE:?required}
+    entrypoint:
+    - /usr/local/bin/executor-entrypoint
+    command:
+    - -D
+    - -e
+    - -f
+    - /etc/ssh/sshd_config
+    stop_grace_period: 60s
+    read_only: true
+    cap_drop:
+    - ALL
+    cap_add:
+    - CHOWN
+    - DAC_OVERRIDE
+    - SETUID
+    - SETGID
+    - SYS_CHROOT
+    mem_limit: ${EXECUTOR_MEMORY:?required}
+    cpus: ${EXECUTOR_CPUS:?required}
+    pids_limit: 256
+    tmpfs:
+    - /run:rw,nosuid,nodev,size=16m
+    - /tmp:rw,nosuid,nodev,size=128m
+    volumes:
+    - type: bind
+      source: ${EXECUTOR_INPUTS:?required}
+      target: /inputs
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${EXECUTOR_WORK:?required}
+      target: /workspace
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${EXECUTOR_HOME:?required}
+      target: /home/runner
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ./executor/sshd_config
+      target: /etc/ssh/sshd_config
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${SECRET_DIR:?required}/executor_authorized_keys
+      target: /etc/athena/authorized_keys
+      read_only: true
+      bind:
+        create_host_path: false
+    secrets:
+    - executor_host_key
+    networks:
+    - executor_rpc
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - ssh-keyscan -T 3 -p 2222 127.0.0.1 >/dev/null 2>&1
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+  runtime:
+    restart: unless-stopped
+    security_opt: *id001
+    logging: *id002
+    image: ${HERMES_IMAGE:?required}
+    command:
+    - gateway
+    - run
+    env_file:
+    - ./env/hermes.env
+    environment:
+      HERMES_HOME: /opt/data
+      HERMES_UID: '10000'
+      HERMES_GID: '10000'
+      TERMINAL_ENV: ssh
+      TERMINAL_SSH_HOST: executor
+      TERMINAL_SSH_PORT: '2222'
+      TERMINAL_SSH_USER: runner
+      TERMINAL_SSH_KEY: /run/secrets/executor_client_key
+      HERMES_DASHBOARD: '0'
+    ports:
+    - 127.0.0.1:8642:8642
+    stop_grace_period: 120s
+    mem_limit: ${HERMES_MEMORY:?required}
+    cpus: ${HERMES_CPUS:?required}
+    pids_limit: 512
+    volumes:
+    - type: bind
+      source: ${HERMES_HOME_HOST:?required}
+      target: /opt/data
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ./executor/ssh_config
+      target: /etc/ssh/ssh_config
+      read_only: true
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${SECRET_DIR:?required}/executor_known_hosts
+      target: /etc/athena/executor_known_hosts
+      read_only: true
+      bind:
+        create_host_path: false
+    secrets:
+    - executor_client_key
+    networks:
+    - runtime_egress
+    - executor_rpc
+    - memory_api
+    - team_api
+    - catalog_api
+    depends_on:
+      executor:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD
+      - python3
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8642/health',timeout=3).read()
+      interval: 20s
+      timeout: 5s
+      retries: 9
+      start_period: 90s
+secrets:
+  executor_host_key:
+    file: ${SECRET_DIR:?required}/executor_host_key
+  executor_client_key:
+    file: ${SECRET_DIR:?required}/executor_client_key
+networks:
+  runtime_egress: {}
+  executor_rpc:
+    internal: true
+  memory_api:
+    external: true
+    name: athena_memory_api
+  team_api:
+    external: true
+    name: athena_team_api
+  catalog_api:
+    external: true
+    name: athena_catalog_api

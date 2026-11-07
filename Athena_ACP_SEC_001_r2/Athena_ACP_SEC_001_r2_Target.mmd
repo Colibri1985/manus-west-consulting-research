@@ -1,0 +1,32 @@
+%% ACP-SEC-001 r2 / 05.11.2026
+%% Architecture accepted in scope of SEC-MODEL-REVIEW-001 r1.
+%% Implementation NOT_VERIFIED. Future mechanisms are not active paths.
+flowchart TB
+  subgraph NOW["Ближайший этап: managed autonomy, fixed models per function"]
+    U["Андрей / verified channel + scope"] --> CHECK["Supported checks: rights, secrets, source restrictions, processing profile, action/budget"]
+    CHECK -->|Black| STOP["STOP affected AI/content packet; safe reason; no raw secret values"]
+    CHECK -->|Red / local-only| RED["Only approved isolated processing; no safe backend = BLOCKED"]
+    CHECK -->|unknown / out of scope| ASK["Clarify or request exact new permission; no silent expansion"]
+    CHECK -->|Yellow / Green + permitted profile| FIXED["Static model/provider assignment per function; no per-request approval within scope"]
+    FIXED --> MAIN["CP-MAIN: Hermes / personal tools; approved selected model"]
+    FIXED --> MEM["CP-MEM: native supported Honcho pipeline; one sender"]
+    MEM --> EMB["CP-EMB: OpenRouter text-embedding-3-large / 1536; same approved choice"]
+    MEM --> TEXT["Approved fixed Honcho text models; exact IDs separately"]
+    FIXED --> VOICE["CP-STT / CP-TTS: allowed audio or speech text; exact new paid routes separately"]
+    MAIN --> OUT["Result / recipient / memory exclusions / ordinary logs checks"]
+    TEXT --> OUT
+    EMB --> OUT
+    VOICE --> OUT
+    OUT --> RESULT["Text / artifact / truthful receipt: accepted != derived/recall-ready"]
+    OUT -->|memory failure or policy excludes| STATUS["Explicit status; no hidden MEMORY.md/skills/notes/alternate store"]
+    OUT -->|gated action| ACTION["Exact action approval, not implicit from data color/profile"]
+    RESULT --> U
+  end
+  subgraph LATER["Отдельные будущие этапы, НЕ применяются сейчас"]
+    GW["LLM Gateway: LiteLLM candidate; compatibility review; static routes possible"]
+    LITTLE["Little LLM Gate: optional advice only, no authority"]
+    ROUTE["Automatic role/complexity/local-cloud selection: deferred"]
+    DRAFT["Draft/speculative decoding: deferred, separate inference benchmark"]
+    LITTLE -. future advice, not permit .-> GW
+    GW -. separate ADR .-> ROUTE
+  end

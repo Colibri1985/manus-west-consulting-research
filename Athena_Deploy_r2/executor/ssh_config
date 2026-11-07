@@ -1,0 +1,16 @@
+Host executor
+    HostName executor
+    Port 2222
+    User runner
+    IdentityFile /run/secrets/executor_client_key
+    IdentitiesOnly yes
+    UserKnownHostsFile /etc/athena/executor_known_hosts
+    GlobalKnownHostsFile /dev/null
+    StrictHostKeyChecking yes
+    BatchMode yes
+    ForwardAgent no
+    ConnectTimeout 10
+Host *
+    BatchMode yes
+    StrictHostKeyChecking yes
+    ForwardAgent no

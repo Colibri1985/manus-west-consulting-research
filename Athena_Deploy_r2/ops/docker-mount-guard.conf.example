@@ -1,0 +1,6 @@
+# Requires explicit approval: applies to ALL Docker containers, possibly VPN.
+# Install root-owned check-data-mount at /usr/local/sbin/check-athena-data-mount.
+[Unit]
+RequiresMountsFor=/srv/athena/honcho-data
+[Service]
+ExecStartPre=/usr/local/sbin/check-athena-data-mount

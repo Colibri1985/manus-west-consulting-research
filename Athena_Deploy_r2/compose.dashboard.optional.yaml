@@ -1,0 +1,11 @@
+services:
+  runtime:
+    env_file:
+    - ./env/hermes.env
+    - ./env/dashboard.env
+    environment:
+      HERMES_DASHBOARD: '1'
+      HERMES_DASHBOARD_HOST: 0.0.0.0
+      HERMES_DASHBOARD_PORT: '9119'
+    ports:
+    - 127.0.0.1:9119:9119

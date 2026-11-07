@@ -1,0 +1,24 @@
+Port 2222
+ListenAddress 0.0.0.0
+HostKey /run/secrets/executor_host_key
+PidFile /run/sshd/sshd.pid
+AuthorizedKeysFile /etc/athena/authorized_keys
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+AuthenticationMethods publickey
+UsePAM no
+AllowUsers runner
+AllowAgentForwarding no
+AllowTcpForwarding no
+AllowStreamLocalForwarding no
+X11Forwarding no
+PermitTunnel no
+PermitUserEnvironment no
+PermitUserRC no
+PermitTTY no
+MaxSessions 2
+MaxAuthTries 3
+LogLevel VERBOSE
+Subsystem sftp internal-sftp

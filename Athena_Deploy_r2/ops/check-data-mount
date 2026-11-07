@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+config=/etc/athena/storage-guard.env
+[ -f "$config" ] && [ ! -L "$config" ] || exit 1
+[ "$(stat -c %u "$config")" = 0 ] || exit 1
+[ "$(stat -c %a "$config")" = 600 ] || exit 1
+mount_path=$(sed -n 's/^HONCHO_DATA_ROOT=//p' "$config")
+expected=$(sed -n 's/^HONCHO_DATA_UUID=//p' "$config")
+[ "$mount_path" = /srv/athena/honcho-data ] || exit 1
+[ -n "$expected" ] || exit 1
+[ ! -L "$mount_path" ] || exit 1
+actual=$(/usr/bin/findmnt -rn --mountpoint "$mount_path" -o UUID)
+[ "$actual" = "$expected" ] || exit 1

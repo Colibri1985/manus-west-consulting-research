@@ -1,0 +1,126 @@
+name: athena-team
+services:
+  project-db:
+    restart: unless-stopped
+    security_opt: &id001
+    - no-new-privileges:true
+    logging: &id002
+      driver: local
+      options:
+        max-size: 10m
+        max-file: '5'
+        compress: 'true'
+    image: ${TEAM_POSTGRES_IMAGE:?required}
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: athena_team
+      POSTGRES_PASSWORD_FILE: /run/secrets/team_admin_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    secrets:
+    - team_admin_password
+    - team_db_password
+    volumes:
+    - projectdata:/var/lib/postgresql/data
+    - type: bind
+      source: ./database/init_team.sh
+      target: /docker-entrypoint-initdb.d/01-app.sh
+      read_only: true
+      bind:
+        create_host_path: false
+    stop_grace_period: 120s
+    shm_size: 256m
+    mem_limit: ${TEAM_DB_MEMORY:?required}
+    cpus: ${TEAM_DB_CPUS:?required}
+    pids_limit: 256
+    networks:
+    - team_db
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U postgres -d athena_team
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 60s
+  team-control:
+    restart: unless-stopped
+    security_opt: *id001
+    logging: *id002
+    image: ${TEAM_CONTROL_IMAGE:?required}
+    env_file:
+    - ./env/team.env
+    user: 10000:10000
+    read_only: true
+    cap_drop:
+    - ALL
+    init: true
+    stop_grace_period: 120s
+    mem_limit: ${TEAM_MEMORY:?required}
+    cpus: ${TEAM_CPUS:?required}
+    pids_limit: 256
+    tmpfs:
+    - /tmp:rw,nosuid,nodev,size=64m
+    volumes:
+    - type: bind
+      source: ${TEAM_STATE:?required}
+      target: /state
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${TEAM_WORK:?required}
+      target: /work
+      read_only: false
+      bind:
+        create_host_path: false
+    - type: bind
+      source: ${GOVERNANCE_ROOT:?required}
+      target: /governance
+      read_only: true
+      bind:
+        create_host_path: false
+    secrets:
+    - team_db_password
+    - team_api_key
+    - catalog_auth_key
+    networks:
+    - team_db
+    - team_api
+    - catalog_api
+    - team_egress
+    depends_on:
+      project-db:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD
+      - /opt/athena/bin/healthcheck
+      - ready
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+volumes:
+  projectdata:
+    external: true
+    name: athena_team_pgdata
+secrets:
+  team_admin_password:
+    file: ${SECRET_DIR:?required}/team_admin_password
+  team_db_password:
+    file: ${SECRET_DIR:?required}/team_db_password
+  team_api_key:
+    file: ${SECRET_DIR:?required}/team_api_key
+  catalog_auth_key:
+    file: ${SECRET_DIR:?required}/catalog_auth_key
+networks:
+  team_db:
+    internal: true
+  team_egress: {}
+  team_api:
+    external: true
+    name: athena_team_api
+  catalog_api:
+    external: true
+    name: athena_catalog_api
