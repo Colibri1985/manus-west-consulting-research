@@ -1,0 +1,10 @@
+﻿store,owner,consistency,independent_copy,restore,runtime_evidence
+Hermes home/auth/history,Runtime sole writer,quiescent or supported consistent native backup incl SQLite WAL semantics,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Honcho PostgreSQL,native DB owner,consistent PG backup + roles/extensions/schema,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Honcho Redis,native cache owner,document actual AOF/cache rebuild/replay contract,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Project DB,Team,consistent backup; only when implemented,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Catalog + Warehouse,Publisher,coordinated metadata and immutable payload/hash manifest,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Governance,trusted operator,approved rules/versions/acceptance refs,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Voice state/assets/rights,controller/publisher,jobs/selection/usage/receipts and rights manifests,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Deployment/image manifest,operator,config/templates/exact image commits/digests,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN
+Secrets,operator,encrypted scoped copy; recovery key outside VPS,Windows → Kingston per approved full-image scope,"isolated; external effects OFF, read-first reconcile",NOT_RUN

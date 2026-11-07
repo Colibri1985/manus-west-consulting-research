@@ -1,0 +1,31 @@
+﻿id,finding,disposition,resolution_location,verification,scope
+A33-001,Missing ACP/HANDOFF/deploy,SOURCES_RECEIVED_PARTIAL_INSPECTION,Policy/ACP_r2; Deploy/README,ACP local available; deployment inspection remains incomplete,external verification
+A33-002,queued vs QUEUED,FIXED_DOCUMENTATION,Specification §19; generated copies,positive/negative JobStatus fixtures,documentation
+A33-003,Cancel version unreadable,FIXED_DOCUMENTATION,JobStatus.version; §18,version required; omission fails schema,documentation
+A33-004,Audio/profile metadata missing,FIXED_DOCUMENTATION,AudioMetadata; JobStatus; §18,READY requires metadata; fixture tests,documentation
+A33-005,Empty Receipt valid,FIXED_DOCUMENTATION,Receipt schema,empty receipt fails,documentation
+A33-006,HTTP SafeError missing,FIXED_DOCUMENTATION,all API 4xx/5xx,all error refs resolve; content audit,documentation
+A33-007,Preview provenance unspecified,FIXED_DESIGN_CONTRACT,§18; LC11; MESSAGE_REVISION.origin_kind,synthetic materialization specified; runtime NOT_RUN,documentation
+A33-008,Budget XOR/atomicity,FIXED_DESIGN_CONTRACT,§25; LC04,logical constraints supplied; storage implementation NOT_RUN,documentation
+A33-009,Dedup/chunk constraints,FIXED_DESIGN_CONTRACT,§19/21; LC05/06; delivery fields,ER/CSV match; concurrency NOT_RUN,documentation
+A33-010,Unknown cost vs required tariff,CLARIFIED,§15; LC07,pinned calculation tariff remains; actual cost can UNKNOWN,documentation
+A33-011,Keys/semantic types incomplete,FIXED_DESIGN_CONTRACT,Logical_Constraints LC01–03,logical constraints supplied; physical DDL not authorized,documentation
+A33-012,Enforcement matrix absent,FIXED_DESIGN_CONTRACT,§27; Boundary_Matrix,native scopes per ACP r2; actual isolation NOT_RUN,documentation
+A33-013,Missing executable TTS adapter,DEFERRED_TO_FEATURE,§24; voice README,route UNIMPLEMENTED; no adapter guarantees claimed,controlled TTS; not Core blocker
+A33-014,Fresh install vs migration,FIXED_DOCUMENTATION,§29; Deploy handoff,fresh install primary; import conditional,documentation
+A33-015,Backup coverage incomplete,FIXED_DOCUMENTATION,§28; Backup_Coverage; physical MMD,coverage table+edges; actual backup NOT_RUN,documentation
+A33-016,Delivery/backup edges,FIXED_DOCUMENTATION,§5; overview MMD,text/audio edges added; MMD renderer NOT_RUN,documentation
+A33-017,8/9 scope unclear,CLARIFIED,§4; Service_Inventory,9 named candidates; no Health,documentation
+A33-018,Manifest source/current confusion,FIXED_DOCUMENTATION,Source/Release manifests; historical,current input hashes separate,documentation
+A33-019,Historical validation PASS misleading,FIXED_DOCUMENTATION,historical; Validation_Report,fresh targeted tests only; old report nonnormative,documentation
+A33-020,dotenv reserved key mismatch,FIXED_DOCUMENTATION,§24 dotenv and env file,semantic equal env inventory,documentation
+A33-021,Executable acceptance/evidence incomplete,PARTIAL_DESIGN_CATALOG,Acceptance_Tests; Traceability,scenario expectations supplied; full executable harness not implemented,tests NOT_RUN; not global PASS
+A33-022,Old PNG labels overlap,REMOVED_FROM_NORMATIVE_SET,historical/reference,old images retained as historical; no new rendered image claimed,documentation
+A33-023,Scope/project mutual bootstrap,FIXED_DESIGN_CONTRACT,§25; LC08,bootstrap and reverse invariant explicit,documentation
+A33-024,Native vs controller guarantees,CLARIFIED_AND_DEFERRED,§24/27; Boundary_Matrix,native-only and controlled modes distinct,CP-TTS checks remain required
+A33-025,IDs/scopes/pagination,FIXED_DESIGN_CONTRACT,OpenAPI; §13/18,nonempty request IDs; operation scope prose; finite profile list,documentation
+D33-001,33/34 deployment files,OPEN_EXTERNAL_DISCREPANCY,Deployment_Errata,33 enumerated in prior inspection; original ZIP not compared,not repaired in external tree
+D33-002,Missing ACCEPTANCE/validation refs,DOCUMENTED_EXTERNAL_ERRATUM,Deployment_Errata; own Acceptance_Tests,new FINAL records not pretend original deploy files,external spec unchanged
+D33-003,Dashboard merged preflight,DOCUMENTED_EXTERNAL_GATE,Deployment_Errata,dashboard remains OFF until merged preflight/env/auth verification,external code not patched
+D33-004,Privileged code ownership not tested,DOCUMENTED_EXTERNAL_GATE,Deployment_Errata,separate parent-dir ownership/writeability checks required,external code not patched
+D33-005,8 vs9 services,FIXED_DOCUMENTATION,§4; Service_Inventory,corrected text+DOCX/PDF/RTF generated,documentation

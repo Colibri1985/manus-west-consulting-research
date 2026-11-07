@@ -1,0 +1,28 @@
+{
+  "version": "3.3",
+  "specification_sections": 36,
+  "entities": 69,
+  "base_entities_preserved": 53,
+  "new_voice_entities": 16,
+  "base_ER_source_blob_verified": "6054339ea576133532f0616dc6f8171358911329",
+  "base_dictionary_source_blob_verified": "4885e346bf61df64aa1a614434cd0ffe8a60e973",
+  "relationships": 94,
+  "source_relationships": 64,
+  "base_cardinality_changes": [
+    "EXECUTION_ATTEMPT optional for BUDGET_RESERVATION to allow speech job subject"
+  ],
+  "mermaid_files": 6,
+  "architecture_alias_identical": true,
+  "ER_references_valid": true,
+  "yaml_parse": "PASS",
+  "OpenAPI_schema_refs_checked": 16,
+  "OpenAPI_example_validation": "PASS",
+  "unexpected_provider_url_rejected": true,
+  "docx_reopened": true,
+  "doc_format": "RTF Word-compatible, not binary Word97",
+  "legacy_binary_conversion": "unavailable: LibreOffice Writer filter not installed",
+  "mermaid_renderer_executed": false,
+  "provider_calls": 0,
+  "vps_changes": false,
+  "github_writes": false
+}

@@ -1,0 +1,70 @@
+entity,group,fields,new_in_3_3,native_sql
+PRINCIPAL,Identity,id PK;type;status,False,False
+EXTERNAL_IDENTITY,Identity,id PK;principal_id FK;channel;external_id;verified_at,False,False
+CONTEXT_SCOPE,Identity,id PK;principal_id FK;environment;privacy_domain;project_id FK,False,False
+PROJECT,Execution,id PK;owner_id FK;scope_id FK;name;version,False,False
+BUSINESS_TASK,Execution,id PK;project_id FK;created_by FK;current_revision;status;version,False,False
+TASK_REVISION,Execution,id PK;task_id FK;revision;objective;payload_hash,False,False
+WORKFLOW_RUN,Execution,id PK;task_revision_id FK;framework;status;budget_policy_ref,False,False
+STAGE,Execution,id PK;run_id FK;role_revision_id FK;status,False,False
+EXECUTION_ATTEMPT,Execution,id PK;stage_id FK;bundle_id FK;model_policy_id FK;fencing_token;lease_until;status,False,False
+ARTIFACT,Catalog,id PK;owner_id FK;scope_id FK;project_id FK;access_policy_id FK;retention_policy_id FK;storage_category;lifecycle_status,False,False
+ARTIFACT_REVISION,Catalog,id PK;artifact_id FK;revision;storage_key;sha256;size_bytes;validation_status;source_ref,False,False
+TASK_ARTIFACT_LINK,Catalog,task_revision_id FK;artifact_revision_id FK;relation,False,False
+ATTEMPT_ARTIFACT_LINK,Catalog,attempt_id FK;artifact_revision_id FK;relation,False,False
+ARTIFACT_PROJECT_LINK,Catalog,project_id FK;artifact_id FK;relation,False,False
+STORAGE_LOCATION,Catalog,id PK;logical_key;mount_ref;kind,False,False
+ARTIFACT_LOCATION,Catalog,artifact_revision_id FK;storage_location_id FK;is_primary,False,False
+ACCESS_POLICY_REVISION,Governance,id PK;scope_id FK;revision;hash,False,False
+RETENTION_POLICY_REVISION,Governance,id PK;revision;rule_ref;hold,False,False
+HANDOFF,Execution,id PK;producer_attempt_id FK;task_revision_id FK;input_snapshot;output_snapshot;status,False,False
+CHECK_RESULT,Execution,id PK;subject_snapshot;criteria_revision;status;evidence_revision_id FK,False,False
+DECISION,Governance,id PK;task_revision_id FK;actor_id FK;kind;outcome;payload_hash,False,False
+APPROVAL,Governance,id PK;decision_id FK;actor_id FK;target_version;scope;expires_at;consumed_at,False,False
+POLICY_REVISION,Governance,id PK;scope_id FK;revision;effect;resource;hash;status,False,False
+GOVERNANCE_BUNDLE,Governance,id PK;scope_id FK;manifest_hash;status,False,False
+BUNDLE_POLICY_LINK,Governance,bundle_id FK;policy_revision_id FK,False,False
+ROLE_PROFILE,Governance,id PK;revision;model_policy_id FK;tool_scope,False,False
+SKILL_REVISION,Governance,id PK;revision;source_commit;hash;status,False,False
+ROLE_SKILL_LINK,Governance,role_id FK;skill_revision_id FK,False,False
+MODEL_POLICY_REVISION,Governance,id PK;revision;provider;model_id;max_cost,False,False
+INBOX_MESSAGE,Memory and events,id PK;source;external_event_id;payload_hash;processed_at,False,False
+ATTACHMENT_REF,Catalog,id PK;source_event_ref;artifact_revision_id FK,False,False
+OUTBOX_EVENT,Memory and events,id PK;aggregate_id;sequence;payload_ref;status,False,False
+AUDIT_EVENT,Memory and events,id PK;actor_id FK;operation;target;utc;safe_metadata,False,False
+MEMORY_BINDING,Memory and events,id PK;principal_id FK;scope_id FK;native_workspace_ref;native_peer_ref,False,False
+MEMORY_SYNC_EVENT,Memory and events,id PK;binding_id FK;source_event_id;status;native_refs,False,False
+CORRECTION_RECORD,Memory and events,id PK;binding_id FK;source_refs;supersedes;tombstone_at;status,False,False
+HONCHO_NATIVE_REF,Memory and events,id PK;binding_id FK;native_session_ref;native_message_ref,False,False
+BUDGET_ACCOUNT,Budget and backup,id PK;scope_id FK;limit;currency;period,False,False
+BUDGET_RESERVATION,Budget and backup,id PK;attempt_id FK;budget_account_id FK;subject_kind;subject_ref;estimated;status,False,False
+USAGE_RECORD,Budget and backup,id PK;attempt_id FK;provider_request_id;cost;status,False,False
+BACKUP_SET,Budget and backup,id PK;point_in_time;manifest_hash;consistency;status,False,False
+BACKUP_COPY,Budget and backup,id PK;backup_set_id FK;location_kind;verified_at;status,False,False
+RESTORE_TEST,Budget and backup,id PK;backup_set_id FK;target_isolation;result;evidence_ref,False,False
+KAITEN_CONNECTION,Kaiten integration,id PK;tenant_base_url;credential_ref;owner_id FK;environment;status,False,False
+KAITEN_SCOPE_BINDING,Kaiten integration,id PK;connection_id FK;scope_id FK;space_id;board_id;allowed_operations;policy_revision,False,False
+KAITEN_CARD_REF,Kaiten integration,id PK;connection_id FK;remote_card_id;remote_version;fetched_at;visibility_status,False,False
+CARD_TASK_LINK,Kaiten integration,id PK;card_ref_id FK;task_id FK;mapping_policy_id FK;link_kind;status,False,False
+CARD_SNAPSHOT,Kaiten integration,id PK;card_ref_id FK;remote_version;content_hash;authorized_payload_ref;fetched_at,False,False
+FIELD_MAPPING_POLICY,Kaiten integration,id PK;revision;field_ownership;status_mapping;allowed_mutations;conflict_rules,False,False
+INTEGRATION_OPERATION,Kaiten integration,id PK;connection_id FK;card_ref_id FK;task_revision_id FK;approval_id FK;payload_hash;idempotency_key;state;remote_receipt,False,False
+SYNC_CURSOR,Kaiten integration,id PK;scope_binding_id FK;last_completed_scan;watermark;scan_state,False,False
+INTEGRATION_EVENT,Kaiten integration,id PK;connection_id FK;remote_event_ref;event_fingerprint;verified_source;status,False,False
+SYNC_CONFLICT,Kaiten integration,id PK;operation_id FK;card_ref_id FK;base_snapshot_ref;remote_current_ref;reason;status;decision_ref,False,False
+VOICE_ENGINE_REVISION,Voice identity/config,id PK;engine;transport;endpoint_ref;capabilities;adapter_revision,True,False
+VOICE_IDENTITY_REVISION,Voice identity/config,id PK;owner_id FK;revision;voice_ref;rights_revision;status,True,False
+VOICE_MATERIAL,Voice identity/config,id PK;identity_revision_id FK;artifact_revision_id FK;kind;rights_ref;hash,True,False
+VOICE_PROFILE_REVISION,Voice identity/config,id PK;engine_revision_id FK;identity_revision_id FK;billing_account_id FK;revision;parameters_hash;status,True,False
+VOICE_SELECTION,Voice identity/config,id PK;principal_id FK;scope_id FK;profile_revision_id FK;version;effective_from,True,False
+MESSAGE_REVISION,Voice synthesis/delivery,id PK;principal_id FK;scope_id FK;revision;text_ref;source_refs;hash,True,False
+SPEECH_PROJECTION,Voice synthesis/delivery,id PK;message_revision_id FK;policy_revision_id FK;spoken_text_ref;hash;status,True,False
+SYNTHESIS_JOB,Voice synthesis/delivery,id PK;projection_id FK;profile_revision_id FK;reservation_id FK;idempotency_key;payload_hash;state,True,False
+SYNTHESIS_CHUNK,Voice synthesis/delivery,id PK;job_id FK;chunk_index;attempt_no;text_hash;provider_receipt;state,True,False
+AUDIO_ARTIFACT,Voice synthesis/delivery,id PK;job_id FK;artifact_revision_id FK;codec;container;duration;validation_status,True,False
+DELIVERY_ATTEMPT,Voice synthesis/delivery,id PK;audio_artifact_id FK;message_revision_id FK;target_binding_ref;attempt_no;receipt;state,True,False
+BILLING_ACCOUNT,Voice billing/events,id PK;provider;credential_ref;billing_mode;currency;entitlement_status,True,False
+ENTITLEMENT_REVISION,Voice billing/events,id PK;billing_account_id FK;revision;status;checked_at;constraints_hash,True,False
+RATE_CARD_REVISION,Voice billing/events,id PK;billing_account_id FK;revision;unit;unit_price;currency;valid_from,True,False
+SPEECH_USAGE,Voice billing/events,id PK;job_id FK;chunk_id FK;reservation_id FK;rate_card_revision_id FK;provider_request_id;cost;status,True,False
+NOTIFICATION_SUBSCRIPTION,Voice billing/events,id PK;principal_id FK;scope_id FK;selection_id FK;event_filter;target_binding_ref;quiet_hours;version;enabled,True,False

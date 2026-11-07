@@ -1,0 +1,226 @@
+--- source/Athena_2_0_Current_Specification_v3_3.md
++++ FINAL-D1/Athena_2_0_Current_Specification_v3_3.md
+@@ -1,8 +1,11 @@
+ # Афина 2.0 — архитектурная спецификация 3.3
+-Редакция 3.3 • 04.11.2026, 22:03 МСК • Владелец решений: Андрей
+-Статус: консолидированная архитектура для реализации. Не отчёт о развёртывании и не разрешение на покупку/внешние записи.
++Редакция архитектуры 3.3 • документальная сборка FINAL-D1 • 07.11.2026 • Владелец решений: Андрей
++Статус: FINAL-D1 — завершённый документальный выпуск по замечаниям текущего аудита; не verified runtime/deployment. Не отчёт о развёртывании и не разрешение на покупку/внешние записи.
+ Основа: GitHub Colibri1985/manus-west-consulting-research, каталог Athena_v3.2.&TTS, commit a6b081eaefc710e3fa8d7170876aea2bf57a74a9 («Athena, live! 4»). Конкретные source paths и Git blob SHA перечислены в Source_Manifest.json. Дубликат имени .md с пробелом не выбран как второй primary.
+ Нумерация и изложение консолидированы. Это полный самостоятельный текст целевой архитектуры, а не только дополнение по голосу. Остальные решения не пересогласовываются из-за добавления TTS.
++
++
++Область выпуска: исправления и уточнения v3.3 без адаптации к Hermes v0.23.0. Завершение инспекции по поручению владельца не превращает NOT_TESTED в PASS. Актуальная policy — ACP-SEC-001 r2; прежние заявления о выполненных проверках сохраняются только в historical/, не являются результатом FINAL-D1.
+ 
+ ## 1. Цель и границы версии
+ Афина — персональный помощник Андрея на базе Hermes Agent: диалог, голос, документы, поиск, память, собственное исполнение и координация команд. Площадка HostHatch/Docker. Старая установка не переносится вслепую; полезные данные и требования восстанавливаются после ревизии.
+@@ -38,8 +41,8 @@
+ |Voice controller/projector|Выбор profile, speech text, policy/budget/jobs|Внутри trusted runtime/integration boundary сначала|
+ |TTS adapter|Native Edge/custom command/plugin|Минимальный env/text, no raw task context|
+ |Catalog/publisher|Artifact IDs/versions/ACL/publish|Independent of Team DB|
+-Восемь app services — исходная ведомость до workers/proxy/catalog. TTS не требует нового постоянного контейнера автоматически. Own TTS endpoint может быть добавлен позднее отдельным ограниченным сервисом/машиной, ресурсы пока не выбраны. Native subagents Hermes не тождественны worker containers. terminal.backend=docker не равно подключённый заранее executor.
+-Отдельные Compose core/honcho/team, точечные API networks; existing VPN и один Caddy ИЛИ Nginx. Никаких privileged/docker.sock/general admin shell для агентов. Непривилегированные UID/GID/read-only root/cap_drop подтверждать совместимостью образа.
++Исходные восемь постоянных сервисов: Core 2 + Honcho 4 + Team 2, без Catalog. Полный deployment-кандидат: Core 2 + Honcho 4 + Data/Catalog 1 + Team 2 = 9. Workers, proxy и возможный own TTS endpoint вне этого счёта. Это целевая ведомость, не факт установки и не требование одновременного запуска. Health & Fitness в эти девять не входит. TTS не требует нового постоянного контейнера автоматически. Own TTS endpoint может быть добавлен позднее отдельным ограниченным сервисом/машиной, ресурсы пока не выбраны. Native subagents Hermes не тождественны worker containers. terminal.backend=docker не равно подключённый заранее executor.
++Отдельные Compose-проекты core/honcho/data/team; data и team — последующие проектные контуры, точечные API networks; existing VPN и один Caddy ИЛИ Nginx. Никаких privileged/docker.sock/general admin shell для агентов. Непривилегированные UID/GID/read-only root/cap_drop подтверждать совместимостью образа.
+ 
+ ## 5. Сквозная архитектура данных
+ ```mermaid
+@@ -59,6 +62,7 @@
+  R --> H
+  H --> MR["Canonical message revision"]
+  MR --> TEXT["Text delivery"]
++ TEXT --> U
+  MR --> PROJ["Speech projection / privacy and length policy"]
+  PROJ --> V["Voice profile snapshot + billing gate"]
+  V --> TTS["Edge / ElevenLabs-OpenRouter / future adapters"]
+@@ -91,11 +95,17 @@
+ Requested model и actual runtime/provider различаются: учитывать фактические usage/цену. Auxiliary compression/title/audio-tags отдельные вызовы и расходы. Hidden rewrite для эмоций не включать без source mapping и policy: она не должна менять цифры/смысл.
+ Embeddings закрыты решением: OpenAI Text Embedding3Large/OpenRouter/1536. No vendor fallback, even same dimension. Новый embedding engine требует нового пространства/миграции. TTS voice model не замена reasoning model и не часть vector search.
+ 
++
++Ближайший этап по ACP r2: фиксированные назначения моделей по функциям. Ролевые model policies — заранее заданные назначения, не автоматический выбор модели по сложности/роли. Дополнительный model gateway, Little LLM и draft отложены. Native Hermes session gateway не равен отложенному LLM gateway.
++
+ ## 8. Память Honcho
+ Self-hosted API/Deriver/PostgreSQL+pgvector/Redis. Один active external provider в Hermes, plugin совместим с pinned release. Accepted message не derived/recall-ready. Контекст ограничен по tokens/scope, provenance/freshness, contradictions не превращаются в approved rules.
+ Один sender/native sync authority; outbox-gap решать в том же пути, не двойной отправкой. UNKNOWN reconcile до повторного send. Corrections/tombstones/cache invalidation учитывают источники и повторное выведение. Secret scrub не complete DLP. Privatekeys/tool logs не отправляются.
+ Own DB не local inference: разрешённые texts уходят OpenRouter/provider. Actual single+batch embedding output1536 подтверждается в real Honcho client. Outage: optional memory→explicit degraded; required memory→blocked. Approved decision читать из trusted record, не stale recall.
+ TTS не пишет output audio в Honcho по умолчанию. Сохраняется один canonical conversation turn; spoken transcript/projection refs — связь, не второй дублирующий turn. Voice mood не считается психологическим фактом о пользователе. Любая preference, извлечённая из речи, проходит общую memory policy.
++
++
++Exclusions по ACP r2: secrets, no-memory/no-save в заданном охвате, local-only, отсутствие права передачи и служебные dumps не отправляются Honcho. Не компенсировать исключение записью в MEMORY.md/skills/notes. «Не запоминать» не равно отсутствию native history; «не сохранять вообще» требует отдельной проверенной поддержки всех путей. До неё такой режим не обещается.
+ 
+ ## 9. Kaiten: задачи и синхронизация
+ Статус integration planned, не recovered working connector. Adapter хранит connection/scope bindings/card refs/cursors/snapshots/operations/conflicts отдельно от native stores. Credentials в secretrefs. REST/read pagination первой стадией, webhook optional later.
+@@ -133,6 +143,9 @@
+ Контроллер проверяет права инициатора, expected_version, готовность профиля, capabilities, права на голос и бюджет. Затем атомарно создаёт новую ревизию выбора. Каждый ответ фиксирует неизменяемый snapshot профиля до синтеза. Уже выполняющийся ответ не меняет голос посередине фразы или между чанками.
+ Первый scope выбора — профиль Hermes. Переключение на уровне чата возможно только после реализации отдельного mapping и передачи выбора в каждый запрос. Нельзя обслуживать параллельные чаты конкурентным редактированием одного глобального config.yaml.
+ Желаемый UI — переключатель готовых профилей. На первом этапе допускается изменение tts.provider с поддерживаемым reload/restart и readback. Горячее переключение не объявляется существующей функцией. Speech off — режим вывода, а не несуществующий native provider:none. При неготовом платном профиле исходный выбор не меняется молча.
++
++
++Selection scope hermes_profile реализуется trusted mapping principal/privacy scope → native profile binding. До появления per-chat mapping конкурирующее переключение чатов через общий config запрещено. Список GET profiles конечный в этой редакции, возвращается целиком; при введении pagination потребуется согласованная версия контракта.
+ 
+ ## 14. Собственный голос Афины
+ Архитектура допускает референсные записи, расшифровки, speaker prompts/embeddings, адаптеры и специально подготовленные веса модели. Для каждого материала фиксируются источник, право использования, согласие при необходимости, лицензия, hash и версия. Право воспроизводить запись не означает право обучать на ней другую модель или экспортировать сервисный voice clone.
+@@ -156,6 +169,9 @@
+ До dispatch резервируется верхняя расчётная стоимость с учётом чанков и применимых тарифов. Лимиты периода и параллельности проверяются атомарно. Это локальный admission guard, не гарантия мгновенного внешнего списания или остановки начатого запроса. Provider-side spend limits используются, если поддерживаются.
+ Если платный бюджет не утверждён, monthly_limit=null означает BLOCKED, а не «безлимит». Одного ATHENA_PAID_TTS_ENABLED=true недостаточно для утверждения месячного бюджета. Автопокупка или upgrade подписки запрещены без решения владельца.
+ Учитываются previews, повторные вызовы, style tags, вспомогательная LLM-нормализация и собственные вычисления. Таймаут может оставить стоимость UNKNOWN. Резерв не освобождается как «не потраченный» без сверки. На OpenRouter сохраняется X-Generation-Id, если получен; окончательная стоимость сверяется доступным provider usage/billing механизмом, а не выдумывается по MP3.
++
++
++Расчётный тариф фиксируется до платного dispatch. Если нельзя установить одобренную RateCardRevision и верхнюю оценку, новый paid вызов BLOCKED. UNKNOWN после вызова означает неизвестную фактическую стоимость, а не отсутствие выбранного расчётного тарифа. SpeechUsage сохраняет эту pinned rate revision; последующая сверка добавляет actual usage/adjustment с provenance, не подменяет старую запись. No-charge engine не требует фиктивного paid account/reservation/usage.
+ 
+ ## 16. Подписки на уведомления
+ NotificationSubscription определяет principal, scope, типы событий, источник/board/task filters, канал, проверенного получателя, режим озвучивания, правило выбора профиля, quiet hours, cadence и статус. Это не коммерческая подписка.
+@@ -187,6 +203,9 @@
+ 
+ Внешний клиент передаёт message_revision_id, а не неограниченный сырой текст. Доверенный internal preview может содержать synthetic text после той же проверки. Схема OpenAPI поставляется как design contract; API-сервер этим документом не создан.
+ 
++
++Контракт FINAL-D1: JobStatus возвращает version для CancelRequest.expected_version, profile_id и числовую profile_revision. Для READY обязательны audio_artifact_id и audio_metadata: sha256, codec, container, duration_seconds, sample_rate_hz, channels. Состояния delivery имеют собственный enum и не смешиваются с synthesis. Delivery Receipt требует id/status/version/audio_artifact_id. Все 4xx/5xx имеют SafeError; 404 не раскрывает существование чужого объекта. Preview доступен только trusted preview actor: сервер внутри idempotent acceptance создаёт scoped synthetic MessageRevision и SpeechProjection. Это synthetic, не второй conversation turn и не ingest Honcho. Повтор preview использует те же refs. API остаётся проектным; сервер не создан.
++
+ ## 19. Примеры API и идемпотентность
+ ```http
+ POST /athena/v1/tts/jobs
+@@ -200,10 +219,13 @@
+ Profile ID — разрешённый выбор, не обход selection policy. Principal/scope берутся из проверенной identity. Сервер фиксирует разрешённую projection и profile revision. Hash исполнения включает engine/model/voice/format/policy, но повтор того же клиентского ключа сначала находит прежнее разрешение, не пересчитывает его по новому default voice.
+ Одинаковые key+actor+request возвращают прежний receipt. Иное тело с тем же key — 409. Истёкший кеш не даёт права автоматически повторно оплачивать прежнюю бизнес-операцию. Срок хранения idempotency records согласуется отдельно.
+ ```json
+-{"job_id":"speech-042","status":"queued","profile_revision":"athena_natural:r1","billing_status":"reserved","delivery_status":"not_requested"}
++{"job_id":"speech-042","status":"QUEUED","version":1,"profile_id":"athena_natural","profile_revision":1,"billing_status":"reserved","delivery_status":"not_requested"}
+ ```
+ 202 означает локально сохранённое принятие, не успешный синтез или доставку. GET при READY возвращает audio_artifact_id, sha256, codec/container, duration/sample_rate/channels и billing status. Сырые пути хоста, ключи и provider error bodies не возвращаются.
+ POST synth не отправляет голосовое автоматически. Delivery использует отдельный idempotency key и уже готовый artifact; сбой транспорта не повод снова вызвать платную модель.
++
++
++Ключ повтора: verified actor + privacy scope + operation kind + Idempotency-Key. Уникальность и lookup/insert обеспечиваются атомарно. Digest строится по валидированному клиентскому телу, не по новым generated refs/defaults. Перед возвратом прежнего результата — live ACL. Delivery хранит свой key и digest, смена target требует новой операции/согласования. До утверждения retention idempotency records не очищаются автоматически. Утрата record не разрешает replay.
+ 
+ ## 20. Контракты внешних TTS-адаптеров
+ |Backend|Запрос|Особенности|
+@@ -225,6 +247,9 @@
+ План чанков неизменяем: порядок, text digests, profile snapshot. На чанк выделяется attempt и provider request reference. Параллельность ограничена. Уже готовые чанки не перегенерируются из-за сбоя доставки. Неполная запись отмечается как PARTIAL, полный текст остаётся доступным.
+ Отмена queued job не вызывает provider. Отмена running — best effort, не гарантирует отсутствие списания. Unknown billing не превращается в ноль и не освобождает резерв до сверки. Продолжение после ошибки не меняет voice revision незаметно.
+ При потере channel receipt возможна уже выполненная доставка. Используется доступная сверка, а не выдуманная exactly-once гарантия Telegram. Успешная BusinessTask не становится FAILED только из-за синтеза или отправки голоса.
++
++
++Переходы и инварианты заданы в Contracts/State_Transitions.csv. Любой изменяющий переход требует current version/CAS и live authority. Чанк имеет стабильные job_id+chunk_index и immutable text_hash; попытка различается attempt_no. Новый attempt допустим только после безопасного разрешения предыдущего UNKNOWN. CANCEL_REQUESTED не обещает возврат средств. READY не отменяет unknown billing; новая доставка не означает новый синтез.
+ 
+ ## 22. Хранение конфигов, голосовых материалов и кеша
+ ```text
+@@ -244,6 +269,9 @@
+ Cache key включает principal/environment/domain, разрешённую projection, engine/model/voice/profile versions, style, normalizer, codec и policy/rights revision. Нельзя переиспользовать аудио между scopes только из-за одинакового текста. Для короткого чувствительного текста обычный hash не анонимизация; использовать scoped HMAC и защищённые metadata.
+ Перед playback повторно проверяются доступ и отзыв прав. Numeric TTL и retention для voice assets, job receipts, audio и usage согласуются отдельно. Temporary cleanup не удаляет активные чанки и единственный экземпляр референса. Regeneration кеша может стоить денег.
+ Backup включает профили, выбор, права, manifests, нужный job state и защищённые secrets. Ключ восстановления хранится вне VPS. Акустические референсы не смешиваются с API credentials.
++
++
++Числовые retention/TTL остаются решением владельца. До утверждения отсутствует автоматическое удаление retained originals/rights/receipts; scratch очищается только при terminal, отсутствии hold/lease/refs и подтверждённой публикации. Полный backup coverage: Contracts/Backup_Coverage.csv; секреты только в защищённой копии с внешним recovery key.
+ 
+ ## 23. Реестр профилей: наш контракт, не native Hermes
+ ```yaml
+@@ -347,12 +375,16 @@
+ ```dotenv
+ OPENROUTER_TTS_API_KEY=
+ FISH_TTS_API_KEY=
++ELEVENLABS_API_KEY=
+ ATHENA_PAID_TTS_ENABLED=false
+ ATHENA_TTS_MAX_INPUT_CHARS=4000
+ ```
+ 4000 символов и90 секунд — исходные проектные параметры, не месячный финансовый лимит. Native command timeout относится к отсутствию вывода; HTTP socket timeout60s в образце не является строгим общим deadline. Общий deadline и quota controller должны быть реализованы отдельно.
+-Command stdout/stderr может возвращаться модели, поэтому в нём запрещены секреты, полный текст и raw provider error bodies. Source adapter проверяет key/model/voice, размер и MIME, блокирует redirects, пишет atomic output и не делает auto-retry. Он не реализует selector, monthly reservations, decode validation, cache, delivery ledger и streaming. Для plugin streaming отдельно проверяется потокобезопасность. Custom providers не должны подменять встроенные имена.
++Command stdout/stderr может возвращаться модели, поэтому в нём запрещены секреты, полный текст и raw provider error bodies. Требования к будущему adapter: key/model/voice, bounded bytes/MIME, запрет redirects, atomic output, no auto-retry. В этом комплекте исполняемый tts_adapter.py отсутствует; никакое свойство его реализации не подтверждено. Он не реализует selector, monthly reservations, decode validation, cache, delivery ledger и streaming. Для plugin streaming отдельно проверяется потокобезопасность. Custom providers не должны подменять встроенные имена.
+ В комплекте native-фрагмент показывает Edge и ElevenLabs/OpenRouter. Fish/direct ElevenLabs/own engine пока зарезервированы в registry, не объявляются установленными provider bindings.
++
++
++Шаблон native config — UNVERIFIED_TEMPLATE: ни один ключ не признан поддерживаемым без закреплённого runtime. /srv/athena/deployment/core/voice — host source; /opt/athena/voice — предполагаемый image destination; packaging ещё не реализован. До проверки adapter файл не переносится как готовая команда. Native-only Edge pilot и controlled TTS — разные режимы: CP-TTS/data scope и ручные synthetic tests обязательны, controller guarantees native-only режиму не приписывать.
+ 
+ ## 25. Логическая модель данных 3.3
+ 53 сущности 3.2 сохраняются по назначению: identity/scopes/projects; tasks/revisions/runs/stages/attempts/handoff/checks; artifacts/revisions/links/locations; governance/approval/roles/skills/model policy; inbox/outbox/audit/memory integration; budgets/usage/backup; десять сущностей Kaiten.
+@@ -360,6 +392,9 @@
+ Engine хранит route/capabilities/version, identity — ссылки на разрешённые материалы, profile закрепляет их версии. Selection указывает конкретный profile revision. MessageRevision — canonical text и source refs; Projection — spoken text/transform/hash; Job — snapshot/idempotency/reservation; Chunk — порядок/attempt/provider receipt; AudioArtifact — verified ArtifactRevision+codec; DeliveryAttempt — exact target/channel receipt.
+ BudgetReservation расширяется: subject_kind/subject_ref поддерживают execution attempt либо synthesis job. Для голосового ответа не требуется создавать фиктивный BusinessTask или attempt. BillingAccount отражает путь оплаты, а не заменяет внутренний BudgetAccount. Provider balance cache имеет fetched_at и не выдаётся за банковский источник истины.
+ NotificationSubscription хранит scopes, события, получателя и selector. Все межхранилищные связи — logical references, не SQL foreign keys внутри Honcho/Kaiten. Новая DDL ещё не применяется. Озвучивание не меняет BusinessTask acceptance.
++
++
++Нормативные логические constraints вынесены в Contracts/Logical_Constraints.csv; они дополняют ER/словарь, не являются vendor DDL. BudgetReservation: ровно один субъект; execution_attempt → attempt_id=subject_ref, synthesis_job → attempt_id NULL и subject_ref=job.id, job.reservation_id указывает обратно. Уникальность активного резерва по budget account + subject kind/ref; reserve+subject creation атомарны в owned store. Для cross-store intent требуется reconcile без видимого «принятого» orphan. Project содержит canonical scope_id; CONTEXT_SCOPE.project_id — optional обратная ссылка, выставляется после создания project. При наличии обратной ссылки она должна указывать на тот же project/scope; для остальных scopes project_id NULL.
+ 
+ ## 26. Матрица ошибок и правила эскалации
+ 
+@@ -391,18 +426,24 @@
+ Служебные DB/cache/metrics не публикуются. Proxy один, private/loopback endpoints, IPv4/IPv6 проверяются отдельно. Docker firewall backend определяется фактически; UFW не считается единственной защитой опубликованных портов. Никакого docker.sock агентам.
+ Endpoint и shell template — trusted config. Redirect/reference fetch ограничены anti-SSRF. Права на голос и допустимость клонирования проверяются до обработки, а не после создания модели. Удаление/отзыв прав и backup retention — отдельные согласованные процедуры.
+ 
++
++Приоритет ACP r2: Yellow в standing approved profile не требует approval каждого сообщения/обезличивания всех имён; новое назначение/scope/gated action требует отдельного допуска. Black — no AI content даже local; Red — без approved isolated backend affected operation BLOCKED. Минимальные checks реально включённых путей обязательны; отдельный PDP/broker, total DLP и полный anti-bypass gateway не prerequisite Core. Матрица enforcement и coverage: Contracts/Boundary_Matrix.csv, статус DESIGN / NOT_VERIFIED. До функциональной проверки synthetic-only pilot, без медицинских/банковских/клиентских материалов.
++
+ ## 28. Логи, backup и восстановление
+ Один primary на каждый класс данных. Honcho использует dedicated filesystem/UUID, mount доступен до auto-restart контейнеров. External named volume сам по себе не доказывает отдельный диск. Образы и Docker logs могут находиться вне этого тома.
+ Проектная ротация: local driver 10m × 5 с compression; это size retention, не гарантированные дни хранения. PostgreSQL stderr без дублирующего collector. Proxy/journal/file logs ограничиваются отдельно. Raw SQL, spoken text, audio base64, Authorization и ключи не попадают в обычный журнал ошибок.
+ Согласованный full image — ежедневно в 00:00 Europe/Moscow, все требуемые диски; затем Windows → Kingston и isolated restore. Preupgrade pg_dump дополняется roles/extensions/config/secrets. Hash или archive list не заменяет restore test. Hosted Kaiten и provider Voice Library не входят в VPS image: экспорт и права отдельно.
+ После восстановления интеграции сначала сверяют current remote state и pending intents в read-only режиме. Нельзя автоматически повторить озвучку или публикацию из старого outbox без проверки receipts. Voice assets/rights — обязательная часть защиты; cache regeneration допускается только с учётом цены. RPO/RTO и retention остаются открытыми.
+ 
+-## 29. Deployment и миграция 3.2 → 3.3
+-Новый постоянный TTS-контейнер необязателен. Сначала native Edge и command adapter в управляемом образе, controller/job store в trusted runtime/integration boundary. Shared TTS service или own engine выделяются позднее по ADR. GPU и соответствие CPU-only VPS не предполагаются.
+-Шаги: сохранить effective 3.2 config/assets/receipts; проверить pinned versions; зарегистрировать новые профили с paid disabled; сохранить Edge; применить транзакционную миграцию voice state; создать selection revision; проверить synthetic Edge/codec/delivery; отдельно разрешить один paid preview; активировать выбранный профиль; readback и тест next-reply snapshot; записать evidence.
+-В config.yaml сливается одна tts-секция, остальные настройки сохраняются. Исходный registry v1 был описательным, а не работающим selector. Source adapter не запускается при выпуске документа.
+-CI: reviewed commits/actions, минимальные permissions, нет prod secrets в PR, build once/pinned digest, staging. CD: exact owner approval, UUID/backup checks, один migration owner, functional tests и rollback. Restricted root dispatcher не заменяется общим sudo или docker group.
+-Rollback требует сохранения схемы/конфига/selection revisions. При восстановлении старой БД возможные новые списания и доставки не исчезают — их необходимо сверить. Purchase, тариф, voice selection и собственное оборудование отдельно согласуются.
++
++Запись backup evidence отдельно перечисляет native home, Honcho PG/Redis, Project DB, Catalog/warehouse, governance, voice state/assets/rights, deployment metadata и encrypted secrets; временные файлы только по retention policy. Стрелка на схеме не доказательство coverage. RPO/RTO открыты.
++
++## 29. Deployment: новая установка и условный импорт старых данных
++Новая Афина ещё не развёрнута. Основной путь — fresh install; наличие прежней 3.2 не предполагается. Действующий порядок подготовки — HANDOFF-DEPLOY-001 r1 из коммита 504c0520f5f53a6bc1faa18cef5e03704909c245. Его исходный текст доступен по закреплённой ссылке в Deploy/README_DEPLOY_RU.md; этот выпуск не выдаёт пересказ за исходник.
++Порядок: baseline/recovery и новый read-only inventory → согласованные ресурсы/storage/UUID → pin/compatibility/settings → ограниченный executor/Core → checkpoint → Honcho → checkpoint → optional voice → последующие Catalog/Team/Kaiten. Health & Fitness, дополнительный model gateway, Little LLM, draft и сложный Admin Approval plane не блокируют первый ограниченный запуск; агенту host/Docker/security/destructive management не выдаются.
++Никакого docker compose up до recovery и проверки применимости. Не складывать независимые Compose-проекты через -f; dashboard overlay проверяется отдельно в итоговом merged config. Полный prepare_storage не core-only bootstrap. Не создавать fake gates/images, не подставлять UUID root ради PASS. Политика approval не даёт разрешения на серверные изменения.
++Legacy import только если реально найден источник: сохранить отдельную копию config/assets/receipts; определить совместимость и provenance; предложить scoped import plan, проверить на копии и согласовать. Не выполнять миграцию фиктивного source state. Старые uploads/backups не удаляются.
++CI/CD: reviewed code, no prod secrets в PR, build once/pinned digest, точное change approval, функциональные тесты и rollback. Image downgrade не отменяет DB migrations/charges/delivery; после restore read-first reconcile. Конкретный runtime release и команды выбираются отдельно; v0.23.0 не закрепляется этим выпуском.
+ 
+ ## 30. Ресурсы и наблюдаемость
+ Исходный бюджет Honcho 4 vCPU / 8 GiB / 100 GiB данных сохраняется как проектный ориентир, не факт о VPS. Пример RAM: DB 3 GiB + API 1 + Deriver 1.5 + Redis 0.5 = 6 GiB контейнеров, ещё 2 GiB — резерв ОС. Core и workers требуют дополнительного бюджета. Один миллион vector(1536) — около 5.729 GiB чистых векторов, без индексов/текстов/WAL.
+@@ -435,6 +476,9 @@
+ |V18|Один владелец автоозвучки, без двойного paid call|
+ 
+ Evidence: requirement → test → revisions → checks → decision. Неиспытанное помечается not_tested. Создание файла не подтверждает production readiness.
++
++
++Применимость tests и expected results — Contracts/Acceptance_Tests.csv; policy gates SEC01–SEC16 трактуются по ACP r2, отложенные функции NOT_APPLICABLE_UNTIL_ENABLED, а не PASS. Статические проверки документов отделены от runtime NOT_RUN. Contracts/Traceability.csv связывает группы требований и замечания; не заявляет исчерпывающую историческую сверку всех ранних источников.
+ 
+ ## 32. Последовательности голоса и уведомлений
+ ```mermaid
+@@ -498,11 +542,13 @@
+ Открыты: основная LLM Hermes; Honcho text IDs; ElevenLabs voice и account access; точный TTS budget/тариф; retention; события/quiet hours подписок; own engine/resources; реализация selector/hot reload/per-chat scope; endpoint/codec capabilities и deployment paths.
+ Выбранный embedding не открывается заново. Нельзя путать Honcho accepted с recall-ready, API key с per-user RBAC, Done с release approval или HTTP200 с delivered.
+ 
+-## 34. Изменения и границы исходного комплекта
+-Указанный commit проверен. Основная спецификация, ER-модель, текстовая TTS-схема, config, registry, adapter, env и README прочитаны через read-only GitHub connector. В 3.3 они использованы как содержательная основа. Это самостоятельная авторская консолидация, а не обещание побайтового сохранения каждого абзаца 3.2.
+-Сохранены роли Hermes/Honcho/Kaiten, task/attempt/artifact/governance/budget/backup контракты. Изменена голосовая область: общий pipeline, движки и профили, own voice capability, commercial billing и notification subscriptions, privacy projection, API/jobs/delivery, storage/errors/acceptance.
+-Source adapter остаётся минимальным примером. Не заявляются реализованными monthly ledger, codec validation, selector, delivery queue или streaming только потому, что они теперь специфицированы.
+-Git blob SHA1 не равен обычному SHA256 файла. Manifest фиксирует provenance, а контрольные суммы выпуска — целостность, не цифровую подпись. Репозиторий, сервер, Kaiten и credentials не изменены; платных вызовов не было.
++
++Открытые решения перечислены в Reports/Open_Decisions.csv: точные модели/digests/account routes/resources/retention/framework/local isolation не выдумываются. Принятие FINAL документов не выдаёт runtime grants и не утверждает произвольный provider.
++
++## 34. Происхождение и изменения документального выпуска
++Исходная v3.3 сохранена побайтово в historical/source_v3_3. Архив содержит её прежние manifest/validation только как историю. FINAL-D1 исправляет известные ошибки примеров, дополняет API/constraints/boundaries/test contracts и уточняет состав 8/9 и fresh install. Никакая исходная версия не перезаписывается задним числом.
++Зафиксированный внешний контекст: ACP r2, HANDOFF и deployment-кандидат на коммите 504c0520f5f53a6bc1faa18cef5e03704909c245. Сам deployment tree в этот выпуск не скопирован и не исправлен. Известные замечания к нему — Deploy/Deployment_Errata.md. Historical r1/SYS/briefings/HTML/PNG не нормативные copies FINAL.
++Проверки FINAL описаны в Validation_Report.json. Результаты прежних запусков не переносятся. Не заявлены полное покрытие всех исторических требований, runtime compatibility, Mermaid CLI rendering, server/SDK/provider/security tests. Выпуск завершён по текущему объёму инспекции решением владельца.
+ 
+ ## 35. Источники и статус проверки
+ S1. GitHub: Colibri1985/manus-west-consulting-research, commit a6b081eaefc710e3fa8d7170876aea2bf57a74a9, каталог Athena_v3.2.&TTS. Canonical paths, Git blob SHA и размеры — в Source_Manifest.json.
+@@ -513,10 +559,12 @@
+ S6. ElevenLabs use policy: https://elevenlabs.io/use-policy
+ Источники проверены 04.11.2026. Тарифы, модели и API capabilities повторно проверяются на выбранном release/account. /athena/v1, registry schema и новые сущности — проектные контракты, не уже работающие endpoints. Платная генерация, установленный Hermes, VPS и Mermaid renderer в рамках этого выпуска не запускались.
+ 
+-## 36. Комплект поставки и согласованность моделей
+-Основной полный текст — Athena_2_0_Current_Specification_v3_3.md, Word DOCX и Word DOC содержат тот же нормативный текст. PDF — дополнительная версия чтения. Шесть Mermaid-файлов: versioned overview и01_Architecture.mmd идентичны;02 — physical;03 — data;04 — logical ER;05 — workflow. PNG архитектуры и группированной ER показывают актуальную3.3.
+-ВER сохранены53 исходные сущности3.2 и64 исходные логические связи по назначению (одна кардинальность budget уточнена для nullable attempt); добавлены16 сущностей голоса. BudgetReservation поддерживает subject_kind/subject_ref: ровно один субъект execution_attempt либо synthesis_job, никаких фиктивных tasks для обычной озвучки. Native schemas не изменяются этими файлами.
+-Все новые endpoints из раздела18 являются проектным private API Афины, а не уже доступными маршрутами Hermes/Honcho. Единственный canonical synthesis route — POST /athena/v1/tts/jobs. Вариант /voice/syntheses из обсуждений не вводится параллельно.
+-Внутренний config registry, нативный tts.provider и будущая кнопка UI — разные уровни. После изменения selection требуется effective readback; scope переключения на старте hermes_profile, hot reload/per-chat не заявлены готовыми. Файлы profile/policy в комплекте — конфигурационные контракты, не работающий controller.
+-Source_Manifest.json фиксирует commit и происхождение. Прилагаемый полный3.3.md использован целиком, без усечения. Сверка с3.2 является содержательной, не побайтовым доказательством сохранения всех его абзацев. Состав всех53 базовых сущностей и64 связей проверен по source ER и dictionary закреплённого commit.
+-Документ/схемы/файлы созданы локально. Ни VPS, ни репозиторий, ни подписки, ни карточки не изменены. Не выполнены платные calls или integration tests установленного Hermes. Mermaid CLI renderer не запускался; PNG строятся из тех же описаний узлов/сущностей отдельно. DOC — дополнительная Word-совместимая RTF-версия для открытия в Word, не бинарный Word97. Основной редактируемый формат — DOCX. Ограничение формата явно указано в README.
++
++Текущие факты о provider API/models/prices здесь не перепроверены. Ссылки и историческая дата их проверки — provenance, не свежая сертификация. External ACP r2 — policy, приложенные PDF/MD сохранены без правок; исходные именованные документы не становятся отчётом наших runtime tests.
++
++## 36. Комплект поставки FINAL-D1
++Нормативный основной текст — этот Markdown, разделы 1–36. DOCX, PDF и RTF сформированы заново из его полного текста; формат .doc — RTF, не Word97. Форматирование упрощено: Mermaid и таблицы представлены текстом, без обещания WYSIWYG-эквивалентности. Нормативные машинные контракты — OpenAPI, ER, Entity Dictionary, Contracts/*.csv и voice design files в указанных областях. При реальном конфликте конкретный шаг останавливается до явного решения; priority disclaimer не заменяет исправление.
++Mermaid: versioned overview и 01 — одинаковые aliases, 02 physical, 03 data, 04 ER, 05 workflow. ER содержит 69 логических сущностей; фактическое число связей пересчитано в текущем validation. Новые CSV constraints — логическая детализация, не физические таблицы Hermes/Honcho/Kaiten.
++Старые PNG и визуальные исторические материалы помещены только в historical. В FINAL не выдаются за актуально отрендеренные .mmd. Новые нормативные схемы — текстовые Mermaid; renderer не запускался. Путь reader PDF не заменяет полную схему.
++Source_Manifest.json описывает происхождение; Release_Manifest.json — текущие пути, размеры, SHA-256 и статус. SHA256SUMS.txt проверяет все текущие файлы кроме самого себя; это не цифровая подпись. Reports содержит dispositions всех известных замечаний: fixed_documentation / clarified / deferred_to_feature / open_verification. FINAL не означает все замечания runtime устранены.
++Архив пригоден для хранения как документальная база v3.3 FINAL-D1. Deploy — только через отдельные stage gates; для Hermes v0.23.0 требуется отдельная v3.3.1.

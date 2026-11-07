@@ -1,0 +1,10 @@
+﻿project,service,counted_in,stage
+core,runtime,full 9,Core
+core,executor,full 9,Core
+honcho,database,full 9,Honcho
+honcho,redis,full 9,Honcho
+honcho,api,full 9,Honcho
+honcho,deriver,full 9,Honcho
+data,catalog,full 9,Later own implementation
+team,project-db,full 9,Later own implementation
+team,team-control,full 9,Later own implementation

@@ -1,0 +1,146 @@
+{
+  "release": "Athena_2_0_v3_3_FINAL_D1_2026-11-07",
+  "source_baseline": [
+    {
+      "path": "01_Architecture.mmd",
+      "bytes": 3136,
+      "sha256": "774bdcb6a95bc25e540822ca08d7c6a53a5470d5758d7dde125f3889b6210259",
+      "integrity": "PASS"
+    },
+    {
+      "path": "02_Physical_Deployment.mmd",
+      "bytes": 2020,
+      "sha256": "e641a500d546bca1bd7b8c9a764b64739fcb55c916dfa9fa49876716f33e72c4",
+      "integrity": "PASS"
+    },
+    {
+      "path": "03_Data_Map.mmd",
+      "bytes": 1749,
+      "sha256": "8d3111f3c6f9c9d5322fd8fbcbeb54f25978e8a9ca7e9c5e2960ba8417387f90",
+      "integrity": "PASS"
+    },
+    {
+      "path": "04_Data_Model.mmd",
+      "bytes": 15629,
+      "sha256": "fd2e142ef304c7063ba13dfcfcb91ae2cdd67d4eea2acd5cd9e831e95515e995",
+      "integrity": "PASS"
+    },
+    {
+      "path": "05_Agent_Workflow.mmd",
+      "bytes": 1704,
+      "sha256": "f2fa3d9617f2b8d60f6ddb0634398dc47fba26e18e35a4a54867cc2dc493a187",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Architecture_v3_3.png",
+      "bytes": 475776,
+      "sha256": "f6d9baca4f2cc169a0d7f53b79a1efc0b4e4e7934148c53b841fd8ebdd67ab2d",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Athena_2_0_Architecture_v3_3.mmd",
+      "bytes": 3136,
+      "sha256": "774bdcb6a95bc25e540822ca08d7c6a53a5470d5758d7dde125f3889b6210259",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Athena_2_0_Current_Specification_v3_3.doc",
+      "bytes": 2813551,
+      "sha256": "c025352bb5729170e72cb0e7945ca3272dbe47649e7e926fb19f7ef81addd057",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Athena_2_0_Current_Specification_v3_3.docx",
+      "bytes": 1238868,
+      "sha256": "b94d4a75527031847912a1980927aa7fe67ccf67ba4fc1a9b8d3c79d4984d677",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Athena_2_0_Current_Specification_v3_3.md",
+      "bytes": 73994,
+      "sha256": "32859e3ca392848025cd7f9d2cab832e07bcac8bf9f10c4878f452347425fa14",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Athena_2_0_Data_Model_v3_3.png",
+      "bytes": 835466,
+      "sha256": "cdd512357fb9d9e732225bbe761164e8ca07d702742c30ff4f1f680bc685bea7",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Entity_Dictionary_v3_3.csv",
+      "bytes": 7569,
+      "sha256": "ea70e6df94b3b67a53d69d1018afbcff0077622db450bde8cb48ba1179857225",
+      "integrity": "PASS"
+    },
+    {
+      "path": "README_RU.md",
+      "bytes": 3788,
+      "sha256": "9b11be21a8e2f764c07b955e88337275df2c2250332b56753ad52bd2c41de5bc",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Source_Manifest.json",
+      "bytes": 3008,
+      "sha256": "57a60f98e60f5810bf54f1de63d0ee47ec000d491e5a26e439de721690cff201",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Synthesis_Error_Matrix_v3_3.csv",
+      "bytes": 2816,
+      "sha256": "93b4fe67e20030b484eb71dbc5afe7077bce6ec847080b81e7812ec6b3892c90",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Validation_Report.json",
+      "bytes": 989,
+      "sha256": "f5b088a0db1e244e89fd9e23e992bac3a410ad070ef072518fce2b9dfde9b0c7",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_API_OpenAPI_v3_3.yaml",
+      "bytes": 12811,
+      "sha256": "b82754b3de3dda431179bd94b7fe1fe34d4aa973ad7ec269eeb417b6ce51a23e",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Billing_Routes_v3_3.csv",
+      "bytes": 1088,
+      "sha256": "faddf2ff71cd64fef8b222f94e5270c32230fd83241858f0e23711ca0dced6e5",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Profiles_Config/README_RU.md",
+      "bytes": 1443,
+      "sha256": "f94624483884c057db3a6d8982fdd52dcb1d27b04f78191cf641fc4768bd4497",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Profiles_Config/config.tts.yaml",
+      "bytes": 706,
+      "sha256": "f19f4513cc553608ccfcf5d4cb8e0f7c9223d4cc4a96419800209a1c814e24ae",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Profiles_Config/voice.env.example",
+      "bytes": 124,
+      "sha256": "dd58e4a8e38770024c52a1502e51709bb6fb675836d65e2e3338c83fb76bf560",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Profiles_Config/voice_policy.yaml",
+      "bytes": 365,
+      "sha256": "f5be7b395d1278d4580440ecd2a41de4fbf93e69f20b722a37607860566cae79",
+      "integrity": "PASS"
+    },
+    {
+      "path": "Voice_Profiles_Config/voice_profiles.yaml",
+      "bytes": 1581,
+      "sha256": "1cf67f4af49fbf71b53411f5dd0700eb0584fd694aaf892f6a7912cb5e3bc082",
+      "integrity": "PASS"
+    }
+  ],
+  "provenance_commit_original": "a6b081eaefc710e3fa8d7170876aea2bf57a74a9",
+  "external_policy_deploy_commit": "504c0520f5f53a6bc1faa18cef5e03704909c245",
+  "note": "Original source manifest with prior attachment hash retained only historical. Current inputs and current release outputs are distinct. Original ZIP container not revalidated."
+}

@@ -1,0 +1,34 @@
+﻿id,title,scenario,expected,stage,actual,evidence_required
+CORE01,Personal dialog,Synthetic authorized conversation with optional Team/Kaiten/voice disabled,dialog succeeds; required-source task blocked,Core,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+CORE02,Identity,wrong actor/scope/header vs real binding,deny without foreign metadata,Core,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+CORE03,Executor,"runner UID, RO inputs/RW work, no secrets/host management; alternate tools disabled until tested",exact intended permissions; no docker.sock/admin,Core,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+CORE04,Persistence,restart/recreate authorized profile,one home authority and retained native data,Core,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+CORE05,Recovery,"isolated consistent restore, egress effects disabled",all declared stores verified; reconcile before writes,Core/Honcho as enabled,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+MEM01,Memory,synthetic ingest→accepted→derived→new-session recall/correction,"1536 single/batch, one sender, scoped recall",Honcho,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+MEM02,Exclusions,synthetic secret/no-memory/local-only/no-transfer markers,no excluded Honcho/hidden alternate store; no-save semantics truthful,Honcho,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+TASK01,Idempotency,"concurrent same-key accept, changed body, revoked access",one receipt;409;no disclosure,own task/voice,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+TASK02,Fencing,lost launch receipt/expired lease/stale writer,"UNKNOWN reconcile, no second writer",Team,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+ART01,Publication,crash before/after payload/metadata,no visible partial artifact; hold prevents cleanup,Catalog,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+INT01,Kaiten,"partial scan, human edit, lost POST receipt",no false deletion/overwrite/duplicate write,Kaiten,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+VOICE01,Selection,two CAS selections + in-flight chunks,one winner; one immutable profile/job,controlled voice,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+VOICE02,Admission,null budget/missing rights/tariff/model/voice,no paid dispatch; text preserved,controlled voice,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+VOICE03,Audio,invalid codec/hash and valid synthetic Edge,invalid rejected; valid delivery codec verified,voice,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+VOICE04,Retry,lost delivery receipt after synthesis,same artifact; no new provider call,controlled delivery,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+VOICE05,Preview,same-key synthetic preview retry,same message/projection refs; no duplicate memory turn,preview,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+QA01,Acceptance,result/revision changed after QA,stale checks/approval invalid; release distinct,Team/release,NOT_RUN,exact source/image/config+safe observed outcome; owner acceptance distinct
+SEC01,secret canary,Synthetic negative/failure scenario; no real secrets,no AI/memory/ordinary log disclosure in checked paths,enabled scope,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC02,unknown/mixed/source restrictions,Synthetic negative/failure scenario; no real secrets,no auto Green or model declassification,enabled scope,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC03,local-only without backend,Synthetic negative/failure scenario; no real secrets,"affected operation BLOCKED, no cloud fallback",enabled scope,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC04,direct bypass,Synthetic negative/failure scenario; no real secrets,verify claimed network boundary only; universal bypass prevention not claimed,future gateway/network boundary,NOT_APPLICABLE_UNTIL_ENABLED,ACP r2 applicability; exact implementation checks
+SEC05,Yellow standing profile,Synthetic negative/failure scenario; no real secrets,within scope no per-message approval; new destination requires permission,enabled CP profiles,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC06,check timeout/exception,Synthetic negative/failure scenario; no real secrets,affected protected operation not opened,enabled checks,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC07,stream/retry,Synthetic negative/failure scenario; no real secrets,same approved profile and output limits; no hidden fallback,when streaming/retry enabled,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC08,action consent,Synthetic negative/failure scenario; no real secrets,class/CP profile not send/delete/push/purchase rights,enabled actions,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC09,credentials,Synthetic negative/failure scenario; no real secrets,addressed auth use; no secret in args/results/logs,enabled connectors,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC10,memory exclusions,Synthetic negative/failure scenario; no real secrets,no excluded Honcho or hidden alternate stores; permitted names retained,Honcho,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC11,persistence semantics,Synthetic negative/failure scenario; no real secrets,no-memory distinct from no-save; no unsupported zero-retention claim,enabled stores,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC12,actual routes,Synthetic negative/failure scenario; no real secrets,inventory all active main/auxiliary/memory/voice calls,enabled functions,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC13,UNKNOWN/revoke/replay,Synthetic negative/failure scenario; no real secrets,reconcile and exact approval; no hidden repeat,enabled external effects,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC14,cache,Synthetic negative/failure scenario; no real secrets,"live rights before replay, no cross-scope",enabled cache,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC15,schema/restore,Synthetic negative/failure scenario; no real secrets,no upstream DDL; isolated restore,changed owned stores,NOT_RUN,ACP r2 applicability; exact implementation checks
+SEC16,Little LLM,Synthetic negative/failure scenario; no real secrets,not enabled; future advice no authority,DEFERRED,NOT_APPLICABLE_UNTIL_ENABLED,ACP r2 applicability; exact implementation checks

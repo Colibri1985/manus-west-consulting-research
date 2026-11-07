@@ -1,0 +1,11 @@
+﻿component,authority,data,required_checks,failure,status,minimum_stage
+Ingress,verified channel binding,user event,identity/scope before retrieval,deny affected input,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Runtime native state,one profile authority,history/MEMORY/USER,exclusions vs no-save coverage; no alternate memory,unsupported strict no-save blocked,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Executor,scoped runner,RO staged inputs/RW job,no runtime/provider secrets/docker.sock; actual UID/networks,"stop job, preserve result/UNKNOWN",DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Honcho,native plugin one sender,permitted memory scope,secrets/no-memory/local-only/no-transfer excluded; accepted != derived,optional degraded/required blocked,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Provider routes,fixed per-function CP profile,minimal permitted context/audio,actual model/route/cap/account/retention,no hidden model fallback,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Catalog,trusted publisher,immutable payload/metadata,ACL before list/read; hashes/holds/refs,no visible partial revision,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Team,approved grants/bundle,task revision/attempt,fencing/live rights/independent QA,no unsafe dispatch,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Voice,one autospeech authority,approved speech projection,external-processing distinct from read ACL; rights/budget,text-only; preserve UNKNOWN cost,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Delivery,bound verified target,ready artifact,live rights/idempotency/exact target,no resynthesis on retry,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass
+Logs/cache/backup,owned subsets,minimal metadata/protected stores,secret canaries/scope/retention/recovery key,stop affected writes; safe alert,DESIGN / NOT_VERIFIED,When enabled; synthetic-only until actual checks pass

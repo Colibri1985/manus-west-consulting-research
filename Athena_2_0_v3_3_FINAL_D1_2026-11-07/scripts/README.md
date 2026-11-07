@@ -1,0 +1,1 @@
+Запуск verify_release.py только проверяет локальные hashes и targeted fixtures, не выполняет Docker/provider/network calls. Для schema tests нужны PyYAML/jsonschema; при отсутствии зависимостей NOT_RUN и exit2. Это не полный OpenAPI meta-validator.

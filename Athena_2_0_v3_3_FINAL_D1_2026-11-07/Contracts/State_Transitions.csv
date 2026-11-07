@@ -1,0 +1,41 @@
+﻿domain,from,to,guard,effect
+synthesis,CREATED,VALIDATING,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,VALIDATING,QUEUED,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,QUEUED,DISPATCH_INTENT,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,DISPATCH_INTENT,SYNTHESIZING,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,SYNTHESIZING,AUDIO_VALIDATING,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,AUDIO_VALIDATING,READY,live authority + version CAS; dispatch requires privacy/rights/budget; READY requires validated published artifact,persist transition before dependent external action
+synthesis,CREATED,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,CREATED,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,CREATED,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,VALIDATING,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,VALIDATING,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,VALIDATING,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,QUEUED,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,QUEUED,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,QUEUED,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,DISPATCH_INTENT,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,DISPATCH_INTENT,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,DISPATCH_INTENT,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,SYNTHESIZING,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,SYNTHESIZING,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,SYNTHESIZING,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,AUDIO_VALIDATING,BLOCKED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,AUDIO_VALIDATING,FAILED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,AUDIO_VALIDATING,CANCEL_REQUESTED,typed cause/current CAS; cancellation no refund promise,preserve refs/usage; no blind retry
+synthesis,SYNTHESIZING,OUTCOME_UNKNOWN,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+synthesis,SYNTHESIZING,PARTIAL,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+synthesis,CANCEL_REQUESTED,CANCELLED,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+synthesis,CANCEL_REQUESTED,OUTCOME_UNKNOWN,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+synthesis,OUTCOME_UNKNOWN,AUDIO_VALIDATING,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+synthesis,OUTCOME_UNKNOWN,FAILED,observed receipt/outcome and CAS; unknown not absence; partial stays review until explicit continuation,reconcile; same job immutable plan; never hidden paid replay
+delivery,queued,sending,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,sending,delivered,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,sending,failed,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,sending,unknown,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,unknown,delivered,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,unknown,failed,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+delivery,failed,queued,"current CAS, live recipient rights, ready artifact; retry only safe with approved bounds","same artifact, separate delivery key; never new synthesis"
+billing,reserved,unknown,actual provider receipt/reconciliation; no automatic release of unknown reserve,append actual usage/provenance; no invented refund
+billing,reserved,settled,actual provider receipt/reconciliation; no automatic release of unknown reserve,append actual usage/provenance; no invented refund
+billing,unknown,settled,actual provider receipt/reconciliation; no automatic release of unknown reserve,append actual usage/provenance; no invented refund

@@ -1,0 +1,71 @@
+flowchart TB
+  %% v3.3 target architecture; one owner of auto speech; no direct Honcho-to-Kaiten-to-TTS pipe.
+  U["АНДРЕЙ<br/>Telegram · голос · dashboard"]
+  H["HONCHO SELF-HOSTED<br/>API · Deriver · PostgreSQL/pgvector<br/>OpenRouter embeddings 1536"]
+  A["АФИНА / HERMES<br/>identity · scope · policy<br/>единый автор ответа"]
+  K["KAITEN — ПЛАНИРУЕТСЯ<br/>бизнес-задачи · сроки · исполнители<br/>не разрешение на release"]
+  WIKI["OBSIDIAN / WIKI<br/>знания · явные решения · источники"]
+  E["ЛИЧНЫЙ EXECUTOR<br/>назначенные inputs RO<br/>scoped job workspace RW"]
+  T["TEAM CONTROL<br/>TaskRevision · attempts · budget<br/>handoff · reconcile"]
+  KA["KAITEN ADAPTER<br/>allowlist · snapshots · receipts<br/>approved writes / sync conflict"]
+  S["WAREHOUSE + CATALOG<br/>originals · revisions · ACL<br/>project_id может быть null"]
+  F["FRAMEWORK ADAPTER<br/>CrewAI ИЛИ CADTopo<br/>выбор не изменён"]
+  DB["PROJECT DB<br/>execution ledger · checks · approvals<br/>не копия всей доски"]
+  R["АРТЕФАКТЫ + ПРОВЕРКИ<br/>snapshot · evidence · limitations"]
+  W["СПЕЦИАЛИСТЫ / WORKERS<br/>роли · модели · изоляция<br/>ограниченный параллелизм"]
+  G["TRUSTED REGISTRY<br/>grants · approvals · model policy"]
+  RET["ОТВЕТ ЧЕРЕЗ АФИНУ<br/>canonical MessageRevision<br/>текст не теряется при TTS error"]
+  ACC["ПРИЁМКА АНДРЕЕМ<br/>версия результата + критерии"]
+  REL["ОТДЕЛЬНЫЙ RELEASE<br/>exact target / payload approval"]
+  B["BACKUP / RESTORE<br/>00:00 МСК → Windows → Kingston<br/>независимая copy / isolated test"]
+  VC["VOICE CONTROLLER<br/>SpeechProjection · profile snapshot<br/>privacy · budget · idempotency"]
+  VP["СМЕННЫЕ TTS-ДВИЖКИ<br/>Edge · ElevenLabs/OpenRouter<br/>Fish · собственный TTS (позднее)"]
+  DEL["AUDIO DELIVERY<br/>decode · normalization · receipt<br/>стоимость и доставка отдельно"]
+  U --> A
+  A <--> H
+  A <--> WIKI
+  A --> E
+  A --> T
+  A --> KA
+  KA <--> K
+  T --> KA
+  T <--> DB
+  T --> G
+  T --> F
+  F --> W
+  E --> S
+  W --> S
+  S --> R
+  R --> RET
+  RET --> ACC
+  ACC --> REL
+  RET --> VC
+  VC --> VP
+  VP --> DEL
+  KA -.-> DB
+  classDef blue fill:#dce9fb,stroke:#7c8da0,color:#203044
+  classDef purple fill:#e9e1fa,stroke:#7c8da0,color:#203044
+  classDef green fill:#ccefe5,stroke:#7c8da0,color:#203044
+  classDef yellow fill:#fff0cc,stroke:#7c8da0,color:#203044
+  classDef red fill:#f6dfe3,stroke:#7c8da0,color:#203044
+  class U blue
+  class H purple
+  class A green
+  class K purple
+  class WIKI purple
+  class E yellow
+  class T green
+  class KA green
+  class S blue
+  class F yellow
+  class DB blue
+  class R blue
+  class W yellow
+  class G purple
+  class RET green
+  class ACC green
+  class REL yellow
+  class B red
+  class VC green
+  class VP yellow
+  class DEL blue

@@ -1,0 +1,11 @@
+﻿topic,state,activation_rule
+Hermes/Honcho/plugin/image pins,OPEN / owner or deployment decision,no install before exact supported versions/digests; 0.23 separate v3.3.1
+Main LLM / Honcho text models,OPEN / owner or deployment decision,fixed approved function mapping before calls
+Runtime native config keys,OPEN / owner or deployment decision,validate each against pinned release; do not trust YAML parse
+Paid voice/account/rights/tariff/caps,OPEN / owner or deployment decision,OFF until explicitly configured and tested
+Retention/RPO/RTO/deadlines/parallelism,OPEN / owner or deployment decision,"no invented values, no automatic destructive cleanup"
+Team framework/transport/provisioning,OPEN / owner or deployment decision,planned; no fake own images/gates
+Strict no-save / local-only backend,OPEN / owner or deployment decision,BLOCK affected operation if unsupported
+Health & Fitness placement,OPEN / owner or deployment decision,deferred; no new DB/container/memory subsystem
+Deployment 33/34 inventory,OPEN / owner or deployment decision,compare exact source archive before claiming E0 complete
+Full historical/atomic coverage,OPEN / owner or deployment decision,"not completed; owner closed current inspection scope, not false PASS"

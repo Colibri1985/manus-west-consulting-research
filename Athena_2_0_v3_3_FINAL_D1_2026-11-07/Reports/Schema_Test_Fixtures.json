@@ -1,0 +1,227 @@
+[
+  {
+    "name": "queued receipt valid",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "job-1",
+      "status": "QUEUED",
+      "version": 1,
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested"
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "lowercase synthesis invalid",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "job-1",
+      "status": "queued",
+      "version": 1,
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "'queued' is not one of ['CREATED', 'VALIDATING', 'QUEUED', 'DISPATCH_INTENT', 'SYNTHESIZING', 'AUDIO_VALIDATING', 'READY', 'FAILED', 'BLOCKED', 'PARTIAL', 'CANCEL_REQUESTED', 'CANCELLED', 'OUTCOME_UNKNOWN']",
+      "{'job_id': 'job-1', 'status': 'queued', 'version': 1, 'profile_id': 'athena_natural', 'profile_revision': 1, 'billing_status': 'reserved', 'delivery_status': 'not_requested'} is not valid under any of the given schemas"
+    ]
+  },
+  {
+    "name": "version required",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "job-1",
+      "status": "QUEUED",
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "'version' is a required property"
+    ]
+  },
+  {
+    "name": "READY metadata required",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "job-1",
+      "status": "READY",
+      "version": 1,
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "{'job_id': 'job-1', 'status': 'READY', 'version': 1, 'profile_id': 'athena_natural', 'profile_revision': 1, 'billing_status': 'reserved', 'delivery_status': 'not_requested'} is not valid under any of the given schemas"
+    ]
+  },
+  {
+    "name": "READY valid",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "job-1",
+      "status": "READY",
+      "version": 1,
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested",
+      "audio_artifact_id": "audio-1",
+      "audio_metadata": {
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "codec": "opus",
+        "container": "ogg",
+        "duration_seconds": 1.2,
+        "sample_rate_hz": 48000,
+        "channels": 1
+      }
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "empty delivery receipt rejected",
+    "schema": "Receipt",
+    "data": {},
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "'id' is a required property",
+      "'status' is a required property",
+      "'version' is a required property",
+      "'audio_artifact_id' is a required property"
+    ]
+  },
+  {
+    "name": "delivery receipt valid",
+    "schema": "Receipt",
+    "data": {
+      "id": "d1",
+      "status": "queued",
+      "version": 1,
+      "audio_artifact_id": "a1"
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "empty request ID invalid",
+    "schema": "JobRequest",
+    "data": {
+      "message_revision_id": "",
+      "profile_id": "p",
+      "delivery_format": "audio_file"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "'' should be non-empty"
+    ]
+  },
+  {
+    "name": "unexpected provider URL invalid",
+    "schema": "JobRequest",
+    "data": {
+      "message_revision_id": "m",
+      "profile_id": "p",
+      "delivery_format": "audio_file",
+      "provider_url": "https://example.invalid"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "Additional properties are not allowed ('provider_url' was unexpected)"
+    ]
+  },
+  {
+    "name": "cancel version valid",
+    "schema": "CancelRequest",
+    "data": {
+      "expected_version": 1
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "negative cancel version invalid",
+    "schema": "CancelRequest",
+    "data": {
+      "expected_version": -1
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "-1 is less than the minimum of 0"
+    ]
+  },
+  {
+    "name": "safe error valid",
+    "schema": "SafeError",
+    "data": {
+      "code": "SCOPE_DENIED",
+      "correlation_id": "c1"
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "error raw extra rejected",
+    "schema": "SafeError",
+    "data": {
+      "code": "X",
+      "correlation_id": "c",
+      "raw_provider_body": "not allowed"
+    },
+    "expected_valid": false,
+    "actual_valid": false,
+    "errors": [
+      "Additional properties are not allowed ('raw_provider_body' was unexpected)"
+    ]
+  },
+  {
+    "name": "spec JobRequest example",
+    "schema": "JobRequest",
+    "data": {
+      "message_revision_id": "msg-042-r1",
+      "profile_id": "athena_natural",
+      "delivery_format": "telegram_voice"
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  },
+  {
+    "name": "spec JobStatus example",
+    "schema": "JobStatus",
+    "data": {
+      "job_id": "speech-042",
+      "status": "QUEUED",
+      "version": 1,
+      "profile_id": "athena_natural",
+      "profile_revision": 1,
+      "billing_status": "reserved",
+      "delivery_status": "not_requested"
+    },
+    "expected_valid": true,
+    "actual_valid": true,
+    "errors": []
+  }
+]

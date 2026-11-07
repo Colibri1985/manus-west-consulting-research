@@ -1,0 +1,196 @@
+{
+  "release": "Athena_2_0_v3_3_FINAL_D1_2026-11-07",
+  "version": "3.3",
+  "document_status": "FINAL_DOCUMENT_RELEASE",
+  "audit_scope": "Current inspection closed by owner; not complete historical/runtime certification",
+  "static_checks": [
+    {
+      "test": "API local refs",
+      "status": "PASS",
+      "detail": "80 occurrences resolve"
+    },
+    {
+      "test": "queued receipt valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "lowercase synthesis invalid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "version required",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "READY metadata required",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "READY valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "empty delivery receipt rejected",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "delivery receipt valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "empty request ID invalid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "unexpected provider URL invalid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "cancel version valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "negative cancel version invalid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "safe error valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "error raw extra rejected",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "spec JobRequest example",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "spec JobStatus example",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "API operations count",
+      "status": "PASS",
+      "detail": "10"
+    },
+    {
+      "test": "all HTTP errors typed",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "ER preserved counts",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "ER relationship endpoints",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Dictionary all fields match",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Overview aliases identical",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "36 sections retained",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Registry embedded matches",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Native template embedded matches",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Only initial voice enabled",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Env example embedded matches",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "DOCX exact full source",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "RTF exact full source roundtrip",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "PDF source line coverage",
+      "status": "PASS",
+      "detail": "16 pages, 0 missing normalized lines; not visual layout proof"
+    },
+    {
+      "test": "Preserved 23 source hashes",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Current JSON/YAML/CSV parse",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "summary": {
+    "targeted_checks": 32,
+    "pass": 32,
+    "fail": 0,
+    "entities": 69,
+    "relationships": 94,
+    "operations": 10,
+    "reader_pdf_pages": 16,
+    "source_hashes": 23
+  },
+  "not_verified": [
+    "Full OpenAPI 3.0 meta-schema",
+    "Mermaid CLI rendering/visual diagram equivalence",
+    "Full historical atomic requirements coverage",
+    "Full deployment file inspection or code remediation",
+    "Runtime compatibility/pinned native config keys",
+    "Docker Compose config/build/startup",
+    "Provider/account/billing/embedding calls",
+    "Security enforcement/cross-scope/runtime negative tests",
+    "Independent server restore"
+  ],
+  "external_errata": "Deploy/Deployment_Errata.md",
+  "findings_status": "Mixed: fixed documentation, design contracts, deferred feature and open external verification; no blanket ALL_CLOSED",
+  "actions": {
+    "github_writes": false,
+    "server_changes": false,
+    "paid_calls": 0
+  }
+}

@@ -1,0 +1,3 @@
+# Voice v3.3 FINAL-D1
+Registry и policy — design contracts, не native enforcement. Native config — UNVERIFIED_TEMPLATE. tts_adapter.py отсутствует и не объявлен работающим. /srv/athena/deployment/core/voice → /opt/athena/voice — proposed packaging mapping, не установленный mount.
+Native-only Edge pilot: CP-TTS, approved synthetic scope, private auth, actual codec/delivery tests. Он не доказывает monthly ledger/CAS/receipt guarantees контроллера. Controlled voice включается только после реализации проектных contracts. Paid routes остаются disabled; placeholder model/voice не проверены аккаунтом. Ключи только пустые examples. Нельзя загружать real env/secrets на GitHub.
