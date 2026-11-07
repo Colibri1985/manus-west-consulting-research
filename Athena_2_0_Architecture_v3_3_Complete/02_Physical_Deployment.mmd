@@ -1,0 +1,47 @@
+flowchart TB
+ U["Андрей / Telegram / dashboard"] --> EDGE["Один proxy + TLS / VPN / auth"]
+ subgraph HOST["HostHatch — целевое размещение, не факт установки"]
+  EDGE --> H["Hermes runtime / один home per profile"]
+  H --> HOME["Persistent HERMES_HOME / state.db / sessions / memories"]
+  H --> EX["Executor / granted tools only"]
+  H --> TC["Team Control / protected separate client"]
+  TC --> PDB[("Project DB")]
+  TC --> FA["Framework adapter"] --> WK["Scoped workers"]
+  H --> HA["Honcho API / private memory network"]
+  HA --> HDB[("Honcho PostgreSQL + pgvector")]
+  HD["Deriver"] --> HDB
+  HA --> RED[("Redis cache")]
+  HD --> RED
+  HDB --> VOL["Dedicated filesystem / UUID / persistent data"]
+  H --> CAT["Catalog / controlled publisher"]
+  EX --> CAT
+  WK --> CAT
+  CAT --> WH["Warehouse persistent payloads"]
+  H --> KA["Kaiten adapter / trusted integration boundary"]
+  TC --> KA
+  KA --> KS["Local bindings cursor snapshots receipts"]
+  H --> VC["Voice controller / first inside trusted runtime boundary"]
+  VC --> VS["Voice state / jobs selection usage receipts"]
+  VC --> VA["Native/custom TTS adapter / minimal env"]
+  VA --> TMP["Scoped temporary audio/text"]
+  VA --> NORM["Decode + ffmpeg normalization"]
+  NORM --> CAT
+  NORM --> DELIVERY["Channel delivery / no duplicate auto-speech owner"]
+  ASSET["Versioned voice materials / rights / manifests"] --> VA
+  SEC["Addressed secrets / no shared executor mount"] -.-> VA
+  SEC -.-> KA
+  MON["Monitoring: no paid synthesis in passive health"] -.-> VC
+ end
+ HA --> OR["OpenRouter inference / authorized content"]
+ HD --> OR
+ VA --> ORE["OpenRouter TTS → ElevenLabs / account gate"]
+ VA --> MS["Edge online"]
+ VA -.-> FISH["Fish route / reserved"]
+ VA -.-> OWN["Own TTS endpoint / location and resources open"]
+ KA --> K["External Kaiten"]
+ BK["Consistent local backup + independent copies"] -.-> VOL
+ BK -.-> HOME
+ BK -.-> WH
+ BK -.-> VS
+ BK -.-> KS
+ K -.-> KEXP["External export policy; not in VPS image"]

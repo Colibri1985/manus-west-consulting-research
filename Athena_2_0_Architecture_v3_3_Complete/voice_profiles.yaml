@@ -1,0 +1,67 @@
+# Athena design registry; not a native Hermes file.
+schema_version: '3.3'
+selection:
+  scope: hermes_profile
+  active_profile: svetlana
+  version: 1
+  switch_policy: next_reply
+  fallback_policy: text_only
+profiles:
+  svetlana:
+    revision: 1
+    enabled: true
+    hermes_provider: edge
+    engine: edge_online
+    voice: ru-RU-SvetlanaNeural
+    external_processing: true
+    billing_route: no_api_charge
+  athena_natural:
+    revision: 1
+    enabled: false
+    hermes_provider: athena_elevenlabs
+    engine: elevenlabs_via_openrouter
+    model: elevenlabs/eleven-v4-turbo
+    voice: null
+    credential_ref: openrouter_tts
+    billing_account_ref: openrouter_main
+    external_processing: true
+    activation_requires:
+    - chosen_voice
+    - paid_budget
+    - account_access
+    - synthesis_delivery_test
+  athena_fish:
+    revision: 1
+    enabled: false
+    engine: fish_direct
+    model: null
+    voice: null
+    activation_requires:
+    - model_selection
+    - chosen_voice
+    - paid_budget
+    - synthesis_delivery_test
+  athena_own:
+    revision: 1
+    enabled: false
+    engine: null
+    voice_identity_revision: null
+    locality: undecided
+    activation_requires:
+    - engine_selection
+    - resources
+    - rights_check
+    - synthesis_delivery_test
+  athena_elevenlabs_direct:
+    revision: 1
+    enabled: false
+    engine: elevenlabs_direct
+    model: null
+    voice: null
+    credential_ref: elevenlabs_direct
+    external_processing: true
+    activation_requires:
+    - account_plan_selection
+    - chosen_voice
+    - paid_budget
+    - synthesis_delivery_test

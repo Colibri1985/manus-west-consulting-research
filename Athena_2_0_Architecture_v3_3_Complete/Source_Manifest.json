@@ -1,0 +1,77 @@
+{
+  "repository": "Colibri1985/manus-west-consulting-research",
+  "commit": "a6b081eaefc710e3fa8d7170876aea2bf57a74a9",
+  "commit_message": "Athena, live! 4",
+  "directory": "Athena_v3.2.&TTS",
+  "retrieval": "Authenticated GitHub read-only connector. No repo modifications.",
+  "files": [
+    {
+      "path": "Athena_v3.2.&TTS/Athena_2_0_Current_Specification_v3_2.md",
+      "git_blob_sha1": "8ad3e0303e749e205a8cd0bba9cdd823bb4e180d",
+      "size_bytes": 83425
+    },
+    {
+      "path": "Athena_v3.2.&TTS/04_Data_Model.mmd",
+      "git_blob_sha1": "6054339ea576133532f0616dc6f8171358911329",
+      "size_bytes": 10795
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_TTS_model.txt",
+      "git_blob_sha1": "86fc74650fae8edc043f0423c50853f8314a4b10",
+      "size_bytes": 920
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_Voice_Profiles_Config/athena-voice-profiles/config.tts.yaml",
+      "git_blob_sha1": "f5cd07b4404360a7f57d264a7e11d8a736be3659",
+      "size_bytes": 1573
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_Voice_Profiles_Config/athena-voice-profiles/voice_profiles.yaml",
+      "git_blob_sha1": "25b70de4fc911827a819c41e3dfb5aa8509a48ac",
+      "size_bytes": 1356
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_Voice_Profiles_Config/athena-voice-profiles/tts_adapter.py",
+      "git_blob_sha1": "9f333290c004174598a4eea472a2b39234baf8d8",
+      "size_bytes": 4485
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_Voice_Profiles_Config/athena-voice-profiles/README_RU.md",
+      "git_blob_sha1": "1b0c1d324c3c1544f1d039a6af50ec0f5b694646",
+      "size_bytes": 7155
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Athena_Voice_Profiles_Config/athena-voice-profiles/voice.env.example",
+      "git_blob_sha1": "0c03f2d0055e28456cd22703f215297f7bbe0ab9",
+      "size_bytes": 424
+    },
+    {
+      "path": "Athena_v3.2.&TTS/Entity_Dictionary_v3_2.csv",
+      "git_blob_sha1": "4885e346bf61df64aa1a614434cd0ffe8a60e973",
+      "size_bytes": 5389,
+      "current_build_blob_verified": true
+    }
+  ],
+  "notes": [
+    "Main .md and space-before-extension duplicate have identical blob SHA; canonical no-space path selected.",
+    "Git blob SHA is not ordinary file SHA256.",
+    "3.3 is an authored consolidation, not a claim of byte-for-byte preservation of all 3.2 paragraphs.",
+    "Source adapter reviewed, not executed or promoted as production-ready."
+  ],
+  "current_build": {
+    "version": "3.3",
+    "document_time_msk": "2026-11-04 22:03",
+    "github_revalidation": [
+      "directory metadata at exact commit",
+      "Entity_Dictionary_v3_2.csv full content and blob SHA",
+      "04_Data_Model.mmd full content and blob SHA"
+    ],
+    "attached_full_text": {
+      "filename": "Athena_2_0_Current_Specification_v3_3.md",
+      "size": 65555,
+      "sha256": "181f1f20f318ca63493756bbc2a5777ffddcec682160ee32603771b1391df6cd"
+    },
+    "prior_3_2_spec_text_response": "truncated; no claim of byte-for-byte paragraph preservation",
+    "write_actions": false
+  }
+}

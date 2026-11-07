@@ -1,0 +1,34 @@
+flowchart LR
+ INPUT["User voice/text"] --> STT["STT if required"] --> H["Hermes / scoped context"]
+ INPUT --> H
+ H --> HIST["Native session history / one primary"]
+ HIST --> SEND["One approved memory sender"] --> HA["Honcho API"] --> DB[("Own PostgreSQL + pgvector")]
+ DB --> RECALL["Scoped recall + provenance + freshness"] --> H
+ K["Kaiten business fields"] --> KA["Authorized read/poll; optional verified event"]
+ KA --> CS["CardSnapshot / CardTaskLink"] --> H
+ H --> TASK["TaskRevision / execution ledger"] --> RESULT["ArtifactRevision + evidence"]
+ RESULT --> CAT["Warehouse/catalog primary"]
+ RESULT --> H
+ H --> MSG["Canonical MessageRevision / authorized audience"]
+ MSG --> TXT["Text delivery"]
+ MSG --> SP["SpeechProjection / source ACL / external processing policy"]
+ SP --> PROF["Immutable VoiceProfileRevision / selection"]
+ PROF --> BILL["BillingAccount / entitlement / RateCard / reservation"]
+ BILL --> JOB["SynthesisJob / chunks / provider receipts"]
+ JOB --> EXT["Selected TTS provider: ONLY speech_text"]
+ EXT --> AUDIO["Decode / normalize / AudioArtifact"]
+ AUDIO --> CAT
+ AUDIO --> DEL["DeliveryAttempt / exact recipient"]
+ JOB --> USAGE["SpeechUsage / reserved settled unknown"]
+ PROF --> CACHE["Scoped HMAC cache key / rights and policy revision"]
+ AUDIO --> CACHE
+ CACHE --> DEL
+ REF["Own voice materials / model-assets / rights manifests"] -.-> PROF
+ EVENT["NotificationSubscription: opt-in filters / quiet hours"] --> MSG
+ KA --> EVENT
+ HA -.-> NOAUTO["Memory processing event does NOT auto-notify"]
+ MSG -.-> PUB["Separate approved minimal publication to Kaiten"] --> KA
+ STATE["Voice job/selection/receipts state"] --> BACK["Backup + isolated restore / reconcile before retry"]
+ DB --> BACK
+ CAT --> BACK
+ USAGE --> BACK

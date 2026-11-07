@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Athena private voice API — DESIGN
+  version: '3.3'
+  description: Not native Hermes API. No API server created. Scope derived from verified
+    identity.
+servers:
+- url: https://athena.example.invalid
+  description: Non-routable placeholder, replace only after deployment decision
+security:
+- ScopedBearer: []
+paths:
+  /athena/v1/voice/profiles:
+    get:
+      operationId: listProfiles
+      summary: listProfiles
+      responses:
+        '200':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileList'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+  /athena/v1/voice/selection:
+    get:
+      operationId: getSelection
+      summary: getSelection
+      responses:
+        '200':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Selection'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+    put:
+      operationId: setSelection
+      summary: setSelection
+      responses:
+        '200':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Selection'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectionRequest'
+  /athena/v1/tts/jobs:
+    post:
+      operationId: createSpeechJob
+      summary: createSpeechJob
+      responses:
+        '202':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+        '402':
+          description: Paid budget/entitlement not approved; no provider call
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRequest'
+  /athena/v1/tts/jobs/{id}:
+    get:
+      operationId: getSpeechJob
+      summary: getSpeechJob
+      responses:
+        '200':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+  /athena/v1/tts/jobs/{id}/cancel:
+    post:
+      operationId: cancelSpeechJob
+      summary: cancelSpeechJob
+      responses:
+        '202':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelRequest'
+  /athena/v1/tts/jobs/{id}/audio:
+    get:
+      operationId: getSpeechAudio
+      summary: getSpeechAudio
+      responses:
+        '200':
+          description: Verified bytes after live ACL/retention check
+          content:
+            audio/ogg:
+              schema:
+                type: string
+                format: binary
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+  /athena/v1/voice/previews:
+    post:
+      operationId: createVoicePreview
+      summary: createVoicePreview
+      responses:
+        '202':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+        '402':
+          description: Paid budget/entitlement not approved; no provider call
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewRequest'
+  /athena/v1/deliveries:
+    post:
+      operationId: createAudioDelivery
+      summary: createAudioDelivery
+      responses:
+        '202':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryRequest'
+  /athena/v1/deliveries/{id}:
+    get:
+      operationId: getDelivery
+      summary: getDelivery
+      responses:
+        '200':
+          description: Authorized result/receipt; 202 does not mean completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '401':
+          description: Unauthenticated
+        '403':
+          description: Scope denied
+        '409':
+          description: Idempotency or revision conflict
+        '422':
+          description: Unsupported input/profile/capability
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+components:
+  securitySchemes:
+    ScopedBearer:
+      type: http
+      scheme: bearer
+  schemas:
+    JobRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - message_revision_id
+      - profile_id
+      - delivery_format
+      properties:
+        message_revision_id:
+          type: string
+        profile_id:
+          type: string
+        delivery_format:
+          type: string
+          enum:
+          - telegram_voice
+          - audio_file
+    SelectionRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - profile_id
+      - expected_version
+      properties:
+        profile_id:
+          type: string
+        expected_version:
+          type: integer
+          minimum: 0
+    PreviewRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - profile_id
+      - text
+      properties:
+        profile_id:
+          type: string
+        text:
+          type: string
+          minLength: 1
+          maxLength: 4000
+    CancelRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - expected_version
+      properties:
+        expected_version:
+          type: integer
+          minimum: 0
+    DeliveryRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - audio_artifact_id
+      - target_binding_ref
+      properties:
+        audio_artifact_id:
+          type: string
+        target_binding_ref:
+          type: string
+    SafeError:
+      type: object
+      required:
+      - code
+      - correlation_id
+      properties:
+        code:
+          type: string
+        correlation_id:
+          type: string
+        job_id:
+          type: string
+        retry_classification:
+          type: string
+    Receipt:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        version:
+          type: integer
+        profile_revision:
+          type: string
+        billing_status:
+          type: string
+        delivery_status:
+          type: string
+        audio_artifact_id:
+          type: string
+    ProfileSummary:
+      type: object
+      required:
+      - id
+      - revision
+      - enabled
+      properties:
+        id:
+          type: string
+        revision:
+          type: integer
+        enabled:
+          type: boolean
+        capabilities:
+          type: array
+          items:
+            type: string
+        readiness:
+          type: string
+    ProfileList:
+      type: object
+      required:
+      - profiles
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileSummary'
+    Selection:
+      type: object
+      required:
+      - profile_id
+      - version
+      properties:
+        profile_id:
+          type: string
+        profile_revision:
+          type: integer
+        version:
+          type: integer
+        effective_from:
+          type: string
+          enum:
+          - next_reply
+        application_status:
+          type: string
+    JobStatus:
+      type: object
+      required:
+      - job_id
+      - status
+      properties:
+        job_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - CREATED
+          - VALIDATING
+          - QUEUED
+          - DISPATCH_INTENT
+          - SYNTHESIZING
+          - AUDIO_VALIDATING
+          - READY
+          - FAILED
+          - BLOCKED
+          - PARTIAL
+          - CANCEL_REQUESTED
+          - CANCELLED
+          - OUTCOME_UNKNOWN
+        audio_artifact_id:
+          type: string
+        billing_status:
+          type: string
+          enum:
+          - not_required
+          - reserved
+          - settled
+          - unknown
+        delivery_status:
+          type: string
+          enum:
+          - not_requested
+          - queued
+          - sending
+          - delivered
+          - failed
+          - unknown
+        error:
+          $ref: '#/components/schemas/SafeError'

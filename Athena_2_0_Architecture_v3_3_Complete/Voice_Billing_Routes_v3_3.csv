@@ -1,0 +1,7 @@
+route,credential_owner,billing,constraint,status
+Edge,Онлайн Microsoft,Без API-платы в исходной схеме,Не обещает офлайн/SLA,configured_then_test
+ElevenLabs via OpenRouter,OpenRouter TTS credential,Баланс OpenRouter / usage,Прямая подписка не пополняет этот баланс,blocked_until_voice_budget_test
+ElevenLabs direct,ElevenLabs credential,План/PAYG/квота аккаунта,Не использует OpenRouter key,reserved
+BYOK,Явно поддерживаемый маршрут,Проверенные условия account/provider/router,Не обещать отсутствие комиссий,open
+Fish,Выбранный direct/router credential,Тариф выбранного маршрута,Неизвестный model не выбирать по default,reserved
+Own engine,Свой scoped endpoint,Инфраструктура/лицензии/эксплуатация,Не считать бесплатным или подходящим текущему VPS,architectural_capability

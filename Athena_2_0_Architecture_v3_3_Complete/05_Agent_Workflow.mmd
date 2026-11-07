@@ -1,0 +1,32 @@
+flowchart TD
+ IN["Message / voice / file / allowed Kaiten event"] --> AUTH["Verified identity + scope + source access"]
+ AUTH --> STT["STT when needed / original transcript"]
+ STT --> MODE{"Route"}
+ MODE -->|"Short answer"| CHAT["Hermes / allowed memory and knowledge"]
+ MODE -->|"Save only"| CAT["Warehouse/catalog / nullable project"]
+ MODE -->|"Task"| PLAN["TaskRevision / criteria / budget / grants"]
+ PLAN --> NEED{"Team needed?"}
+ NEED -->|"No"| EX["Personal executor"]
+ NEED -->|"Yes"| TEAM["Team Control / adapter / workers / handoff"]
+ EX --> CHECK["Snapshot-bound checks / publish result"]
+ TEAM --> CHECK
+ CHECK --> PASS{"Passed?"}
+ PASS -->|"No"| RETRY["Bounded rework or escalation"] --> PLAN
+ PASS -->|"Yes"| MSG["Canonical authorized MessageRevision"]
+ CHAT --> MSG
+ CAT --> MSG
+ MSG --> TEXT["Text output / business status independent of voice"]
+ MSG --> SPEAK{"Voice enabled / event subscription allowed?"}
+ SPEAK -->|"No"| DONE["Text only"]
+ SPEAK -->|"Yes"| PROJ["SpeechProjection / immutable profile snapshot"]
+ PROJ --> GATE{"Privacy + entitlement + budget ready?"}
+ GATE -->|"No"| ERR["Text preserved / sanitized error / no silent fallback"]
+ GATE -->|"Yes"| JOB["Durable idempotent job / chunk plan"]
+ JOB --> SYNTH["One selected TTS engine"]
+ SYNTH --> OK{"Valid decodable audio?"}
+ OK -->|"No / timeout"| UNKNOWN["Failed or UNKNOWN charge / reconcile; no blind retry"]
+ OK -->|"Yes"| NORMAL["Normalize and publish AudioArtifact"]
+ NORMAL --> DEL["Separate idempotent delivery"]
+ DEL --> RECEIPT["Receipt or delivery UNKNOWN; no new synthesis"]
+ MSG -.-> ACCEPT["Owner acceptance; release separate approval"]
+ MSG -.-> KP["Optional Kaiten update via separate approved operation"]

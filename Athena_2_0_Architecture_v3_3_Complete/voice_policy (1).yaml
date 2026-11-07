@@ -1,0 +1,12 @@
+# Policy layer of Athena; NOT read natively by Hermes.
+schema_version: '3.3'
+status: design_only
+paid_tts_enabled: false
+monthly_limit: null
+currency: USD
+null_budget_behavior: block_paid_calls
+fallback_policy: text_only
+unknown_charge_action: hold_reservation_and_reconcile
+default_event_audio: false
+automatic_plan_upgrade: false
+automatic_provider_change: false
